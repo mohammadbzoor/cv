@@ -2,16 +2,18 @@ import { Link } from 'react-router-dom';
 import { Home, AlertCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { ROUTE_PATHS } from '../app/routePaths';
+import { PageContainer } from '../components/layout/PageContainer';
+import { Button } from '../components/ui/Button';
 
 /**
  * NotFoundPage component.
- * Fully internationalized 404 fallback page.
+ * Fully internationalized 404 fallback page rendered cleanly inside PublicLayout.
  */
 export default function NotFoundPage() {
   const { t } = useTranslation(['designSystem', 'navigation', 'common']);
 
   return (
-    <div className="min-h-screen bg-app-bg text-foreground flex items-center justify-center p-4 font-sans">
+    <PageContainer className="py-12 md:py-20 flex items-center justify-center">
       <main className="max-w-md w-full bg-surface border border-border rounded-2xl p-8 text-center shadow-2xs space-y-6">
         <div className="mx-auto w-14 h-14 bg-warning-subtle text-warning rounded-full flex items-center justify-center">
           <AlertCircle className="w-7 h-7" aria-hidden="true" />
@@ -26,15 +28,13 @@ export default function NotFoundPage() {
         </div>
 
         <div>
-          <Link
-            to={ROUTE_PATHS.HOME}
-            className="inline-flex items-center justify-center gap-2 w-full px-5 py-2.5 bg-primary text-on-primary font-medium text-sm rounded-lg hover:bg-primary-hover focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 transition-colors shadow-2xs cursor-pointer"
-          >
-            <Home className="w-4 h-4" aria-hidden="true" />
-            <span>{t('navigation:backToHome')}</span>
+          <Link to={ROUTE_PATHS.HOME}>
+            <Button leadingIcon={Home} className="w-full">
+              {t('navigation:backToHome')}
+            </Button>
           </Link>
         </div>
       </main>
-    </div>
+    </PageContainer>
   );
 }

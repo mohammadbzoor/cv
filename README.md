@@ -64,6 +64,47 @@ npm run preview
 
 ---
 
+## 🏛️ معمارية الهيكل والتنقل (Layout & Navigation Architecture)
+
+تم تأسيس نظام التخطيط والتنقل العام للتطبيق باستخدام عناصر دلالية ومرنة تعتمد معايير الوصول الشامل (WAI-ARIA):
+
+```text
+src/
+├── constants/
+│   └── navigation.js            # المصفوفة المركزية الموحدة لجميع عناصر التنقل
+│
+├── components/layout/
+│   ├── AppLayout/               # الهيكل البنائي الأساسي (header, main #main-content, footer)
+│   ├── PublicLayout/            # تغليف الهيكل العام مع ScrollToTop و Outlet
+│   ├── Navbar/                  # ترويسة التطبيق الثابتة sticky
+│   ├── DesktopNavigation/       # روابط التنقل لسطح المكتب مع aria-current="page"
+│   ├── MobileNavigation/        # قائمة الهاتف الجانبية (Drawer) مع التغليق التلقائي عند تغيير المسار
+│   ├── Footer/                  # تذييل الصفحات مع الحقوق وسنة ديناميكية وتنويه لغة CV
+│   ├── PageContainer/           # حاوي قياسي متجاوب بمقاسات مختلفة (sm, md, lg, xl, full)
+│   ├── PageHeader/              # ترويسة الصفحة مع مسار التصفح والعناوين والإجراءات
+│   ├── SkipLink/                # رابط تخطي المحتوى لسهولة الوصول عبر لوحة المفاتيح
+│   ├── Logo/                    # الشعار المهني الرسمي
+│   ├── Breadcrumbs/             # مسار التصفح التفاعلي WAI-ARIA
+│   └── ScrollToTop/             # إعادة موضع التمرير لأعلى الصفحة عند التبديل
+│
+├── features/shared/components/
+│   └── FeaturePlaceholder.jsx   # مكون عرض الصفحات قيد التطوير المستقبلية
+│
+└── pages/
+    ├── HomePage.jsx             # الصفحة الرئيسية
+    ├── CreatePage.jsx           # صفحة إنشاء سيرة ذاتية
+    ├── UploadPage.jsx           # صفحة رفع وتصدير سيرة
+    ├── AnalyzePage.jsx          # صفحة تحليل السيرة الذاتية (ATS)
+    ├── MatchPage.jsx            # صفحة مطابقة الوظيفة
+    ├── ImprovePage.jsx          # صفحة تحسين المحتوى بالذكاء الاصطناعي
+    ├── TemplatesPage.jsx        # صفحة استعراض القوالب
+    ├── HelpPage.jsx             # صفحة المساعدة والتعليمات
+    ├── NotFoundPage.jsx         # صفحة 404
+    └── DesignSystemPage.jsx     # صفحة نظام التصميم التطويرية
+```
+
+---
+
 ## 🌐 نظام التدويل واللغات (i18n Architecture)
 
 > **Architectural Principle:**
@@ -71,9 +112,8 @@ npm run preview
 
 - **واجهة التطبيق (App Interface):** العربية (`ar` / RTL) والإنجليزية (`en` / LTR).
 - **مستند السيرة الذاتية مستقبلاً (CV Document):** لغة إنجليزية ثابتة (`en` / LTR) دائماً.
-
 - **مفتاح localStorage للغة:** `cv-platform-language`
-- **Namespaces:** `common`, `navigation`, `home`, `designSystem`, `feedback`.
+- **Namespaces:** `common`, `navigation`, `home`, `designSystem`, `feedback`, `pages`.
 
 ---
 
@@ -92,38 +132,7 @@ npm run preview
 
 ## 🧩 مكتبة مكونات الواجهة (Core UI Components Library)
 
-تم استكمال مكتبة مكونات الواجهة العامة (Primitives & Feedback States) بدون استخدام أي مكتبة UI خارجية:
-
-| المكون | التصدير | الوصف وسلوك الوصول (Accessibility) |
-| :--- | :--- | :--- |
-| **Button** | `Button` | أزرار متعددة الأنماط والأحجام مع حالات تحميل وتعطيل ودعم أيقونات leading/trailing. |
-| **Input** | `Input` | حقل إدخال مع label, helperText, error, startIcon, endIcon, aria-invalid, aria-describedby. |
-| **Textarea** | `Textarea` | منطقة نص مع عداد أحرف وحجم أقصى وأولوية الخطأ على النص المساعد. |
-| **Select** | `Select` | قائمة منسدلة قائمة على `<select>` الأصلي مع سهم اتجاه منطقي يدعم RTL و LTR. |
-| **Checkbox** | `Checkbox` | مربع اختيار دلالي يدعم checked, unchecked, indeterminate, description, aria-invalid. |
-| **RadioGroup** | `RadioGroup` | مجموعة اختيارات دائرية تعتمد `<fieldset>` و `<legend>` مع تنسيق رأسي وأفقي. |
-| **Switch** | `Switch` | زر تبديل مع `role="switch"` و `aria-checked` وتحريك سلس يراعي Reduced Motion. |
-| **Modal** | `Modal` | نافذة منبثقة تعتمد React Portal, Focus Trap, Scroll Lock, Escape key, وإعادة Focus السابق. |
-| **Tabs** | `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent` | تبويبات متوافقة مع WAI-ARIA ودعم التنقل بأسهم لوحة المفاتيح و Home/End مع مراعاة اتجاه RTL. |
-| **Accordion** | `Accordion`, `AccordionItem`, `AccordionTrigger`, `AccordionContent` | قائمة طي واكتشاف متوافقة مع WAI-ARIA ودعم التمدد الفردي والمتعدد وحركة Chevron. |
-| **Skeleton** | `Skeleton` | هيكل تحميل بصري يدعم أنماط text, circle, rectangle ويختفي عن قارئ الشاشة بـ `aria-hidden`. |
-| **Spinner** | `Spinner` | مؤشر تحميل دائري دلالي يضم `role="status"` ونص مخفي قارئ شاشة `sr-only`. |
-| **EmptyState** | `EmptyState` | حاوي عرض للحالات الفارغة يدعم الأيقونات والأوصاف وأزرار الإجراءات بدون نصوص صلبة. |
-| **ErrorState** | `ErrorState` | حاوي عرض لأخطاء الشبكة والنظام مع أزرار إعادة المحاولة وعرض تفاصيل الخطأ. |
-| **ConfirmDialog** | `ConfirmDialog` | حوار تأكيد يعيد استخدام Modal و Button مع دعم العمليات المدمرة وحالة التحميل. |
-| **FormField** | `FormField` | حاوي تخطيطي موحد يربط label و required و error بالـ htmlFor. |
-| **Tooltip** | `Tooltip` | تلميح توضيحي يظهر عند Hover و Focus ويغلق بزر Esc ويرتبط بـ `aria-describedby`. |
-| **ThemeToggle** | `ThemeToggle` | قائمة منسدلة لتبديل السمة الفاتحة والداكنة والنظام. |
-| **LanguageSwitcher** | `LanguageSwitcher` | زر التبديل بين العربية والإنجليزية دون استخدام أعلام الدول. |
-
-### طريقة الاستيراد
-
-```javascript
-import { Select } from './components/ui/Select';
-import { Modal } from './components/ui/Modal';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from './components/ui/Tabs';
-import { ConfirmDialog } from './components/ui/ConfirmDialog';
-```
+- **Button**, **Input**, **Textarea**, **Select**, **Checkbox**, **RadioGroup**, **Switch**, **Modal**, **Tabs**, **Accordion**, **Skeleton**, **Spinner**, **EmptyState**, **ErrorState**, **ConfirmDialog**, **FormField**, **Tooltip**, **ThemeToggle**, **LanguageSwitcher**.
 
 ---
 
@@ -133,27 +142,28 @@ import { ConfirmDialog } from './components/ui/ConfirmDialog';
 ```text
 /design-system
 ```
-تعرض جميع المكونات والألوان والنصوص واختبارات النماذج والطبقات وحالات التغذية الراجعة في اللغتين العربية والإنجليزية والاتجاهين (RTL / LTR).
 
 ---
 
-## ✅ ما تم إنجازه في المرحلة الرابعة (Phase 4 Accomplishments)
+## ✅ ما تم إنجازه في المرحلة الخامسة (Phase 5 Accomplishments)
 
-1. بناء المكونات الـ 14 العامة بالكامل وفق المعايير الدلالية و WAI-ARIA.
-2. عدم الاعتماد على أية مكتبة UI أو Forms أو State إضافية.
-3. التوافق التام لجميع المكونات مع الوضعين الفاتح والداكن وتفضيل النظام.
-4. دعم اتجاهات RTL و LTR بالخصائص المنطقية (Logical Properties) والأيقونات المتكيفة.
-5. توفير إدارة كاملة للتركيز (Focus Trap & Return) في `Modal` وحظر التمرير الخلفي.
-6. دعم لوحة المفاتيح الكامل (Tab, Enter, Space, Escape, Arrows, Home, End).
-7. تنظيم صفحة `/design-system` وتوزيع مكوناتها في وحدات منظمة تحت `src/features/design-system/components/`.
-8. تحديث التوثيق واجتياز اختبارات ESLint و Production Build بفرص نجاح كاملة وسريعة.
+1. إعداد الثوابت المركزية لأسماء المسارات (`routePaths.js`) وعناصر التنقل (`navigation.js`).
+2. بناء الهيكل البنائي `AppLayout` و `PublicLayout` باستخدام عناصر HTML5 الدلالية (`<header>`, `<nav>`, `<main id="main-content">`, `<footer>`).
+3. إدراج مكون `SkipLink` للانتقال المباشر للمحتوى الرئيسي لتعزيز إمكانية الوصول.
+4. تطوير `Navbar` الثابت أعلى الصفحة و `DesktopNavigation` مع تمييز الصفحة الحالية بـ `aria-current="page"`.
+5. تطوير `MobileNavigation` (Drawer) متوافق مع الوصول الشامل وإغلاق تلقائي عند تغيير المسار.
+6. تطوير `Footer` مع التنويه المعماري للـ CV وإدراج السنة الحالية برمجياً.
+7. إنشاء المكونات المساندة `PageContainer` و `PageHeader` و `Logo` و `Breadcrumbs` و `ScrollToTop`.
+8. إنشاء الصفحات المؤقتة للمسارات المستقبلية ومكون `FeaturePlaceholder`.
+9. إعداد مسارات React Router بروابط فرعية (Nested Layout Routes).
+10. تحديث ملفات الترجمة واجتياز اختبارات ESLint وبناء الإنتاج بنجاح كامل.
 
 ---
 
 ## 🔮 المراحل القادمة (Upcoming Phases)
 
-- **المرحلة الخامسة:** الهيكل البنائي والتنقل واختيار القوالب (Layout & Navigation).
-- **المرحلة السادسة:** نموذج بيانات السيرة الذاتية ومحرر السيرة الذاتية (CV Data Model & Builder).
+- **المرحلة السادسة:** نموذج بيانات السيرة الذاتية وإدارة الحالة (CV Data Model & State Management / Zustand).
+- **المرحلة السابعة:** محرر السيرة الذاتية وقوالب العرض (CV Builder & Templates).
 
 ---
 

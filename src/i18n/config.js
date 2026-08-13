@@ -7,12 +7,14 @@ import arNavigation from './locales/ar/navigation.json';
 import arHome from './locales/ar/home.json';
 import arDesignSystem from './locales/ar/designSystem.json';
 import arFeedback from './locales/ar/feedback.json';
+import arPages from './locales/ar/pages.json';
 
 import enCommon from './locales/en/common.json';
 import enNavigation from './locales/en/navigation.json';
 import enHome from './locales/en/home.json';
 import enDesignSystem from './locales/en/designSystem.json';
 import enFeedback from './locales/en/feedback.json';
+import enPages from './locales/en/pages.json';
 
 function getInitialLanguage() {
   try {
@@ -36,6 +38,7 @@ i18n
         home: arHome,
         designSystem: arDesignSystem,
         feedback: arFeedback,
+        pages: arPages,
       },
       en: {
         common: enCommon,
@@ -43,12 +46,13 @@ i18n
         home: enHome,
         designSystem: enDesignSystem,
         feedback: enFeedback,
+        pages: enPages,
       },
     },
     lng: getInitialLanguage(),
     fallbackLng: FALLBACK_LANGUAGE,
     defaultNS: 'common',
-    ns: ['common', 'navigation', 'home', 'designSystem', 'feedback'],
+    ns: ['common', 'navigation', 'home', 'designSystem', 'feedback', 'pages'],
     interpolation: {
       escapeValue: false, // React already escapes string values
     },

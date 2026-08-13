@@ -2,9 +2,23 @@
   "home": "Home",
   "designSystem": "Design System",
   "switchLanguage": "Switch Language",
-  "openMenu": "Open Menu",
-  "closeMenu": "Close Menu",
+  "openMenu": "Open main menu",
+  "closeMenu": "Close main menu",
   "backToHome": "Back to Home",
   "testNotFound": "Test 404 Page",
-  "viewDesignSystem": "View Design System & Components"
+  "viewDesignSystem": "View Design System & Components",
+  "primaryNav": "Primary Navigation",
+  "skipToContent": "Skip to main content",
+  "breadcrumbs": "Breadcrumbs",
+  "createCv": "Create CV",
+  "menu": "Menu",
+  "links": {
+    "home": "Home",
+    "create": "Create CV",
+    "analyze": "Analyze CV",
+    "match": "Job Match",
+    "improve": "Improve Content",
+    "templates": "Templates",
+    "help": "Help & Support"
+  }
 }

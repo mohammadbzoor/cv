@@ -1,0 +1,36 @@
+{
+  "comingSoon": "Coming Soon",
+  "featureUnderDevelopment": "Feature under active development",
+  "footerDescription": "Smart platform for building, analyzing, and optimizing professional English resumes.",
+  "cvEnglishNotice": "Resume documents, templates, and exports are English-only and always use LTR document direction.",
+  "privacy": "Privacy Policy",
+  "terms": "Terms of Service",
+  "create": {
+    "title": "Create New Resume",
+    "description": "Start entering your experience and education to build an ATS-compliant resume."
+  },
+  "upload": {
+    "title": "Upload Resume File",
+    "description": "Upload your existing resume file for automated parsing and analysis."
+  },
+  "analyze": {
+    "title": "ATS Resume Analysis",
+    "description": "Evaluate your resume formatting and content against modern ATS algorithms."
+  },
+  "match": {
+    "title": "Job Match Analysis",
+    "description": "Compare your resume directly against job descriptions to increase match score."
+  },
+  "improve": {
+    "title": "AI Content Improvement",
+    "description": "Get tailored bullet point suggestions and active phrasing recommendations."
+  },
+  "templates": {
+    "title": "Resume Templates",
+    "description": "Browse professional, battle-tested templates tailored for various industries."
+  },
+  "help": {
+    "title": "Help & Instructions",
+    "description": "Guides and FAQs on getting the most out of the platform and resume best practices."
+  }
+}
