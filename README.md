@@ -74,50 +74,118 @@ src/
 │   └── routePaths.js     # الثوابت الخاصة بأسماء المسارات
 │
 ├── assets/               # الأصول الثابتة (الصور والأيقونات)
-│   ├── images/
-│   ├── icons/
-│   └── template-thumbnails/
 │
-├── components/           # المكونات العامة المجهزة لإعادة الاستخدام
-│   ├── ui/               # عناصر الواجهة الذرية (Atomic UI)
+├── components/
+│   ├── ui/               # مكونات الواجهة الأساسية
+│   │   ├── Button/       # زر متعدد الأنماط والأحجام
+│   │   ├── Input/        # حقل إدخال مع تسمية وأيقونات وأخطاء
+│   │   ├── Textarea/     # منطقة نص مع عداد أحرف
+│   │   ├── Card/         # بطاقة مركبة بمكونات فرعية
+│   │   ├── Badge/        # شارة حالة غير تفاعلية
+│   │   └── ThemeToggle/  # زر تبديل السمة الفاتحة/الداكنة/النظام
 │   ├── layout/           # الهياكل الأساسية (Navbar, Footer, Layouts)
 │   └── feedback/         # التنبيهات ورسائل التحميل والأخطاء
 │
-├── features/             # الميزات المقسمة حسب النطاق (Feature Modules)
-│   ├── home/
-│   ├── create/
-│   ├── upload/
-│   ├── analyze/
-│   ├── match/
-│   ├── improve/
-│   ├── builder/
-│   ├── templates/
-│   └── export/
+├── contexts/             # السياقات العامة
+│   ├── ThemeContext.jsx   # سياق السمة
+│   └── ThemeProvider.jsx  # مزود السمة
 │
-├── pages/                # الصفحات المستقلة المربوطة بالمسارات
-│   ├── HomePage.jsx      # الصفحة الرئيسية الاختبارية
-│   └── NotFoundPage.jsx  # صفحة الخطأ 404
+├── hooks/
+│   └── useTheme.js       # خطاف الوصول للسمة
 │
-├── contexts/             # السياقات العامة (Global Contexts)
-├── hooks/                # الخطافات المخصصة (Custom Hooks)
-├── services/             # خدمات الشبكة والـ API
-│   ├── apiClient.js      # Axios instance الرئيسي
-│   ├── endpoints.js      # المسارات المتوقعة للـ API
-│   └── errorNormalizer.js# دالة توحيد أخطاء الشبكة
+├── features/             # الميزات المقسمة حسب النطاق
 │
-├── models/               # بنية ونماذج البيانات
-├── constants/            # الثوابت العامة
-├── utils/                # الدوال المساعدة العامة
-├── styles/               # الأنماط والتنسيقات
-│   └── globals.css       # تنسيقات Tailwind والأشكال العامة
-└── main.jsx              # نقطة الانطلاق الرئيسية للتطبيق
+├── pages/
+│   ├── HomePage.jsx       # الصفحة الرئيسية
+│   ├── NotFoundPage.jsx   # صفحة 404
+│   └── DesignSystemPage.jsx # صفحة عرض نظام التصميم
+│
+├── services/
+│   ├── apiClient.js       # Axios instance الرئيسي
+│   ├── endpoints.js       # المسارات المتوقعة للـ API
+│   └── errorNormalizer.js # دالة توحيد أخطاء الشبكة
+│
+├── utils/
+│   └── cn.js             # أداة دمج أسماء الفئات CSS
+│
+├── styles/
+│   └── globals.css        # Design Tokens + Tailwind + Dark Mode
+│
+└── main.jsx               # نقطة الانطلاق الرئيسية
 ```
 
 ---
 
-## 🔑 متغيرات البيئة (Environment Variables)
+## 🎨 نظام الثيمات (Theme System)
 
-يتم ضبط متغيرات البيئة في ملف `.env` (مع توفير ملف `.env.example` كمثال مرجعي):
+### الأوضاع المدعومة
+
+| الوضع | الوصف |
+| :--- | :--- |
+| `light` | الوضع الفاتح (افتراضي) |
+| `dark` | الوضع الداكن |
+| `system` | يتبع تفضيل نظام التشغيل تلقائياً |
+
+### البنية
+
+- **ThemeContext**: سياق React يوفر `theme` و `resolvedTheme` و `setTheme` و `toggleTheme`.
+- **ThemeProvider**: مزود يدير حالة السمة ويتعامل مع DOM و localStorage.
+- **useTheme**: خطاف مخصص للوصول إلى نظام الثيمات.
+- **ThemeToggle**: مكون واجهة لتبديل السمة مع دعم لوحة المفاتيح و ARIA.
+- **Anti-Flash Script**: سكريبت في `index.html` يمنع وميض اللون عند التحميل.
+
+### مفتاح التخزين
+
+```
+cv-platform-theme
+```
+
+### Design Tokens
+
+جميع الألوان معرفة كـ CSS custom properties في `globals.css` باستخدام `@theme` (Tailwind v4) وتتغير تلقائياً مع `.dark`:
+
+| Token | Light | Dark |
+| :--- | :--- | :--- |
+| `app-bg` | `#F7F5F1` | `#171C1F` |
+| `surface` | `#FCFBF9` | `#1E2529` |
+| `foreground` | `#202A30` | `#EDF0EE` |
+| `primary` | `#344553` | `#A7B8BF` |
+| `secondary` | `#607D73` | `#8FA99F` |
+| `accent` | `#B9785D` | `#D09A82` |
+| `border` | `#D8D6D0` | `#374145` |
+
+### اختبار الثيمات
+
+1. افتح التطبيق وبدّل السمة من القائمة المنسدلة في الترويسة.
+2. أعد تحميل الصفحة — يجب أن يبقى التفضيل محفوظاً.
+3. اختر "النظام" ثم غيّر تفضيل نظام التشغيل للتحقق من التكيف التلقائي.
+
+---
+
+## 🧩 المكونات المنفذة (Core UI Components)
+
+| المكون | الأنماط (Variants) | الأحجام | الوصف |
+| :--- | :--- | :--- | :--- |
+| **Button** | primary, secondary, outline, ghost, danger | sm, md, lg, icon | أزرار مع حالات تحميل وتعطيل ودعم أيقونات |
+| **Input** | — | — | حقل إدخال مع تسمية ونص مساعد وخطأ وأيقونات |
+| **Textarea** | — | — | منطقة نص مع عداد أحرف وتحقق |
+| **Card** | default, elevated, outlined, muted | — | بطاقة مركبة (Header, Title, Description, Content, Footer) |
+| **Badge** | neutral, primary, secondary, success, warning, danger, accent | sm, md | شارة حالة غير تفاعلية |
+| **ThemeToggle** | — | — | قائمة تبديل السمة |
+
+### صفحة نظام التصميم
+
+متاحة في وضع التطوير على المسار:
+
+```
+/design-system
+```
+
+تعرض جميع المكونات وأنماطها وأحجامها وحالاتها في كلا الوضعين.
+
+---
+
+## 🔑 متغيرات البيئة (Environment Variables)
 
 | المتغير | الوصف | القيمة الافتراضية |
 | :--- | :--- | :--- |
@@ -125,24 +193,38 @@ src/
 
 ---
 
-## ✅ ما تم إنجازه في المرحلة الأولى (Phase 1 Accomplishments)
+## ✅ ما تم إنجازه
 
-1. تأسيس مشروع React + Vite باستخدام JavaScript و JSX بدون TypeScript.
-2. تثبيت الحزم الأساسية وتوافقها الكامل (`react-router-dom`, `axios`, `lucide-react`, `tailwindcss`, `eslint`).
-3. إعداد وتفعيل Tailwind CSS v4 من خلال الملحق الرسمي لـ Vite (`@tailwindcss/vite`).
-4. بناء هيكل المجلدات الهندسي المنظم مع دعم التوسع وحفظ المجلدات عبر `.gitkeep`.
-5. ضبط التوجيه (React Router) وتحديد مسار الصفحة الرئيسية `/` وصفحة الخطأ `*` (NotFoundPage).
-6. إنشاء عميل Axios موحد (`apiClient.js`) يدعم متغيرات البيئة ودالة معالجة الأخطاء (`errorNormalizer.js`).
-7. بناء صفحة اختبار تجريبية (`HomePage`) تدعم التصميم المتجاوب، والاتجاه الأيمن RTL، وأيقونات Lucide، وعينات لوحة الألوان (Indigo, Teal, Amber).
-8. اجتياز اختبارات ESLint و Production Build دون أخطاء.
+### المرحلة الأولى — البنية التحتية
+
+1. تأسيس مشروع React + Vite.
+2. هيكل مجلدات هندسي منظم.
+3. React Router + Axios client + ESLint.
+4. هوية بصرية مهنية هادئة.
+5. ربط GitHub.
+
+### المرحلة الثانية — نظام الثيمات والمكونات
+
+1. نظام ثيمات كامل (Light / Dark / System).
+2. Design Tokens دلالية مركزية مع دعم Dark Mode.
+3. Anti-flash script لمنع وميض اللون.
+4. مكونات Button, Input, Textarea, Card, Badge, ThemeToggle.
+5. صفحة Design System للعرض والاختبار.
+6. أداة `cn()` لدمج فئات CSS.
 
 ---
 
-## 🔮 المراحل القادمة (Upcoming Phases)
+## 🔮 المراحل القادمة
 
-- **المرحلة الثانية:** إعداد ThemeContext ودعم Mode الداكن/الفاتح، وتأسيس الهيكل البصري للـ Navigation و Footer.
-- **المرحلة الثالثة:** بناء نماذج البيانات واستكمال وحدات بناء السيرة الذاتية (CV Builder & Templates).
-- **المرحلة الرابعة:** ربط وحدات التحليل والتحسين وإدخال الذكاء الاصطناعي ورفع الملفات.
+- **المرحلة الثالثة:** Navigation وLayout وصفحات البناء.
+- **المرحلة الرابعة:** نماذج البيانات وCV Builder والقوالب.
+- **المرحلة الخامسة:** التحليل والتحسين والمطابقة.
+
+---
+
+## 📌 حدود المرحلة الحالية
+
+لم يتم تنفيذ: CV Data Model, Zustand, Builder, Templates, Upload, Analyze, Match, Improve, Modal, Tabs, Select, PDF/DOCX, Backend, Tests المتقدمة.
 
 ---
 

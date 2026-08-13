@@ -1,12 +1,15 @@
 import { RouterProvider } from 'react-router-dom';
 import { router } from './router';
+import { ThemeProvider } from '../contexts/ThemeProvider';
 
 /**
  * AppProviders component.
- * Acts as the centralized root wrapper for all application context providers.
- *
- * @returns {JSX.Element} The router provider wrapping the application.
+ * Centralized root wrapper for all application context providers.
  */
 export function AppProviders() {
-  return <RouterProvider router={router} />;
+  return (
+    <ThemeProvider>
+      <RouterProvider router={router} />
+    </ThemeProvider>
+  );
 }

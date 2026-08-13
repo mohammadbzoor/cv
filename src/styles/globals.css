@@ -1,37 +1,35 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
-  /* Application Backgrounds & Surfaces */
   --color-app-bg: #F7F5F1;
   --color-surface: #FCFBF9;
   --color-surface-elevated: #FFFFFF;
   --color-surface-muted: #ECE9E3;
 
-  /* Typography / Text Colors */
   --color-foreground: #202A30;
   --color-foreground-secondary: #667178;
   --color-foreground-muted: #849097;
 
-  /* Primary Palette (Deep Slate) */
   --color-primary: #344553;
   --color-primary-hover: #293A47;
+  --color-primary-active: #1F3040;
   --color-primary-subtle: #E7ECEE;
 
-  /* Secondary Palette (Muted Sage) */
   --color-secondary: #607D73;
   --color-secondary-hover: #506B62;
+  --color-secondary-active: #44594F;
   --color-secondary-subtle: #E5ECE8;
 
-  /* Accent Palette (Soft Terracotta) */
   --color-accent: #B9785D;
   --color-accent-hover: #A5664E;
+  --color-accent-active: #935A43;
   --color-accent-subtle: #F3E7E1;
 
-  /* Borders */
   --color-border: #D8D6D0;
   --color-border-strong: #B9B8B3;
 
-  /* Status Colors */
   --color-success: #3F7D68;
   --color-success-subtle: #E3F1EB;
   --color-warning: #A97932;
@@ -39,11 +37,58 @@
   --color-danger: #A95454;
   --color-danger-subtle: #F5E3E3;
 
-  /* Focus Ring */
   --color-focus-ring: #607D73;
+
+  --color-on-primary: #FFFFFF;
+  --color-on-secondary: #FFFFFF;
+  --color-on-accent: #FFFFFF;
+  --color-on-danger: #FFFFFF;
 }
 
-/* Base resets and warm global setup */
+/* Dark theme overrides */
+.dark {
+  --color-app-bg: #171C1F;
+  --color-surface: #1E2529;
+  --color-surface-elevated: #252D31;
+  --color-surface-muted: #2D3538;
+
+  --color-foreground: #EDF0EE;
+  --color-foreground-secondary: #B7C0BD;
+  --color-foreground-muted: #8D9995;
+
+  --color-primary: #A7B8BF;
+  --color-primary-hover: #BBC8CD;
+  --color-primary-active: #CED7DB;
+  --color-primary-subtle: #2A373D;
+
+  --color-secondary: #8FA99F;
+  --color-secondary-hover: #A5B8B1;
+  --color-secondary-active: #B9C8C2;
+  --color-secondary-subtle: #293733;
+
+  --color-accent: #D09A82;
+  --color-accent-hover: #DCAE99;
+  --color-accent-active: #E6C0AF;
+  --color-accent-subtle: #3D2D27;
+
+  --color-border: #374145;
+  --color-border-strong: #4A565A;
+
+  --color-success: #82B7A3;
+  --color-success-subtle: #233A32;
+  --color-warning: #C9A667;
+  --color-warning-subtle: #3B3222;
+  --color-danger: #CA8585;
+  --color-danger-subtle: #3C2828;
+
+  --color-focus-ring: #9DB5AC;
+
+  --color-on-primary: #171C1F;
+  --color-on-secondary: #171C1F;
+  --color-on-accent: #171C1F;
+  --color-on-danger: #171C1F;
+}
+
 *,
 *::before,
 *::after {
@@ -60,13 +105,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Enhanced accessible focus states using standard focus ring token */
 :focus-visible {
   outline: 2px solid var(--color-focus-ring);
   outline-offset: 2px;
 }
 
-/* Respect user preferences for reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

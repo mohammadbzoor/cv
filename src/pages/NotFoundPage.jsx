@@ -4,9 +4,7 @@ import { ROUTE_PATHS } from '../app/routePaths';
 
 /**
  * NotFoundPage component.
- * Fallback 404 route component updated with the calm professional theme tokens.
- *
- * @returns {JSX.Element} The rendered 404 page.
+ * Accessible 404 fallback using semantic design tokens for light and dark mode.
  */
 export default function NotFoundPage() {
   return (
@@ -27,7 +25,7 @@ export default function NotFoundPage() {
         <div>
           <Link
             to={ROUTE_PATHS.HOME}
-            className="inline-flex items-center justify-center gap-2 w-full px-5 py-2.5 bg-primary text-surface-elevated font-medium text-sm rounded-lg hover:bg-primary-hover focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 transition-colors shadow-2xs"
+            className="inline-flex items-center justify-center gap-2 w-full px-5 py-2.5 bg-primary text-on-primary font-medium text-sm rounded-lg hover:bg-primary-hover focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 transition-colors shadow-2xs cursor-pointer"
           >
             <Home className="w-4 h-4" aria-hidden="true" />
             <span>الرجوع إلى الصفحة الرئيسية</span>
