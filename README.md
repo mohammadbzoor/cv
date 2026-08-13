@@ -66,79 +66,14 @@ npm run preview
 
 ## 🌐 نظام التدويل واللغات (i18n Architecture)
 
-### 📌 الفرق بين لغة الواجهة ولغة السيرة الذاتية (App Language vs CV Language)
-
 > **Architectural Principle:**
 > "The application interface supports Arabic and English. CV content, templates, preview, and export are English-only and always use LTR document direction."
 
-- **واجهة التطبيق (App Interface):**
-  - **العربية:** `ar` (اتجاه RTL) — افتراضية
-  - **الإنجليزية:** `en` (اتجاه LTR) — احتياطية (fallback)
-- **مستند السيرة الذاتية مستقبلاً (CV Document):**
-  - **اللغة:** `en` ثابتة
-  - **الاتجاه:** `ltr` ثابت دائماً بغض النظر عن لغة الواجهة المفضلة للمستخدم.
+- **واجهة التطبيق (App Interface):** العربية (`ar` / RTL) والإنجليزية (`en` / LTR).
+- **مستند السيرة الذاتية مستقبلاً (CV Document):** لغة إنجليزية ثابتة (`en` / LTR) دائماً.
 
----
-
-### 📂 بنية ملفات الترجمة
-
-```text
-src/
-└── i18n/
-    ├── config.js               # تهيئة مكتبة i18next
-    ├── supportedLanguages.js   # تعريف اللغات المدعومة واللغة الافتراضية
-    └── locales/
-        ├── ar/                 # حزمة نصوص اللغة العربية (RTL)
-        │   ├── common.json
-        │   ├── navigation.json
-        │   ├── home.json
-        │   └── designSystem.json
-        └── en/                 # حزمة نصوص اللغة الإنجليزية (LTR)
-            ├── common.json
-            ├── navigation.json
-            ├── home.json
-            └── designSystem.json
-```
-
----
-
-### 🔑 مفتاح التخزين والتحكم
-
-- **مفتاح localStorage للغة:**
-  ```text
-  cv-platform-language
-  ```
-- **اللغة الافتراضية:** `ar`
-- **اللغة الاحتياطية (Fallback):** `en`
-- **Namespaces المستخدمة:**
-  1. `common`: النصوص العامة والأزرار وحالات النظام.
-  2. `navigation`: أسماء المسارات وعناصر التنقل.
-  3. `home`: محتوى الصفحة الرئيسية.
-  4. `designSystem`: نصوص وأمثلة نظام التصميم.
-
----
-
-### ➕ كيفية إضافة مفاتيح ترجمة جديدة
-
-عند إضافة نص جديد للواجهة:
-1. افتح الملف المناسب في `src/i18n/locales/ar/[namespace].json`.
-2. أضف المفتاح مع النص العربي.
-3. افتح الملف المماثل في `src/i18n/locales/en/[namespace].json`.
-4. أضف نفس المفتاح مع النص الإنجليزي.
-5. استخدم الخطاف داخل المكون:
-   ```javascript
-   const { t } = useTranslation('namespace');
-   return <p>{t('keyName')}</p>;
-   ```
-
----
-
-### 🌍 كيفية إضافة لغة جديدة مستقبلاً
-
-1. أنشئ مجلداً جديداً برمز اللغة داخل `src/i18n/locales/[code]/`.
-2. انسخ ملفات JSON الأربعة وترجم قيمها.
-3. أضف كائن اللغة الجديدة في `src/i18n/supportedLanguages.js`.
-4. سجل الحزمة الجديدة داخل `src/i18n/config.js`.
+- **مفتاح localStorage للغة:** `cv-platform-language`
+- **Namespaces:** `common`, `navigation`, `home`, `designSystem`, `feedback`.
 
 ---
 
@@ -151,19 +86,44 @@ src/
 | `system` | يتبع تفضيل نظام التشغيل تلقائياً |
 
 - **مفتاح التخزين في localStorage:** `cv-platform-theme`
-- **Anti-Flash Script:** سكريبت مباشر في `index.html` يفحص السمة واللغة قبل بناء واجهة React لضمان عدم الوميض عند التحميل.
+- **Anti-Flash Script:** يفحص السمة واللغة في `index.html` قبل بناء React لضمان عدم الوميض عند التحميل.
 
 ---
 
-## 🧩 المكونات المنفذة (Core UI Components)
+## 🧩 مكتبة مكونات الواجهة (Core UI Components Library)
 
-- **Button**: variants (`primary`, `secondary`, `outline`, `ghost`, `danger`), sizes (`sm`, `md`, `lg`, `icon`), loading, disabled, leadingIcon, trailingIcon.
-- **Input**: label, helperText, error, required, disabled, startIcon, endIcon, aria-describedby.
-- **Textarea**: label, helperText, error, maxLength, showCharacterCount, rows.
-- **Card**: compound (`Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`) & variants (`default`, `elevated`, `outlined`, `muted`).
-- **Badge**: variants (`neutral`, `primary`, `secondary`, `success`, `warning`, `danger`, `accent`), sizes (`sm`, `md`).
-- **ThemeToggle**: قائمة تبديل السمة.
-- **LanguageSwitcher**: زر تبديل اللغة بدون أعلام دول وبدعم كامل للوصول وسهولة الاستخدام.
+تم استكمال مكتبة مكونات الواجهة العامة (Primitives & Feedback States) بدون استخدام أي مكتبة UI خارجية:
+
+| المكون | التصدير | الوصف وسلوك الوصول (Accessibility) |
+| :--- | :--- | :--- |
+| **Button** | `Button` | أزرار متعددة الأنماط والأحجام مع حالات تحميل وتعطيل ودعم أيقونات leading/trailing. |
+| **Input** | `Input` | حقل إدخال مع label, helperText, error, startIcon, endIcon, aria-invalid, aria-describedby. |
+| **Textarea** | `Textarea` | منطقة نص مع عداد أحرف وحجم أقصى وأولوية الخطأ على النص المساعد. |
+| **Select** | `Select` | قائمة منسدلة قائمة على `<select>` الأصلي مع سهم اتجاه منطقي يدعم RTL و LTR. |
+| **Checkbox** | `Checkbox` | مربع اختيار دلالي يدعم checked, unchecked, indeterminate, description, aria-invalid. |
+| **RadioGroup** | `RadioGroup` | مجموعة اختيارات دائرية تعتمد `<fieldset>` و `<legend>` مع تنسيق رأسي وأفقي. |
+| **Switch** | `Switch` | زر تبديل مع `role="switch"` و `aria-checked` وتحريك سلس يراعي Reduced Motion. |
+| **Modal** | `Modal` | نافذة منبثقة تعتمد React Portal, Focus Trap, Scroll Lock, Escape key, وإعادة Focus السابق. |
+| **Tabs** | `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent` | تبويبات متوافقة مع WAI-ARIA ودعم التنقل بأسهم لوحة المفاتيح و Home/End مع مراعاة اتجاه RTL. |
+| **Accordion** | `Accordion`, `AccordionItem`, `AccordionTrigger`, `AccordionContent` | قائمة طي واكتشاف متوافقة مع WAI-ARIA ودعم التمدد الفردي والمتعدد وحركة Chevron. |
+| **Skeleton** | `Skeleton` | هيكل تحميل بصري يدعم أنماط text, circle, rectangle ويختفي عن قارئ الشاشة بـ `aria-hidden`. |
+| **Spinner** | `Spinner` | مؤشر تحميل دائري دلالي يضم `role="status"` ونص مخفي قارئ شاشة `sr-only`. |
+| **EmptyState** | `EmptyState` | حاوي عرض للحالات الفارغة يدعم الأيقونات والأوصاف وأزرار الإجراءات بدون نصوص صلبة. |
+| **ErrorState** | `ErrorState` | حاوي عرض لأخطاء الشبكة والنظام مع أزرار إعادة المحاولة وعرض تفاصيل الخطأ. |
+| **ConfirmDialog** | `ConfirmDialog` | حوار تأكيد يعيد استخدام Modal و Button مع دعم العمليات المدمرة وحالة التحميل. |
+| **FormField** | `FormField` | حاوي تخطيطي موحد يربط label و required و error بالـ htmlFor. |
+| **Tooltip** | `Tooltip` | تلميح توضيحي يظهر عند Hover و Focus ويغلق بزر Esc ويرتبط بـ `aria-describedby`. |
+| **ThemeToggle** | `ThemeToggle` | قائمة منسدلة لتبديل السمة الفاتحة والداكنة والنظام. |
+| **LanguageSwitcher** | `LanguageSwitcher` | زر التبديل بين العربية والإنجليزية دون استخدام أعلام الدول. |
+
+### طريقة الاستيراد
+
+```javascript
+import { Select } from './components/ui/Select';
+import { Modal } from './components/ui/Modal';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from './components/ui/Tabs';
+import { ConfirmDialog } from './components/ui/ConfirmDialog';
+```
 
 ---
 
@@ -173,28 +133,27 @@ src/
 ```text
 /design-system
 ```
-تعرض جميع المكونات والألوان والنصوص واختبار التفاعل في اللغتين والاتجاهين (RTL / LTR).
+تعرض جميع المكونات والألوان والنصوص واختبارات النماذج والطبقات وحالات التغذية الراجعة في اللغتين العربية والإنجليزية والاتجاهين (RTL / LTR).
 
 ---
 
-## ✅ ما تم إنجازه في المرحلة الثالثة (Phase 3 Accomplishments)
+## ✅ ما تم إنجازه في المرحلة الرابعة (Phase 4 Accomplishments)
 
-1. تثبيت وتهيئة `i18next` و `react-i18next`.
-2. بناء `LanguageContext` و `LanguageProvider` و `useLanguage` بشكل مستقل ونظيف.
-3. دعم تبديل اللغة دون إعادة تحميل الصفحة وحفظ التفضيل في `cv-platform-language`.
-4. تحديث `document.documentElement.lang` و `dir` تلقائياً بين `ar` (rtl) و `en` (ltr).
-5. دمج السكريبت الخاص بمنع وميض اللغة والسمة (Anti-Flash) في `index.html`.
-6. تطوير مكون `LanguageSwitcher` المتوافق مع معايير Accessibility دون استخدام أعلام الدول.
-7. ترجمة جميع نصوص الصفحة الرئيسية `HomePage` وصفحة 404 `NotFoundPage` وصفحة `DesignSystemPage` ومكون `ThemeToggle`.
-8. إنشاء وحدة `src/utils/locale.js` لتنسيق الأرقام والتواريخ باستخدام `Intl` APIs.
-9. توثيق قرار واجهة تطبيق ثنائية اللغة وسيرة ذاتية إنجليزية فقط.
+1. بناء المكونات الـ 14 العامة بالكامل وفق المعايير الدلالية و WAI-ARIA.
+2. عدم الاعتماد على أية مكتبة UI أو Forms أو State إضافية.
+3. التوافق التام لجميع المكونات مع الوضعين الفاتح والداكن وتفضيل النظام.
+4. دعم اتجاهات RTL و LTR بالخصائص المنطقية (Logical Properties) والأيقونات المتكيفة.
+5. توفير إدارة كاملة للتركيز (Focus Trap & Return) في `Modal` وحظر التمرير الخلفي.
+6. دعم لوحة المفاتيح الكامل (Tab, Enter, Space, Escape, Arrows, Home, End).
+7. تنظيم صفحة `/design-system` وتوزيع مكوناتها في وحدات منظمة تحت `src/features/design-system/components/`.
+8. تحديث التوثيق واجتياز اختبارات ESLint و Production Build بفرص نجاح كاملة وسريعة.
 
 ---
 
 ## 🔮 المراحل القادمة (Upcoming Phases)
 
-- **المرحلة الرابعة:** الهيكل البنائي لـ CV Data Model وتأسيس حالة CV Store وإدارة النموذج.
-- **المرحلة الخامسة:** بناء محرر السيرة الذاتية (CV Builder) والتنقل بين أقسامه والقوالب.
+- **المرحلة الخامسة:** الهيكل البنائي والتنقل واختيار القوالب (Layout & Navigation).
+- **المرحلة السادسة:** نموذج بيانات السيرة الذاتية ومحرر السيرة الذاتية (CV Data Model & Builder).
 
 ---
 

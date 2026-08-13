@@ -1,0 +1,13 @@
+{
+  "confirm": "Confirm",
+  "cancel": "Cancel",
+  "retry": "Retry",
+  "close": "Close",
+  "deleteConfirmTitle": "Confirm Deletion",
+  "deleteConfirmDesc": "Are you sure you want to delete this item? This action cannot be undone.",
+  "emptyStateTitle": "No Items Found",
+  "emptyStateDesc": "There is no data to display right now. You can create a new item to get started.",
+  "errorStateTitle": "An Unexpected Error Occurred",
+  "errorStateDesc": "We could not complete your request at this time. Please try again later.",
+  "createItem": "Create New Item"
+}
