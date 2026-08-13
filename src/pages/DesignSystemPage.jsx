@@ -1,12 +1,15 @@
 import { Link } from 'react-router-dom';
-import { Search, Mail, Lock, AlertCircle, ArrowRight, Plus, Trash2, Download, Eye, Home } from 'lucide-react';
+import { Search, Mail, Lock, AlertCircle, ArrowRight, ArrowLeft, Plus, Trash2, Download, Eye, Home } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { ROUTE_PATHS } from '../app/routePaths';
 import { ThemeToggle } from '../components/ui/ThemeToggle';
+import { LanguageSwitcher } from '../components/ui/LanguageSwitcher';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Textarea } from '../components/ui/Textarea';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
+import { useLanguage } from '../hooks/useLanguage';
 
 function SectionTitle({ children }) {
   return <h2 className="text-xl font-bold text-foreground mb-1">{children}</h2>;
@@ -18,26 +21,32 @@ function SectionDescription({ children }) {
 
 /**
  * Development-only design system showcase page.
- * Demonstrates all UI components, variants, states, and design tokens.
+ * Demonstrates all UI components, variants, states, design tokens, and bilingual (ar/en) layouts.
  */
 export default function DesignSystemPage() {
+  const { t } = useTranslation(['designSystem', 'navigation', 'common']);
+  const { isRTL } = useLanguage();
+
+  const ActionArrow = isRTL ? ArrowLeft : ArrowRight;
+
   return (
-    <div dir="rtl" className="min-h-screen bg-app-bg text-foreground font-sans">
+    <div className="min-h-screen bg-app-bg text-foreground font-sans">
       {/* Header */}
       <header className="bg-surface border-b border-border sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <h1 className="text-lg font-bold text-foreground">نظام التصميم</h1>
-            <Badge variant="primary" size="sm">مرحلة التطوير</Badge>
+            <h1 className="text-lg font-bold text-foreground">{t('designSystem:title')}</h1>
+            <Badge variant="primary" size="sm">{t('designSystem:devPhase')}</Badge>
           </div>
           <div className="flex items-center gap-3">
+            <LanguageSwitcher />
             <ThemeToggle />
             <Link
               to={ROUTE_PATHS.HOME}
               className="inline-flex items-center gap-2 px-3 py-2 text-sm text-foreground-secondary hover:text-foreground transition-colors"
             >
               <Home className="w-4 h-4" aria-hidden="true" />
-              <span>الرئيسية</span>
+              <span>{t('navigation:home')}</span>
             </Link>
           </div>
         </div>
@@ -45,20 +54,21 @@ export default function DesignSystemPage() {
 
       <main className="max-w-6xl mx-auto px-4 py-8 md:py-12 space-y-12">
 
-        {/* === THEME TOGGLE === */}
+        {/* === THEME TOGGLE & LANGUAGE SWITCHER === */}
         <section>
-          <SectionTitle>تبديل السمة (Theme Toggle)</SectionTitle>
-          <SectionDescription>يدعم ثلاثة أوضاع: فاتح وداكن ونظام. يحفظ التفضيل تلقائياً.</SectionDescription>
-          <div className="bg-surface rounded-xl border border-border p-6 flex items-center gap-4">
+          <SectionTitle>{t('designSystem:themeToggleSectionTitle')}</SectionTitle>
+          <SectionDescription>{t('designSystem:themeToggleSectionDesc')}</SectionDescription>
+          <div className="bg-surface rounded-xl border border-border p-6 flex items-center gap-4 flex-wrap">
             <ThemeToggle />
-            <span className="text-sm text-foreground-secondary">اختر السمة من القائمة المنسدلة</span>
+            <LanguageSwitcher />
+            <span className="text-sm text-foreground-secondary">{t('designSystem:themeToggleInstruction')}</span>
           </div>
         </section>
 
         {/* === DESIGN TOKENS === */}
         <section>
-          <SectionTitle>رموز التصميم (Design Tokens)</SectionTitle>
-          <SectionDescription>جميع الألوان تتغير تلقائياً حسب السمة المختارة.</SectionDescription>
+          <SectionTitle>{t('designSystem:tokensSectionTitle')}</SectionTitle>
+          <SectionDescription>{t('designSystem:tokensSectionDesc')}</SectionDescription>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
             {[
               { label: 'Primary', cls: 'bg-primary' },
@@ -81,7 +91,7 @@ export default function DesignSystemPage() {
               <div key={label} className="rounded-lg border border-border overflow-hidden">
                 <div className={`h-12 ${cls}`} />
                 <div className="px-3 py-2 bg-surface">
-                  <span className="text-xs text-foreground-secondary">{label}</span>
+                  <span className="text-xs text-foreground-secondary font-mono">{label}</span>
                 </div>
               </div>
             ))}
@@ -90,45 +100,45 @@ export default function DesignSystemPage() {
 
         {/* === TYPOGRAPHY === */}
         <section>
-          <SectionTitle>الخطوط والأحجام (Typography)</SectionTitle>
-          <SectionDescription>نماذج للأحجام والأوزان المعتمدة في المشروع.</SectionDescription>
+          <SectionTitle>{t('designSystem:typographySectionTitle')}</SectionTitle>
+          <SectionDescription>{t('designSystem:typographySectionDesc')}</SectionDescription>
           <div className="bg-surface rounded-xl border border-border p-6 space-y-4">
-            <p className="text-3xl font-extrabold text-foreground">عنوان رئيسي (3xl / extrabold)</p>
-            <p className="text-2xl font-bold text-foreground">عنوان ثانوي (2xl / bold)</p>
-            <p className="text-xl font-bold text-foreground">عنوان فرعي (xl / bold)</p>
-            <p className="text-lg font-semibold text-foreground">عنوان صغير (lg / semibold)</p>
-            <p className="text-base text-foreground">نص أساسي (base) - هذا نص عربي تجريبي لاختبار قابلية القراءة والتباين في الوضعين الفاتح والداكن.</p>
-            <p className="text-sm text-foreground-secondary">نص ثانوي (sm / secondary) - يُستخدم للتعليقات التوضيحية والنصوص المساندة.</p>
-            <p className="text-xs text-foreground-muted">نص مصغّر (xs / muted) - يُستخدم للملاحظات والتواريخ.</p>
+            <p className="text-3xl font-extrabold text-foreground">{t('designSystem:headingMain')}</p>
+            <p className="text-2xl font-bold text-foreground">{t('designSystem:headingSecondary')}</p>
+            <p className="text-xl font-bold text-foreground">{t('designSystem:headingSub')}</p>
+            <p className="text-lg font-semibold text-foreground">{t('designSystem:headingSmall')}</p>
+            <p className="text-base text-foreground">{t('designSystem:bodyText')}</p>
+            <p className="text-sm text-foreground-secondary">{t('designSystem:secondaryText')}</p>
+            <p className="text-xs text-foreground-muted">{t('designSystem:mutedText')}</p>
           </div>
         </section>
 
         {/* === BUTTONS === */}
         <section>
-          <SectionTitle>الأزرار (Buttons)</SectionTitle>
-          <SectionDescription>خمسة أنماط، أربعة أحجام، حالات التحميل والتعطيل.</SectionDescription>
+          <SectionTitle>{t('designSystem:buttonsSectionTitle')}</SectionTitle>
+          <SectionDescription>{t('designSystem:buttonsSectionDesc')}</SectionDescription>
 
           <div className="space-y-8">
             {/* Variants */}
             <div className="bg-surface rounded-xl border border-border p-6 space-y-4">
-              <h3 className="text-sm font-semibold text-foreground-secondary">الأنماط (Variants)</h3>
+              <h3 className="text-sm font-semibold text-foreground-secondary">{t('designSystem:variantsSub')}</h3>
               <div className="flex flex-wrap gap-3">
-                <Button variant="primary">أساسي (Primary)</Button>
-                <Button variant="secondary">ثانوي (Secondary)</Button>
-                <Button variant="outline">محيط (Outline)</Button>
-                <Button variant="ghost">شبح (Ghost)</Button>
-                <Button variant="danger">خطر (Danger)</Button>
+                <Button variant="primary">{t('designSystem:primaryBtn')}</Button>
+                <Button variant="secondary">{t('designSystem:secondaryBtn')}</Button>
+                <Button variant="outline">{t('designSystem:outlineBtn')}</Button>
+                <Button variant="ghost">{t('designSystem:ghostBtn')}</Button>
+                <Button variant="danger">{t('designSystem:dangerBtn')}</Button>
               </div>
             </div>
 
             {/* Sizes */}
             <div className="bg-surface rounded-xl border border-border p-6 space-y-4">
-              <h3 className="text-sm font-semibold text-foreground-secondary">الأحجام (Sizes)</h3>
+              <h3 className="text-sm font-semibold text-foreground-secondary">{t('designSystem:sizesSub')}</h3>
               <div className="flex flex-wrap items-center gap-3">
-                <Button size="sm">صغير (sm)</Button>
-                <Button size="md">متوسط (md)</Button>
-                <Button size="lg">كبير (lg)</Button>
-                <Button size="icon" aria-label="إضافة عنصر">
+                <Button size="sm">{t('designSystem:btnSmall')}</Button>
+                <Button size="md">{t('designSystem:btnMedium')}</Button>
+                <Button size="lg">{t('designSystem:btnLarge')}</Button>
+                <Button size="icon" aria-label="Add item">
                   <Plus className="w-5 h-5" aria-hidden="true" />
                 </Button>
               </div>
@@ -136,23 +146,23 @@ export default function DesignSystemPage() {
 
             {/* With Icons */}
             <div className="bg-surface rounded-xl border border-border p-6 space-y-4">
-              <h3 className="text-sm font-semibold text-foreground-secondary">مع أيقونات (With Icons)</h3>
+              <h3 className="text-sm font-semibold text-foreground-secondary">{t('designSystem:withIconsSub')}</h3>
               <div className="flex flex-wrap gap-3">
-                <Button leadingIcon={Download}>تحميل</Button>
-                <Button variant="secondary" trailingIcon={ArrowRight}>التالي</Button>
-                <Button variant="danger" leadingIcon={Trash2}>حذف</Button>
-                <Button variant="outline" leadingIcon={Eye}>معاينة</Button>
+                <Button leadingIcon={Download}>{t('designSystem:download')}</Button>
+                <Button variant="secondary" trailingIcon={ActionArrow}>{t('designSystem:next')}</Button>
+                <Button variant="danger" leadingIcon={Trash2}>{t('designSystem:delete')}</Button>
+                <Button variant="outline" leadingIcon={Eye}>{t('designSystem:preview')}</Button>
               </div>
             </div>
 
             {/* States */}
             <div className="bg-surface rounded-xl border border-border p-6 space-y-4">
-              <h3 className="text-sm font-semibold text-foreground-secondary">الحالات (States)</h3>
+              <h3 className="text-sm font-semibold text-foreground-secondary">{t('designSystem:statesSub')}</h3>
               <div className="flex flex-wrap gap-3">
-                <Button loading>جاري التحميل...</Button>
-                <Button variant="secondary" loading>حفظ...</Button>
-                <Button disabled>معطّل (Disabled)</Button>
-                <Button variant="outline" disabled>محيط معطّل</Button>
+                <Button loading>{t('designSystem:loadingBtn')}</Button>
+                <Button variant="secondary" loading>{t('designSystem:savingBtn')}</Button>
+                <Button disabled>{t('designSystem:disabledBtn')}</Button>
+                <Button variant="outline" disabled>{t('designSystem:disabledOutline')}</Button>
               </div>
             </div>
           </div>
@@ -160,25 +170,25 @@ export default function DesignSystemPage() {
 
         {/* === INPUT === */}
         <section>
-          <SectionTitle>حقل الإدخال (Input)</SectionTitle>
-          <SectionDescription>يدعم التسمية والنص المساعد والخطأ والأيقونات وحالة التعطيل.</SectionDescription>
+          <SectionTitle>{t('designSystem:inputSectionTitle')}</SectionTitle>
+          <SectionDescription>{t('designSystem:inputSectionDesc')}</SectionDescription>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-surface rounded-xl border border-border p-6 space-y-5">
               <Input
-                label="الاسم الكامل"
-                placeholder="أدخل اسمك الكامل"
-                helperText="الاسم كما سيظهر في السيرة الذاتية."
+                label={t('designSystem:fullNameLabel')}
+                placeholder={t('designSystem:fullNamePlaceholder')}
+                helperText={t('designSystem:fullNameHelper')}
               />
               <Input
-                label="البريد الإلكتروني"
+                label={t('designSystem:emailLabel')}
                 type="email"
-                placeholder="email@example.com"
+                placeholder={t('designSystem:emailPlaceholder')}
                 startIcon={Mail}
                 required
               />
               <Input
-                label="كلمة المرور"
+                label={t('designSystem:passwordLabel')}
                 type="password"
                 placeholder="••••••••"
                 startIcon={Lock}
@@ -188,21 +198,21 @@ export default function DesignSystemPage() {
 
             <div className="bg-surface rounded-xl border border-border p-6 space-y-5">
               <Input
-                label="البحث"
-                placeholder="ابحث هنا..."
+                label={t('designSystem:searchLabel')}
+                placeholder={t('designSystem:searchPlaceholder')}
                 startIcon={Search}
-                helperText="ابحث في السير الذاتية المحفوظة."
+                helperText={t('designSystem:searchHelper')}
               />
               <Input
-                label="المسمى الوظيفي"
-                placeholder="مهندس برمجيات"
-                error="هذا الحقل مطلوب."
+                label={t('designSystem:jobTitleLabel')}
+                placeholder={t('designSystem:jobTitlePlaceholder')}
+                error={t('designSystem:requiredFieldError')}
                 endIcon={AlertCircle}
                 required
               />
               <Input
-                label="حقل معطّل"
-                placeholder="لا يمكن التعديل"
+                label={t('designSystem:disabledInputLabel')}
+                placeholder={t('designSystem:disabledInputPlaceholder')}
                 disabled
               />
             </div>
@@ -211,34 +221,34 @@ export default function DesignSystemPage() {
 
         {/* === TEXTAREA === */}
         <section>
-          <SectionTitle>منطقة النص (Textarea)</SectionTitle>
-          <SectionDescription>يدعم عداد الأحرف والنص المساعد وحالة الخطأ.</SectionDescription>
+          <SectionTitle>{t('designSystem:textareaSectionTitle')}</SectionTitle>
+          <SectionDescription>{t('designSystem:textareaSectionDesc')}</SectionDescription>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-surface rounded-xl border border-border p-6 space-y-5">
               <Textarea
-                label="الملخص المهني"
-                placeholder="اكتب ملخصاً مختصراً عن خبراتك ومهاراتك..."
-                helperText="يظهر في بداية السيرة الذاتية."
+                label={t('designSystem:summaryLabel')}
+                placeholder={t('designSystem:summaryPlaceholder')}
+                helperText={t('designSystem:summaryHelper')}
               />
               <Textarea
-                label="وصف محدود"
-                placeholder="اكتب وصفاً مختصراً..."
+                label={t('designSystem:charLimitLabel')}
+                placeholder={t('designSystem:charLimitPlaceholder')}
                 maxLength={200}
                 showCharacterCount
-                defaultValue="هذا نص تجريبي لاختبار عداد الأحرف."
+                defaultValue={t('designSystem:charLimitDefault')}
               />
             </div>
 
             <div className="bg-surface rounded-xl border border-border p-6 space-y-5">
               <Textarea
-                label="ملاحظات (خطأ)"
+                label={t('designSystem:notesErrorLabel')}
                 placeholder="..."
-                error="يجب ألا يتجاوز النص 500 حرف."
+                error={t('designSystem:notesErrorMsg')}
               />
               <Textarea
-                label="حقل معطّل"
-                placeholder="لا يمكن التعديل"
+                label={t('designSystem:disabledInputLabel')}
+                placeholder={t('designSystem:disabledInputPlaceholder')}
                 disabled
                 rows={3}
               />
@@ -248,54 +258,54 @@ export default function DesignSystemPage() {
 
         {/* === CARDS === */}
         <section>
-          <SectionTitle>البطاقات (Cards)</SectionTitle>
-          <SectionDescription>أربعة أنماط مع عناصر فرعية: Header وTitle وDescription وContent وFooter.</SectionDescription>
+          <SectionTitle>{t('designSystem:cardsSectionTitle')}</SectionTitle>
+          <SectionDescription>{t('designSystem:cardsSectionDesc')}</SectionDescription>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card variant="default">
               <CardHeader>
-                <CardTitle>بطاقة افتراضية (Default)</CardTitle>
-                <CardDescription>الشكل الأساسي للبطاقة مع خلفية Surface وحدود خفيفة.</CardDescription>
+                <CardTitle>{t('designSystem:defaultCardTitle')}</CardTitle>
+                <CardDescription>{t('designSystem:defaultCardDesc')}</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-foreground-secondary">محتوى البطاقة يظهر هنا. يمكن وضع أي عناصر داخل CardContent.</p>
+                <p className="text-sm text-foreground-secondary">{t('designSystem:defaultCardContent')}</p>
               </CardContent>
               <CardFooter>
-                <Button size="sm">إجراء</Button>
-                <Button size="sm" variant="ghost">إلغاء</Button>
+                <Button size="sm">{t('designSystem:cardAction')}</Button>
+                <Button size="sm" variant="ghost">{t('designSystem:cardCancel')}</Button>
               </CardFooter>
             </Card>
 
             <Card variant="elevated">
               <CardHeader>
-                <CardTitle>بطاقة مرتفعة (Elevated)</CardTitle>
-                <CardDescription>تستخدم ظلاً خفيفاً وخلفية مرتفعة لإبراز المحتوى المهم.</CardDescription>
+                <CardTitle>{t('designSystem:elevatedCardTitle')}</CardTitle>
+                <CardDescription>{t('designSystem:elevatedCardDesc')}</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-foreground-secondary">مناسبة لإبراز العناصر ذات الأولوية مثل ملخص السيرة الذاتية.</p>
+                <p className="text-sm text-foreground-secondary">{t('designSystem:elevatedCardContent')}</p>
               </CardContent>
               <CardFooter>
-                <Button size="sm" variant="secondary">عرض التفاصيل</Button>
+                <Button size="sm" variant="secondary">{t('designSystem:viewDetails')}</Button>
               </CardFooter>
             </Card>
 
             <Card variant="outlined">
               <CardHeader>
-                <CardTitle>بطاقة محددة (Outlined)</CardTitle>
-                <CardDescription>خلفية شفافة مع حدود واضحة. مناسبة للقوائم.</CardDescription>
+                <CardTitle>{t('designSystem:outlinedCardTitle')}</CardTitle>
+                <CardDescription>{t('designSystem:outlinedCardDesc')}</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-foreground-secondary">تُستخدم عادة داخل مجموعات متكررة مثل بطاقات الخبرات.</p>
+                <p className="text-sm text-foreground-secondary">{t('designSystem:outlinedCardContent')}</p>
               </CardContent>
             </Card>
 
             <Card variant="muted">
               <CardHeader>
-                <CardTitle>بطاقة صامتة (Muted)</CardTitle>
-                <CardDescription>خلفية مكتومة للعناصر الأقل أهمية بصرياً.</CardDescription>
+                <CardTitle>{t('designSystem:mutedCardTitle')}</CardTitle>
+                <CardDescription>{t('designSystem:mutedCardDesc')}</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-foreground-secondary">مناسبة للملاحظات والتلميحات والمعلومات الجانبية.</p>
+                <p className="text-sm text-foreground-secondary">{t('designSystem:mutedCardContent')}</p>
               </CardContent>
             </Card>
           </div>
@@ -303,56 +313,74 @@ export default function DesignSystemPage() {
 
         {/* === BADGES === */}
         <section>
-          <SectionTitle>الشارات (Badges)</SectionTitle>
-          <SectionDescription>سبعة أنماط دلالية وحجمان. غير تفاعلية افتراضياً.</SectionDescription>
+          <SectionTitle>{t('designSystem:badgesSectionTitle')}</SectionTitle>
+          <SectionDescription>{t('designSystem:badgesSectionDesc')}</SectionDescription>
 
           <div className="bg-surface rounded-xl border border-border p-6 space-y-6">
             <div>
-              <h3 className="text-sm font-semibold text-foreground-secondary mb-3">الحجم المتوسط (md)</h3>
+              <h3 className="text-sm font-semibold text-foreground-secondary mb-3">{t('designSystem:mediumSize')}</h3>
               <div className="flex flex-wrap gap-3">
-                <Badge variant="neutral">محايد (Neutral)</Badge>
-                <Badge variant="primary">أساسي (Primary)</Badge>
-                <Badge variant="secondary">ثانوي (Secondary)</Badge>
-                <Badge variant="success">نجاح (Success)</Badge>
-                <Badge variant="warning">تحذير (Warning)</Badge>
-                <Badge variant="danger">خطر (Danger)</Badge>
-                <Badge variant="accent">مميز (Accent)</Badge>
+                <Badge variant="neutral">{t('designSystem:badgeNeutral')}</Badge>
+                <Badge variant="primary">{t('designSystem:badgePrimary')}</Badge>
+                <Badge variant="secondary">{t('designSystem:badgeSecondary')}</Badge>
+                <Badge variant="success">{t('designSystem:badgeSuccess')}</Badge>
+                <Badge variant="warning">{t('designSystem:badgeWarning')}</Badge>
+                <Badge variant="danger">{t('designSystem:badgeDanger')}</Badge>
+                <Badge variant="accent">{t('designSystem:badgeAccent')}</Badge>
               </div>
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold text-foreground-secondary mb-3">الحجم الصغير (sm)</h3>
+              <h3 className="text-sm font-semibold text-foreground-secondary mb-3">{t('designSystem:smallSize')}</h3>
               <div className="flex flex-wrap gap-3">
-                <Badge variant="neutral" size="sm">محايد</Badge>
-                <Badge variant="primary" size="sm">أساسي</Badge>
-                <Badge variant="secondary" size="sm">ثانوي</Badge>
-                <Badge variant="success" size="sm">نجاح</Badge>
-                <Badge variant="warning" size="sm">تحذير</Badge>
-                <Badge variant="danger" size="sm">خطر</Badge>
-                <Badge variant="accent" size="sm">مميز</Badge>
+                <Badge variant="neutral" size="sm">{t('designSystem:badgeNeutral')}</Badge>
+                <Badge variant="primary" size="sm">{t('designSystem:badgePrimary')}</Badge>
+                <Badge variant="secondary" size="sm">{t('designSystem:badgeSecondary')}</Badge>
+                <Badge variant="success" size="sm">{t('designSystem:badgeSuccess')}</Badge>
+                <Badge variant="warning" size="sm">{t('designSystem:badgeWarning')}</Badge>
+                <Badge variant="danger" size="sm">{t('designSystem:badgeDanger')}</Badge>
+                <Badge variant="accent" size="sm">{t('designSystem:badgeAccent')}</Badge>
               </div>
             </div>
           </div>
         </section>
 
-        {/* === RTL TEST === */}
+        {/* === BILINGUAL & LTR CV FIELD TEST === */}
         <section>
-          <SectionTitle>اختبار اتجاه النص (RTL Test)</SectionTitle>
-          <SectionDescription>التحقق من دعم الاتجاه العربي الأيمن بصورة صحيحة.</SectionDescription>
-          <Card>
-            <CardContent>
-              <div className="space-y-4">
+          <SectionTitle>{t('designSystem:bilingualTestSectionTitle')}</SectionTitle>
+          <SectionDescription>{t('designSystem:bilingualTestSectionDesc')}</SectionDescription>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Interface Direction & Text Test</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
                 <p className="text-sm text-foreground leading-relaxed">
-                  هذا النص باللغة العربية لاختبار صحة محاذاة الاتجاه من اليمين إلى اليسار.
-                  يجب أن تكون جميع العناصر بما في ذلك الأزرار والحقول والشارات متوافقة مع اتجاه القراءة العربي.
+                  {t('designSystem:rtlTestParagraph')}
                 </p>
                 <div className="flex flex-wrap gap-3">
-                  <Button leadingIcon={Plus} size="sm">إضافة عنصر جديد</Button>
-                  <Input placeholder="حقل بحث..." startIcon={Search} />
+                  <Button leadingIcon={Plus} size="sm">{t('designSystem:cardAction')}</Button>
+                  <Input placeholder={t('designSystem:searchPlaceholder')} startIcon={Search} />
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>{t('designSystem:futureCvFieldTitle')}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Input
+                  label={t('designSystem:jobTitleLabel')}
+                  value="Full Stack Developer"
+                  dir="ltr"
+                  lang="en"
+                  readOnly
+                  helperText={t('designSystem:futureCvFieldHelper')}
+                />
+              </CardContent>
+            </Card>
+          </div>
         </section>
 
       </main>
@@ -360,7 +388,7 @@ export default function DesignSystemPage() {
       {/* Footer */}
       <footer className="bg-surface border-t border-border py-6 mt-auto">
         <div className="max-w-6xl mx-auto px-4 text-center text-xs text-foreground-muted">
-          <p>صفحة تطوير داخلية - CV Platform Design System</p>
+          <p>{t('designSystem:footerText')}</p>
         </div>
       </footer>
     </div>

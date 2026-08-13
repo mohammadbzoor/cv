@@ -1,14 +1,17 @@
 import { Link } from 'react-router-dom';
 import { Home, AlertCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { ROUTE_PATHS } from '../app/routePaths';
 
 /**
  * NotFoundPage component.
- * Accessible 404 fallback using semantic design tokens for light and dark mode.
+ * Fully internationalized 404 fallback page.
  */
 export default function NotFoundPage() {
+  const { t } = useTranslation(['designSystem', 'navigation', 'common']);
+
   return (
-    <div dir="rtl" className="min-h-screen bg-app-bg text-foreground flex items-center justify-center p-4 font-sans">
+    <div className="min-h-screen bg-app-bg text-foreground flex items-center justify-center p-4 font-sans">
       <main className="max-w-md w-full bg-surface border border-border rounded-2xl p-8 text-center shadow-2xs space-y-6">
         <div className="mx-auto w-14 h-14 bg-warning-subtle text-warning rounded-full flex items-center justify-center">
           <AlertCircle className="w-7 h-7" aria-hidden="true" />
@@ -16,9 +19,9 @@ export default function NotFoundPage() {
 
         <div className="space-y-2">
           <p className="text-5xl font-extrabold text-primary tracking-tight">404</p>
-          <h1 className="text-lg font-bold text-foreground">الصفحة غير موجودة</h1>
+          <h1 className="text-lg font-bold text-foreground">{t('designSystem:notFoundTitle')}</h1>
           <p className="text-xs text-foreground-secondary leading-relaxed">
-            عذراً، الرابط الذي طلبت الوصول إليه غير موجود أو تم نقله.
+            {t('designSystem:notFoundDesc')}
           </p>
         </div>
 
@@ -28,7 +31,7 @@ export default function NotFoundPage() {
             className="inline-flex items-center justify-center gap-2 w-full px-5 py-2.5 bg-primary text-on-primary font-medium text-sm rounded-lg hover:bg-primary-hover focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 transition-colors shadow-2xs cursor-pointer"
           >
             <Home className="w-4 h-4" aria-hidden="true" />
-            <span>الرجوع إلى الصفحة الرئيسية</span>
+            <span>{t('navigation:backToHome')}</span>
           </Link>
         </div>
       </main>

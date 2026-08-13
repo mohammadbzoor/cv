@@ -1,0 +1,21 @@
+{
+  "save": "Save",
+  "cancel": "Cancel",
+  "loading": "Loading...",
+  "back": "Back",
+  "home": "Home",
+  "language": "Language",
+  "theme": "Theme",
+  "light": "Light",
+  "dark": "Dark",
+  "system": "System",
+  "required": "Required",
+  "error": "Error",
+  "enabled": "Enabled",
+  "disabled": "Disabled",
+  "selectTheme": "Select theme",
+  "switchLanguage": "Switch language to {{lang}}",
+  "rightsReserved": "All rights reserved",
+  "appTitle": "CV Platform",
+  "version": "CV Platform v1.0.0"
+}

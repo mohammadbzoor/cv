@@ -1,0 +1,16 @@
+{
+  "badgePhase2": "Phase 3 Completed",
+  "heroBadge": "Infrastructure + Theme System + i18n Support",
+  "heroTitle": "Core Project Infrastructure Established Successfully",
+  "heroDescription": "The project is initialized with a theme system supporting Light, Dark, and System modes, alongside full Arabic and English support with dynamic text directions.",
+  "colorPaletteTitle": "Editorial Color Palette",
+  "colorPaletteSub": "Calm, warm color tokens that automatically adapt to light and dark themes",
+  "deepSlateDesc": "Primary buttons, key headings, and high priority elements.",
+  "mutedSageDesc": "Supporting elements, success indicators, and secondary links.",
+  "softTerracottaDesc": "Alerts, important badges, and cautious accent highlighting.",
+  "checkListTitle": "Criteria Verification",
+  "checkList1": "Light, Dark, and System theme preferences",
+  "checkList2": "Button, Input, Textarea, Card, and Badge components",
+  "checkList3": "React Router & Tailwind CSS v4 integration",
+  "checkList4": "Full Arabic & English support with dynamic RTL and LTR"
+}

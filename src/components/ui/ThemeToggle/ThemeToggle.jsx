@@ -1,23 +1,26 @@
 import { useState, useRef, useEffect } from 'react';
 import { Sun, Moon, Monitor } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../../hooks/useTheme';
 import { cn } from '../../../utils/cn';
 
-const THEME_OPTIONS = [
-  { value: 'light', label: 'فاتح', Icon: Sun },
-  { value: 'dark', label: 'داكن', Icon: Moon },
-  { value: 'system', label: 'النظام', Icon: Monitor },
-];
-
 /**
  * Accessible dropdown menu for switching between light, dark, and system themes.
+ * Supports translated labels and dynamic RTL/LTR menu placement.
  */
 export function ThemeToggle() {
+  const { t } = useTranslation('common');
   const { theme, resolvedTheme, setTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef(null);
 
   const ActiveIcon = resolvedTheme === 'dark' ? Moon : Sun;
+
+  const themeOptions = [
+    { value: 'light', labelKey: 'light', Icon: Sun },
+    { value: 'dark', labelKey: 'dark', Icon: Moon },
+    { value: 'system', labelKey: 'system', Icon: Monitor },
+  ];
 
   useEffect(() => {
     if (!isOpen) return;
@@ -54,7 +57,8 @@ export function ThemeToggle() {
           'focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2',
           'transition-colors cursor-pointer'
         )}
-        aria-label="تبديل سمة العرض"
+        aria-label={t('selectTheme')}
+        title={t('selectTheme')}
         aria-expanded={isOpen}
         aria-haspopup="true"
       >
@@ -69,7 +73,7 @@ export function ThemeToggle() {
             'bg-surface-elevated border-border shadow-md z-50'
           )}
         >
-          {THEME_OPTIONS.map(({ value, label, Icon }) => (
+          {themeOptions.map(({ value, labelKey, Icon }) => (
             <button
               key={value}
               type="button"
@@ -80,14 +84,14 @@ export function ThemeToggle() {
               }}
               className={cn(
                 'flex items-center gap-3 w-full px-3 py-2.5 text-sm cursor-pointer',
-                'hover:bg-surface-muted transition-colors text-right',
+                'hover:bg-surface-muted transition-colors text-start',
                 theme === value
                   ? 'text-primary font-medium'
                   : 'text-foreground-secondary'
               )}
             >
               <Icon className="w-4 h-4 shrink-0" aria-hidden="true" />
-              <span>{label}</span>
+              <span>{t(labelKey)}</span>
             </button>
           ))}
         </div>

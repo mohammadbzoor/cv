@@ -1,6 +1,7 @@
 import { RouterProvider } from 'react-router-dom';
 import { router } from './router';
 import { ThemeProvider } from '../contexts/ThemeProvider';
+import { LanguageProvider } from '../contexts/LanguageProvider';
 
 /**
  * AppProviders component.
@@ -8,8 +9,10 @@ import { ThemeProvider } from '../contexts/ThemeProvider';
  */
 export function AppProviders() {
   return (
-    <ThemeProvider>
-      <RouterProvider router={router} />
-    </ThemeProvider>
+    <LanguageProvider>
+      <ThemeProvider>
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </LanguageProvider>
   );
 }

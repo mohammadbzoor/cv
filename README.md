@@ -13,6 +13,7 @@
 - **الواجهة الأمامية (Frontend):** React.js (v19)
 - **أداة البناء والتطوير:** Vite (v8)
 - **لغة البرمجة:** JavaScript (ES6+) و JSX
+- **التدويل والتعدد اللغوي:** i18next (v25) + react-i18next (v16)
 - **التنسيق والأنماط:** Tailwind CSS (v4)
 - **التوجيه والمسارات:** React Router (v7)
 - **الخدمات والشبكة:** Axios (v1)
@@ -63,168 +64,137 @@ npm run preview
 
 ---
 
-## 🏗️ هيكل المشروع (Project Structure)
+## 🌐 نظام التدويل واللغات (i18n Architecture)
+
+### 📌 الفرق بين لغة الواجهة ولغة السيرة الذاتية (App Language vs CV Language)
+
+> **Architectural Principle:**
+> "The application interface supports Arabic and English. CV content, templates, preview, and export are English-only and always use LTR document direction."
+
+- **واجهة التطبيق (App Interface):**
+  - **العربية:** `ar` (اتجاه RTL) — افتراضية
+  - **الإنجليزية:** `en` (اتجاه LTR) — احتياطية (fallback)
+- **مستند السيرة الذاتية مستقبلاً (CV Document):**
+  - **اللغة:** `en` ثابتة
+  - **الاتجاه:** `ltr` ثابت دائماً بغض النظر عن لغة الواجهة المفضلة للمستخدم.
+
+---
+
+### 📂 بنية ملفات الترجمة
 
 ```text
 src/
-├── app/                  # إعدادات التطبيق والتوجيه والمزودات الرئيسية
-│   ├── App.jsx           # المكون الجذري للتطبيق
-│   ├── router.jsx        # تعريف المسارات والصفحات
-│   ├── providers.jsx     # تجميع Context Providers
-│   └── routePaths.js     # الثوابت الخاصة بأسماء المسارات
-│
-├── assets/               # الأصول الثابتة (الصور والأيقونات)
-│
-├── components/
-│   ├── ui/               # مكونات الواجهة الأساسية
-│   │   ├── Button/       # زر متعدد الأنماط والأحجام
-│   │   ├── Input/        # حقل إدخال مع تسمية وأيقونات وأخطاء
-│   │   ├── Textarea/     # منطقة نص مع عداد أحرف
-│   │   ├── Card/         # بطاقة مركبة بمكونات فرعية
-│   │   ├── Badge/        # شارة حالة غير تفاعلية
-│   │   └── ThemeToggle/  # زر تبديل السمة الفاتحة/الداكنة/النظام
-│   ├── layout/           # الهياكل الأساسية (Navbar, Footer, Layouts)
-│   └── feedback/         # التنبيهات ورسائل التحميل والأخطاء
-│
-├── contexts/             # السياقات العامة
-│   ├── ThemeContext.jsx   # سياق السمة
-│   └── ThemeProvider.jsx  # مزود السمة
-│
-├── hooks/
-│   └── useTheme.js       # خطاف الوصول للسمة
-│
-├── features/             # الميزات المقسمة حسب النطاق
-│
-├── pages/
-│   ├── HomePage.jsx       # الصفحة الرئيسية
-│   ├── NotFoundPage.jsx   # صفحة 404
-│   └── DesignSystemPage.jsx # صفحة عرض نظام التصميم
-│
-├── services/
-│   ├── apiClient.js       # Axios instance الرئيسي
-│   ├── endpoints.js       # المسارات المتوقعة للـ API
-│   └── errorNormalizer.js # دالة توحيد أخطاء الشبكة
-│
-├── utils/
-│   └── cn.js             # أداة دمج أسماء الفئات CSS
-│
-├── styles/
-│   └── globals.css        # Design Tokens + Tailwind + Dark Mode
-│
-└── main.jsx               # نقطة الانطلاق الرئيسية
+└── i18n/
+    ├── config.js               # تهيئة مكتبة i18next
+    ├── supportedLanguages.js   # تعريف اللغات المدعومة واللغة الافتراضية
+    └── locales/
+        ├── ar/                 # حزمة نصوص اللغة العربية (RTL)
+        │   ├── common.json
+        │   ├── navigation.json
+        │   ├── home.json
+        │   └── designSystem.json
+        └── en/                 # حزمة نصوص اللغة الإنجليزية (LTR)
+            ├── common.json
+            ├── navigation.json
+            ├── home.json
+            └── designSystem.json
 ```
+
+---
+
+### 🔑 مفتاح التخزين والتحكم
+
+- **مفتاح localStorage للغة:**
+  ```text
+  cv-platform-language
+  ```
+- **اللغة الافتراضية:** `ar`
+- **اللغة الاحتياطية (Fallback):** `en`
+- **Namespaces المستخدمة:**
+  1. `common`: النصوص العامة والأزرار وحالات النظام.
+  2. `navigation`: أسماء المسارات وعناصر التنقل.
+  3. `home`: محتوى الصفحة الرئيسية.
+  4. `designSystem`: نصوص وأمثلة نظام التصميم.
+
+---
+
+### ➕ كيفية إضافة مفاتيح ترجمة جديدة
+
+عند إضافة نص جديد للواجهة:
+1. افتح الملف المناسب في `src/i18n/locales/ar/[namespace].json`.
+2. أضف المفتاح مع النص العربي.
+3. افتح الملف المماثل في `src/i18n/locales/en/[namespace].json`.
+4. أضف نفس المفتاح مع النص الإنجليزي.
+5. استخدم الخطاف داخل المكون:
+   ```javascript
+   const { t } = useTranslation('namespace');
+   return <p>{t('keyName')}</p>;
+   ```
+
+---
+
+### 🌍 كيفية إضافة لغة جديدة مستقبلاً
+
+1. أنشئ مجلداً جديداً برمز اللغة داخل `src/i18n/locales/[code]/`.
+2. انسخ ملفات JSON الأربعة وترجم قيمها.
+3. أضف كائن اللغة الجديدة في `src/i18n/supportedLanguages.js`.
+4. سجل الحزمة الجديدة داخل `src/i18n/config.js`.
 
 ---
 
 ## 🎨 نظام الثيمات (Theme System)
 
-### الأوضاع المدعومة
-
 | الوضع | الوصف |
 | :--- | :--- |
-| `light` | الوضع الفاتح (افتراضي) |
+| `light` | الوضع الفاتح |
 | `dark` | الوضع الداكن |
 | `system` | يتبع تفضيل نظام التشغيل تلقائياً |
 
-### البنية
-
-- **ThemeContext**: سياق React يوفر `theme` و `resolvedTheme` و `setTheme` و `toggleTheme`.
-- **ThemeProvider**: مزود يدير حالة السمة ويتعامل مع DOM و localStorage.
-- **useTheme**: خطاف مخصص للوصول إلى نظام الثيمات.
-- **ThemeToggle**: مكون واجهة لتبديل السمة مع دعم لوحة المفاتيح و ARIA.
-- **Anti-Flash Script**: سكريبت في `index.html` يمنع وميض اللون عند التحميل.
-
-### مفتاح التخزين
-
-```
-cv-platform-theme
-```
-
-### Design Tokens
-
-جميع الألوان معرفة كـ CSS custom properties في `globals.css` باستخدام `@theme` (Tailwind v4) وتتغير تلقائياً مع `.dark`:
-
-| Token | Light | Dark |
-| :--- | :--- | :--- |
-| `app-bg` | `#F7F5F1` | `#171C1F` |
-| `surface` | `#FCFBF9` | `#1E2529` |
-| `foreground` | `#202A30` | `#EDF0EE` |
-| `primary` | `#344553` | `#A7B8BF` |
-| `secondary` | `#607D73` | `#8FA99F` |
-| `accent` | `#B9785D` | `#D09A82` |
-| `border` | `#D8D6D0` | `#374145` |
-
-### اختبار الثيمات
-
-1. افتح التطبيق وبدّل السمة من القائمة المنسدلة في الترويسة.
-2. أعد تحميل الصفحة — يجب أن يبقى التفضيل محفوظاً.
-3. اختر "النظام" ثم غيّر تفضيل نظام التشغيل للتحقق من التكيف التلقائي.
+- **مفتاح التخزين في localStorage:** `cv-platform-theme`
+- **Anti-Flash Script:** سكريبت مباشر في `index.html` يفحص السمة واللغة قبل بناء واجهة React لضمان عدم الوميض عند التحميل.
 
 ---
 
 ## 🧩 المكونات المنفذة (Core UI Components)
 
-| المكون | الأنماط (Variants) | الأحجام | الوصف |
-| :--- | :--- | :--- | :--- |
-| **Button** | primary, secondary, outline, ghost, danger | sm, md, lg, icon | أزرار مع حالات تحميل وتعطيل ودعم أيقونات |
-| **Input** | — | — | حقل إدخال مع تسمية ونص مساعد وخطأ وأيقونات |
-| **Textarea** | — | — | منطقة نص مع عداد أحرف وتحقق |
-| **Card** | default, elevated, outlined, muted | — | بطاقة مركبة (Header, Title, Description, Content, Footer) |
-| **Badge** | neutral, primary, secondary, success, warning, danger, accent | sm, md | شارة حالة غير تفاعلية |
-| **ThemeToggle** | — | — | قائمة تبديل السمة |
+- **Button**: variants (`primary`, `secondary`, `outline`, `ghost`, `danger`), sizes (`sm`, `md`, `lg`, `icon`), loading, disabled, leadingIcon, trailingIcon.
+- **Input**: label, helperText, error, required, disabled, startIcon, endIcon, aria-describedby.
+- **Textarea**: label, helperText, error, maxLength, showCharacterCount, rows.
+- **Card**: compound (`Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`) & variants (`default`, `elevated`, `outlined`, `muted`).
+- **Badge**: variants (`neutral`, `primary`, `secondary`, `success`, `warning`, `danger`, `accent`), sizes (`sm`, `md`).
+- **ThemeToggle**: قائمة تبديل السمة.
+- **LanguageSwitcher**: زر تبديل اللغة بدون أعلام دول وبدعم كامل للوصول وسهولة الاستخدام.
 
-### صفحة نظام التصميم
+---
 
-متاحة في وضع التطوير على المسار:
+## 🛠️ صفحة نظام التصميم (Design System Page)
 
-```
+متاحة في بيئة التطوير على المسار:
+```text
 /design-system
 ```
-
-تعرض جميع المكونات وأنماطها وأحجامها وحالاتها في كلا الوضعين.
-
----
-
-## 🔑 متغيرات البيئة (Environment Variables)
-
-| المتغير | الوصف | القيمة الافتراضية |
-| :--- | :--- | :--- |
-| `VITE_API_BASE_URL` | عنوان مسار الـ API الرئيسي | `http://localhost:5000/api` |
+تعرض جميع المكونات والألوان والنصوص واختبار التفاعل في اللغتين والاتجاهين (RTL / LTR).
 
 ---
 
-## ✅ ما تم إنجازه
+## ✅ ما تم إنجازه في المرحلة الثالثة (Phase 3 Accomplishments)
 
-### المرحلة الأولى — البنية التحتية
-
-1. تأسيس مشروع React + Vite.
-2. هيكل مجلدات هندسي منظم.
-3. React Router + Axios client + ESLint.
-4. هوية بصرية مهنية هادئة.
-5. ربط GitHub.
-
-### المرحلة الثانية — نظام الثيمات والمكونات
-
-1. نظام ثيمات كامل (Light / Dark / System).
-2. Design Tokens دلالية مركزية مع دعم Dark Mode.
-3. Anti-flash script لمنع وميض اللون.
-4. مكونات Button, Input, Textarea, Card, Badge, ThemeToggle.
-5. صفحة Design System للعرض والاختبار.
-6. أداة `cn()` لدمج فئات CSS.
+1. تثبيت وتهيئة `i18next` و `react-i18next`.
+2. بناء `LanguageContext` و `LanguageProvider` و `useLanguage` بشكل مستقل ونظيف.
+3. دعم تبديل اللغة دون إعادة تحميل الصفحة وحفظ التفضيل في `cv-platform-language`.
+4. تحديث `document.documentElement.lang` و `dir` تلقائياً بين `ar` (rtl) و `en` (ltr).
+5. دمج السكريبت الخاص بمنع وميض اللغة والسمة (Anti-Flash) في `index.html`.
+6. تطوير مكون `LanguageSwitcher` المتوافق مع معايير Accessibility دون استخدام أعلام الدول.
+7. ترجمة جميع نصوص الصفحة الرئيسية `HomePage` وصفحة 404 `NotFoundPage` وصفحة `DesignSystemPage` ومكون `ThemeToggle`.
+8. إنشاء وحدة `src/utils/locale.js` لتنسيق الأرقام والتواريخ باستخدام `Intl` APIs.
+9. توثيق قرار واجهة تطبيق ثنائية اللغة وسيرة ذاتية إنجليزية فقط.
 
 ---
 
-## 🔮 المراحل القادمة
+## 🔮 المراحل القادمة (Upcoming Phases)
 
-- **المرحلة الثالثة:** Navigation وLayout وصفحات البناء.
-- **المرحلة الرابعة:** نماذج البيانات وCV Builder والقوالب.
-- **المرحلة الخامسة:** التحليل والتحسين والمطابقة.
-
----
-
-## 📌 حدود المرحلة الحالية
-
-لم يتم تنفيذ: CV Data Model, Zustand, Builder, Templates, Upload, Analyze, Match, Improve, Modal, Tabs, Select, PDF/DOCX, Backend, Tests المتقدمة.
+- **المرحلة الرابعة:** الهيكل البنائي لـ CV Data Model وتأسيس حالة CV Store وإدارة النموذج.
+- **المرحلة الخامسة:** بناء محرر السيرة الذاتية (CV Builder) والتنقل بين أقسامه والقوالب.
 
 ---
 

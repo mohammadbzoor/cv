@@ -1,0 +1,21 @@
+{
+  "save": "حفظ",
+  "cancel": "إلغاء",
+  "loading": "جاري التحميل...",
+  "back": "رجوع",
+  "home": "الرئيسية",
+  "language": "اللغة",
+  "theme": "السمة",
+  "light": "فاتح",
+  "dark": "داكن",
+  "system": "النظام",
+  "required": "مطلوب",
+  "error": "خطأ",
+  "enabled": "مفعّل",
+  "disabled": "معطّل",
+  "selectTheme": "اختر السمة",
+  "switchLanguage": "تغيير اللغة إلى {{lang}}",
+  "rightsReserved": "جميع الحقوق محفوظة",
+  "appTitle": "منصة السير الذاتية الذكية",
+  "version": "CV Platform v1.0.0"
+}

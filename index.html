@@ -1,14 +1,15 @@
 <!doctype html>
-<html lang="en">
+<html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CV Platform</title>
     <script>
-      // Prevent theme flash before React hydrates
+      // Anti-flash script for Theme and Language preferences
       (function() {
         try {
+          // Initialize Theme
           var theme = localStorage.getItem('cv-platform-theme');
           var isDark = theme === 'dark' ||
             ((!theme || theme === 'system') &&
@@ -17,6 +18,12 @@
             document.documentElement.classList.add('dark');
           }
           document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
+
+          // Initialize Language & Direction
+          var lang = localStorage.getItem('cv-platform-language');
+          var isEn = lang === 'en';
+          document.documentElement.lang = isEn ? 'en' : 'ar';
+          document.documentElement.dir = isEn ? 'ltr' : 'rtl';
         } catch (e) {}
       })();
     </script>
