@@ -10,11 +10,15 @@
   "activeTemplate": "القالب النشط",
   "preview": "معاينة سريعة",
   "clickToPreview": "انقر لعرض المعاينة الكاملة",
+  "moreDetails": "تفاصيل",
+  "bestForRole": "الأفضل لـ",
   "close": "إغلاق",
   "cancel": "إلغاء",
   "recommendedFor": "يوصى به لـ",
   "keyTraits": "أبرز سمات التصميم",
   "supportedSections": "الأقسام المدعومة",
+  "activeFilters": "الفلاتر النشطة",
+  "removeFilter": "إزالة الفلتر",
   "compatibility": {
     "all": "جميع مستويات التوافق",
     "atsOptimized": "محسّن لـ ATS",
@@ -39,6 +43,7 @@
   "compatibilityLabel": "مستوى التوافق",
   "clearFilters": "إعادة ضبط الفلاتر",
   "noTemplatesFound": "لا توجد قوالب تطابق معايير البحث أو الفلاتر المحددة.",
+  "noTemplatesFoundDesc": "جرب تعديل كلمات البحث أو مسح فلاتر التصفية.",
   "previewingYourCv": "معاينة بيانات سيرتك الذاتية",
   "previewingSampleData": "معاينة البيانات التوضيحية",
   "tabVisualPreview": "المعاينة البصرية",
@@ -61,6 +66,21 @@
     "understated": "هادئ بسيطة",
     "prominent": "بارز عريض"
   },
+  "sizeLabels": {
+    "sm": "صغير (Small)",
+    "md": "متوسط (Medium)",
+    "lg": "كبير (Large)",
+    "tight": "ضيق (Tight)",
+    "normal": "عادي (Normal)",
+    "wide": "واسع (Wide)",
+    "relaxed": "مريح (Relaxed)"
+  },
+  "customizationGroups": {
+    "visual": "التنسيق البصري (الألوان والخطوط)",
+    "spacing": "المسافات وكثافة المحتوى",
+    "structure": "الهيكلية وإدارة الأقسام",
+    "safety": "السلامة والتشخيص والمصفوفة"
+  },
   "sectionManagerTitle": "ترتيب ورؤية الأقسام",
   "resetRecommendedOrder": "إعادة الترتيب الموصى به القالب",
   "resetOrder": "إعادة الترتيب",
@@ -79,6 +99,128 @@
   "noPlainTextContent": "لا يوجد محتوى نصي لعرضه.",
   "atsStructureCheckTitle": "تقييم هيكلية ATS المحلي",
   "atsStructureCheckDesc": "تقييم تخطيط المستند مقابل مبادئ استخراج أنظمة تتبع المتقدمين القياسية.",
+  "recommendation": {
+    "title": "محرك التوصية الذكي للقوالب",
+    "subtitle": "توصية حتمية استناداً إلى المستوى المهني وهيكلية السيرة الذاتية.",
+    "careerLevel": "المستوى المهني",
+    "targetRole": "مجال الوظيفة المستهدفة",
+    "autoDetect": "كشف تلقائي من السيرة",
+    "student": "طالب / خريج جديد",
+    "junior": "مبتدئ (1-2 سنة)",
+    "mid": "متوسط (3-5 سنوات)",
+    "senior": "خبير (6+ سنوات)",
+    "executive": "تنفيذي / قيادي",
+    "softwareRole": "برمجيات / تكنولوجيا",
+    "engineeringRole": "هندسة وتقنية",
+    "businessRole": "أعمال ومالية",
+    "consultingRole": "استشارات واستراتيجية",
+    "managementRole": "إدارة وعمليات",
+    "generalRole": "عام / احترافي",
+    "topFit": "أفضل قالب موصى به",
+    "apply": "تطبيق التوصية",
+    "currentlyActive": "نشط حالياً",
+    "whyRecommended": "لماذا نوصي بهذا القالب:",
+    "reasons": {
+      "technicalPrimeMatch": "يجمع المهارات التقنية بوضوح لأدوار البرمجيات والهندسة.",
+      "developerMatch": "يبرز الأدوات البرمجية، المشاريع، ومستودعات GitHub.",
+      "executiveMatch": "يتضمن مربع ملخص تنفيذي وتنسيق قيادي بارز.",
+      "professionalMatch": "يوفر هرمية تنفذية راقية مع فواصل أقسام دقيقة.",
+      "juniorCareerMatch": "تخطيط بسيط بعمود واحد مثالي للبناء المبدئي.",
+      "seniorCareerMatch": "يركز على إنجازات القيادة والتسلسل المهني.",
+      "onePageMatch": "مساحات مضغوطة مخصصة للسير ذات الصفحة الواحدة.",
+      "groupedSkillsMatch": "مثالي لقوائم المهارات المجمعة حسب التصنيف.",
+      "projectFocusMatch": "يعطي الأولوية للمشاريع البرمجية والتقنية البارزة.",
+      "generalAtsMatch": "توافق عالي مع معظم منصات التوظيف القياسية."
+    }
+  },
+  "decisionMatrix": {
+    "title": "مصفوفة اتخاذ القرار للقوالب",
+    "desc": "مقارنة نوعية للمفاضلات الهيكلية عبر أبعاد التخطيط.",
+    "parsingSimplicity": "بساطة التحليل الآلي",
+    "onePageSuitability": "ملائمة الصفحة الواحدة",
+    "projectEmphasis": "التركيز على المشاريع",
+    "executiveEmphasis": "التركيز التنفيذي",
+    "visualDensity": "كثافة المعلومات",
+    "customizationRange": "مدى التخصيص",
+    "readingOrderComplexity": "تعقيد تسلسل القراءة",
+    "printStability": "استقرار الطباعة وPDF",
+    "values": {
+      "high": "عالي (High)",
+      "medium": "متوسط (Medium)",
+      "low": "منخفض (Low)",
+      "simple": "بسيط (من الأعلى للأسفل)",
+      "moderate": "معتدل"
+    }
+  },
+  "pressure": {
+    "title": "كثافة المحتوى وضغط الصفحات",
+    "comfortable": "مريح (Comfortable)",
+    "approaching-limit": "يقترب من الحد",
+    "dense": "تخطيط مكثف",
+    "overflow-risk": "خطر تجاوز الصفحة",
+    "suggestions": {
+      "comfortableDesc": "المحتوى يناسب الصفحة براحة مع مسافات تنفس جيدة.",
+      "approachingLimitDesc": "المحتوى يقترب من حدود الصفحة.",
+      "denseDesc": "حجم النصوص كبير. يُفضل اختيار كثافة متوازنة.",
+      "overflow-riskDesc": "حجم النص القد يسبب تجاوز الصفحة الواحدة.",
+      "suggestCompactTpl": "تلميح: انتقل لقالب Compact ATS للتنسيق المضغوط.",
+      "suggestReduceText": "تلميح: قلل النصوص المكررة أو اضبط المسافات."
+    }
+  },
+  "coverage": {
+    "title": "خريطة اكتمال محتوى الأقسام",
+    "status": {
+      "complete": "مكتمل",
+      "partial": "جزئي",
+      "empty": "فارغ",
+      "hidden": "مخفي"
+    }
+  },
+  "safetyGuard": {
+    "title": "تنبيه حارس سهولة القراءة",
+    "desc": "بعض خيارات التنسيق قد تقلل من تباين النص أو سهولة القراءة.",
+    "applySaferDefaults": "تطبيق الإعدادات الآمنة",
+    "warnings": {
+      "lightColorWarning": "اللون الرئيسي فاتح جداً على الورق الأبيض.",
+      "compactSmallFontWarning": "الكثافة المضغوطة مع الخط الصغير قد تبدو مزدحمة.",
+      "hiddenDividersWeakHeadingsWarning": "إخفاء الفواصل مع العناوين البسيطة يقلل تمييز الأقسام."
+    }
+  },
+  "inspector": {
+    "streamTitle": "تدفق النص المجرد المستخرج",
+    "missingContact": {
+      "title": "بيانات الاتصال مفقودة",
+      "desc": "البريد الإلكتروني أو الهاتف غير موجود في الترويسة الرئيسية."
+    },
+    "hiddenSummaryData": {
+      "title": "قسم مخفي يحتوي على بيانات",
+      "desc": "قسم الملخص يحتوي نصاً ولكنه محدد كمخفي حالياً."
+    },
+    "duplicateHeading": {
+      "title": "عنوان قسم مكرر",
+      "desc": "ترتيب الأقسام يحتوي عناصر مكررة."
+    }
+  },
+  "changeImpact": {
+    "title": "تأكيد تغيير القالب",
+    "notice": "تغيير القالب يحافظ على كافة نصوصك وتعديلاتها دون أي فقدان.",
+    "willChange": "ما الذي سيتغير:",
+    "willRemain": "ما الذي سيبقى كما هو دون تغيير:",
+    "templateLayoutChange": "تحديث تخطيط القالب إلى {{name}}",
+    "resetOrderChange": "إعادة تسلسل الأقسام للترتيب الموصى به القالب",
+    "saferDefaultsChange": "إعادة ضبط إعدادات التصميم للقيم الآمنة",
+    "preserveText": "جميع البيانات الشخصية ونص الملخص",
+    "preserveExperiences": "جميع خبرات العمل ومشاريعك الحالية",
+    "preserveUndo": "إمكانية التراجع متوفرة دائماً (Ctrl+Z)"
+  },
+  "mobileTabs": {
+    "templates": "القوالب",
+    "preview": "المعاينة",
+    "customize": "التخصيص"
+  },
+  "undo": "تراجع",
+  "redo": "إعادة",
+  "confirmChange": "تأكيد وتطبيق",
   "atsChecks": {
     "singleColumn": {
       "title": "معمارية العمود الواحد",

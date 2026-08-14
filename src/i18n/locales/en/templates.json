@@ -10,11 +10,15 @@
   "activeTemplate": "Active Template",
   "preview": "Quick Preview",
   "clickToPreview": "Click to view full preview",
+  "moreDetails": "Details",
+  "bestForRole": "Best for",
   "close": "Close",
   "cancel": "Cancel",
   "recommendedFor": "Recommended For",
   "keyTraits": "Key Design Traits",
   "supportedSections": "Supported Sections",
+  "activeFilters": "Active Filters",
+  "removeFilter": "Remove filter",
   "compatibility": {
     "all": "All Compatibility Levels",
     "atsOptimized": "ATS Optimized",
@@ -39,6 +43,7 @@
   "compatibilityLabel": "Compatibility Level",
   "clearFilters": "Clear all filters",
   "noTemplatesFound": "No templates match your current search or filter criteria.",
+  "noTemplatesFoundDesc": "Try adjusting your search terms or clearing category filters.",
   "previewingYourCv": "Previewing Your CV Data",
   "previewingSampleData": "Previewing Sample Data",
   "tabVisualPreview": "Visual Preview",
@@ -61,6 +66,21 @@
     "understated": "Understated Title Case",
     "prominent": "Prominent Bold"
   },
+  "sizeLabels": {
+    "sm": "Small",
+    "md": "Medium",
+    "lg": "Large",
+    "tight": "Tight",
+    "normal": "Normal",
+    "wide": "Wide",
+    "relaxed": "Relaxed"
+  },
+  "customizationGroups": {
+    "visual": "Visual Styling (Color & Typography)",
+    "spacing": "Spacing & Content Density",
+    "structure": "Structure & Section Manager",
+    "safety": "Safety, Pressure & Matrix"
+  },
   "sectionManagerTitle": "Section Order & Visibility",
   "resetRecommendedOrder": "Reset to Template Order",
   "resetOrder": "Reset Order",
@@ -79,6 +99,128 @@
   "noPlainTextContent": "No text content available to display.",
   "atsStructureCheckTitle": "Local ATS Structure Evaluation",
   "atsStructureCheckDesc": "Evaluates document layout against standard applicant tracking system extraction principles.",
+  "recommendation": {
+    "title": "Smart Template Fit Engine",
+    "subtitle": "Deterministic recommendation based on career level & CV structure metrics.",
+    "careerLevel": "Career Level",
+    "targetRole": "Target Role Family",
+    "autoDetect": "Auto-detect from CV",
+    "student": "Student / Graduate",
+    "junior": "Junior (1-2 years)",
+    "mid": "Mid-Level (3-5 years)",
+    "senior": "Senior (6+ years)",
+    "executive": "Executive / Leadership",
+    "softwareRole": "Software / IT",
+    "engineeringRole": "Engineering & Tech",
+    "businessRole": "Business & Finance",
+    "consultingRole": "Consulting & Strategy",
+    "managementRole": "Management & Operations",
+    "generalRole": "General / Professional",
+    "topFit": "Top Recommended Fit",
+    "apply": "Apply Recommendation",
+    "currentlyActive": "Currently Active",
+    "whyRecommended": "Why this template is recommended:",
+    "reasons": {
+      "technicalPrimeMatch": "Groups technical skills cleanly for software & engineering roles.",
+      "developerMatch": "Highlights technical stacks, repositories, and GitHub projects.",
+      "executiveMatch": "Features dedicated executive summary box and leadership layout.",
+      "professionalMatch": "Provides corporate executive hierarchy with subtle section accents.",
+      "juniorCareerMatch": "Ultra-clean single column layout ideal for early career profiles.",
+      "seniorCareerMatch": "Emphasizes leadership achievements and multi-year progression.",
+      "onePageMatch": "Optimized single-page spacing for concise resumes.",
+      "groupedSkillsMatch": "Ideal for extensive skill lists grouped by category.",
+      "projectFocusMatch": "Prioritizes featured software & technical projects.",
+      "generalAtsMatch": "High ATS parser compatibility across standard platforms."
+    }
+  },
+  "decisionMatrix": {
+    "title": "Template Decision Matrix",
+    "desc": "Qualitative comparison of structural trade-offs across layout dimensions.",
+    "parsingSimplicity": "Parsing Simplicity",
+    "onePageSuitability": "Single-Page Fit",
+    "projectEmphasis": "Project Emphasis",
+    "executiveEmphasis": "Executive Focus",
+    "visualDensity": "Visual Density",
+    "customizationRange": "Customization",
+    "readingOrderComplexity": "Reading Order",
+    "printStability": "Print Stability",
+    "values": {
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low",
+      "simple": "Simple (Top-to-Bottom)",
+      "moderate": "Moderate"
+    }
+  },
+  "pressure": {
+    "title": "Content Density & Page Pressure",
+    "comfortable": "Comfortable",
+    "approaching-limit": "Approaching Limit",
+    "dense": "Dense Layout",
+    "overflow-risk": "Overflow Risk",
+    "suggestions": {
+      "comfortableDesc": "Content fits comfortably with generous breathing room.",
+      "approachingLimitDesc": "Content is approaching page boundaries.",
+      "denseDesc": "Text volume is high. Consider balanced density.",
+      "overflow-riskDesc": "High text volume may cause page overflow.",
+      "suggestCompactTpl": "Tip: Switch to Compact ATS template for tight text.",
+      "suggestReduceText": "Tip: Reduce repetitive wording or adjust spacing."
+    }
+  },
+  "coverage": {
+    "title": "Section Content Coverage Map",
+    "status": {
+      "complete": "Complete",
+      "partial": "Partial",
+      "empty": "Empty",
+      "hidden": "Hidden"
+    }
+  },
+  "safetyGuard": {
+    "title": "Readability Guard Warning",
+    "desc": "Some styling choices may reduce contrast or readability.",
+    "applySaferDefaults": "Apply Safer Defaults",
+    "warnings": {
+      "lightColorWarning": "Primary color is very light on white paper.",
+      "compactSmallFontWarning": "Compact density + small font size may feel dense.",
+      "hiddenDividersWeakHeadingsWarning": "Hidden dividers + understated headings reduce section separation."
+    }
+  },
+  "inspector": {
+    "streamTitle": "Extracted Plain Text Stream",
+    "missingContact": {
+      "title": "Missing Contact Information",
+      "desc": "Email or phone number is missing from primary header flow."
+    },
+    "hiddenSummaryData": {
+      "title": "Hidden Section Contains Data",
+      "desc": "Summary has content but is currently set to hidden."
+    },
+    "duplicateHeading": {
+      "title": "Duplicate Section Heading",
+      "desc": "Section order contains duplicate entries."
+    }
+  },
+  "changeImpact": {
+    "title": "Confirm Template Change",
+    "notice": "Switching template layout preserves all your text content, experience entries, and section settings.",
+    "willChange": "What will change:",
+    "willRemain": "What will remain intact:",
+    "templateLayoutChange": "Template layout updated to {{name}}",
+    "resetOrderChange": "Section sequence reset to template recommended order",
+    "saferDefaultsChange": "Design settings reset to safer readability defaults",
+    "preserveText": "All personal details & summary text",
+    "preserveExperiences": "All work experience & project entries",
+    "preserveUndo": "Undo/Redo is available anytime (Ctrl+Z)"
+  },
+  "mobileTabs": {
+    "templates": "Templates",
+    "preview": "Preview",
+    "customize": "Customize"
+  },
+  "undo": "Undo",
+  "redo": "Redo",
+  "confirmChange": "Confirm & Apply",
   "atsChecks": {
     "singleColumn": {
       "title": "Single-Column Architecture",

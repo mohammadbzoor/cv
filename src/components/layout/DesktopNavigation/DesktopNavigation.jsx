@@ -20,7 +20,7 @@ export function DesktopNavigation({ className }) {
           to={path}
           className={({ isActive }) =>
             cn(
-              'px-3 py-2 text-xs font-medium rounded-lg transition-colors',
+              'px-2.5 py-2 text-xs font-medium rounded-lg transition-colors whitespace-nowrap',
               'focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-1',
               isActive
                 ? 'bg-primary-subtle text-primary font-semibold'

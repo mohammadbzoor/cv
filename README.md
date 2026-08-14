@@ -6,7 +6,14 @@ An internationalized, accessible, multi-template Resume Builder & AI Intelligenc
 
 ## 🌟 Key Features
 
-- **Professional Template Studio (`/templates`)**: Redesigned template gallery with live A4 document preview, safe generic sample data fallback, zoom controls (50%, 75%, 100%, Fullscreen), plain text reading stream, local ATS structure evaluation panel, quick customization panel, side-by-side template comparison, search & filters.
+- **Professional Template Studio (`/templates`)**: Redesigned template workbench with single unified header, responsive Workbench layout (5-col rail + 7-col workspace), mobile 3-tab workflow, live A4 document preview, zoom controls (50%, 75%, 100%, Zoom In/Out, Fullscreen), plain text inspector, local ATS structure evaluation panel, quick customization accordions, side-by-side template comparison, search & filters.
+- **Smart Template Fit Engine**: Deterministic recommendation engine matching user career level (`student`, `junior`, `mid`, `senior`, `executive`), target role family (`software`, `engineering`, `business`, `consulting`, `management`, `general`), and CV metrics. Displays match score, localized reasons, and "Apply Recommendation" button without mutating store automatically.
+- **Template Decision Matrix**: Qualitative comparison matrix evaluating layout trade-offs across 10 dimensions (parsing simplicity, one-page suitability, project emphasis, executive emphasis, visual density, customization range, best career level, reading order complexity, print stability) using descriptive qualitative labels (`high`, `medium`, `low`, `simple`).
+- **Content Pressure Meter**: Evaluates document text volume and layout settings (`comfortable`, `approaching-limit`, `dense`, `overflow-risk`), showing actionable layout suggestions without shrinking font below safe limit (10pt).
+- **Content Coverage Map**: Interactive status grid (`Complete`, `Partial`, `Empty`, `Hidden`) across all 7 core sections.
+- **Safe Customization Guard**: Non-blocking warning for low-contrast primary colors, small fonts with compact density, or hidden dividers with weak headings, with an "Apply Safer Defaults" quick action button.
+- **Reading Order Inspector**: Evaluates extracted plain text flow, detects missing contact info, duplicate headings, hidden section data, and unsafe links.
+- **Change Impact Preview**: Summary confirmation modal displayed before major changes (template switch, reset recommended order, safer defaults) showing what will change and what text remains preserved.
 - **6 Practice Resume Templates**:
   - `Technical Prime ATS` (Flagship Default): Single column, ATS optimized, grouped technical skills, clean Deep Slate headings, thin dividers, reverse-chronological experiences, no photos or layout tables.
   - `Classic ATS`: Ultra-clean minimal single column layout.
@@ -14,17 +21,6 @@ An internationalized, accessible, multi-template Resume Builder & AI Intelligenc
   - `Compact ATS`: Dense single-column layout for single-page CVs without clipping text.
   - `Executive ATS`: Executive summary highlight box and achievement-oriented experience layout.
   - `Developer Portfolio`: Visually enhanced technical layout with skill tags and repository links.
-- **ATS Structure Check Engine**: Evaluates 12 layout criteria locally (Single column, selectable text, no layout tables, no skill bars, no photo, contact in body, standard headings, safe font, readable font size, logical reading order, valid section order, safe links) and returns a structural readiness score out of 100 with actionable feedback and mandatory disclaimers.
-- **Plain Text Reading Preview**: Transforms CV data into clean, ordered plain text matching `sectionOrder` for reading order inspection and instant clipboard copying.
-- **Advanced Design Settings**: Customization controls for Primary Color, Font Family, Font Size, Line Height, Margins, Content Density (`comfortable`, `balanced`, `compact`), Section Divider Visibility (`showSectionDividers`), and Heading Style (`standard`, `understated`, `prominent`).
-- **Professional SaaS Landing Page (`/`)**: Hero section with HTML/CSS miniature CV paper sheet, trust principles, 8 platform services, 4-step workflow, feature highlights, studio builder showcase, template cards, ATS compatibility explanation, privacy guarantees, FAQ accordion, and final CTA.
-- **Motion Design System**: Accessible entry animations (`MotionReveal`, `MotionStagger`, `MotionSection`) powered by `IntersectionObserver` with full support for `prefers-reduced-motion`.
-- **Demo Auth Architecture (`/login`, `/register`, `/forgot-password`)**: Complete front-end authentication UI flow with React Hook Form, Zod validation, password strength meter, show/hide toggle, and explicit demo notices. **Never stores passwords or tokens**.
-- **User Settings & Preferences (`/settings`)**: Comprehensive settings panel covering Profile, Appearance (Light/Dark/System), Language (Arabic/English), Notifications (local reminders), Privacy guarantees, Local Data management (JSON export & granular clearance), and Account session controls.
-- **Multi-Step Resume Wizard (`/create`)**: Step-by-step form navigation with Zod validation for Personal Info, Summary, Experience, Education, and Skills.
-- **Studio Builder Engine (`/builder`)**: Live A4 preview sheet, inline text editing (`EditableField`), section reordering & reset (`SectionManager`), zoom controls, and keyboard shortcuts (`Ctrl+S`, `Ctrl+Z`, `Ctrl+Y`).
-- **Browser Print & PDF Export Engine (`/export`)**: PDF export via browser print dialog (`window.print()`) with print CSS, document title sanitization, and readiness validation.
-- **Debounced Local Autosave**: Autosave status indicator with local storage persistence (`cv-platform-cv-draft`) and draft recovery notice.
 - **Dual Language & RTL/LTR**: Application UI available in Arabic (RTL) and English (LTR). CV document content strictly enforced in **English only and LTR only** (`lang="en" dir="ltr"`).
 
 ---
@@ -38,7 +34,7 @@ An internationalized, accessible, multi-template Resume Builder & AI Intelligenc
 - **Form Validation**: React Hook Form, Zod 4
 - **Localization**: i18next, react-i18next
 - **Icons**: Lucide React
-- **Testing**: Vitest 4 (162 unit & integration tests)
+- **Testing**: Vitest 4 (180 unit & integration tests)
 - **Linting**: ESLint 10
 
 ---
@@ -49,10 +45,8 @@ An internationalized, accessible, multi-template Resume Builder & AI Intelligenc
 src/
 ├── app/                      # Router, Providers, Route Constants, App Entry
 ├── components/
-│   ├── feedback/             # AppErrorBoundary, RouteLoadingFallback
-│   ├── layout/               # AppLayout, PublicLayout, Navbar (AccountMenu), PageContainer
-│   └── ui/                   # Button, Modal, ConfirmDialog, DropdownMenu, Input, Switch...
-├── contexts/                 # ThemeContext, LanguageContext
+│   ├── layout/               # AppLayout, PublicLayout, Navbar, PageContainer
+│   └── ui/                   # Button, Modal, ConfirmDialog, Input, Switch...
 ├── features/
 │   ├── ai-services/          # Mock API Client, Zod Schemas, Mock Data Generators
 │   ├── auth/                 # Demo Auth Store, Login/Register/Forgot Forms, Demo Notices
@@ -61,17 +55,15 @@ src/
 │   ├── create-wizard/        # Step Navigation & Multi-step Form Logic
 │   ├── cv/                   # CV Store, Data Models, Defaults, Factories, Validation
 │   ├── export/               # Print Service, Export Dialog, Readiness Checkers
-│   ├── home/                 # Hero, Services, HowItWorks, Features, Builder/Template Showcases
-│   ├── motion/               # MotionReveal, MotionStagger, ReducedMotionFallback, Tokens
-│   ├── release/              # Feature Flags & Development Route Controls
-│   ├── settings/             # Settings Layout, Navigation, Profile, Appearance, Local Data
+│   ├── home/                 # Hero, Services, HowItWorks, Features, Showcases
+│   ├── settings/             # Settings Layout, Profile, Appearance, Local Data
 │   └── templates/            # Template Registry, 6 Resume Templates, Live Preview, ATS Checks
 │       ├── ats/              # ATS Structure Check runner, Plain Text Preview, Disclaimers
-│       ├── components/       # TemplateGallery, TemplateStudioControls, LivePreview, Customization
-│       ├── data/             # Generic Sample CV Preview Data
-│       ├── registry/         # Template Registry & Metadata definitions
-│       └── templates/        # Technical Prime ATS, Classic, Professional, Compact, Executive, Developer
-├── hooks/                    # useTheme, useLanguage, useDocumentMetadata
+│       └── studio/           # Template Studio Workbench
+│           ├── components/   # StudioHeader, Toolbar, Rail, Workspace, Recommendation, Matrix...
+│           ├── hooks/        # useTemplateStudio, useTemplateFilters, useTemplateComparison...
+│           ├── utils/        # rankTemplates, buildTemplateRecommendation, calculateContentPressure...
+│           └── __tests__/    # Unit & Integration tests for studio state & features
 ├── i18n/                     # i18next configuration & ar/en translation dictionaries
 ├── pages/                    # HomePage, TemplatesPage, BuilderPage, LoginPage, SettingsPage...
 └── styles/                   # globals.css, print.css, accessibility.css
@@ -84,11 +76,8 @@ src/
 ### Installation
 
 ```bash
-# Clone repository
 git clone https://github.com/mohammadbzoor/cv.git
 cd cv
-
-# Install dependencies
 npm install
 ```
 
@@ -103,7 +92,7 @@ App will start at `http://localhost:5173`.
 ### Automated Testing & Linting
 
 ```bash
-# Run unit & integration test suite (162 tests)
+# Run unit & integration test suite (180 tests)
 npm run test
 
 # Run ESLint code quality check
@@ -124,7 +113,6 @@ npm run preview
 - Authentication pages (`/login`, `/register`, `/forgot-password`) are **front-end demonstrations**.
 - **No passwords, tokens, or credentials are stored** in `localStorage`, `sessionStorage`, or state.
 - Logging out of a demo session **does NOT delete your local CV draft**.
-- Targeted data clearance options under `/settings` allow wiping local storage keys without clearing unrelated domain keys.
 
 ---
 
