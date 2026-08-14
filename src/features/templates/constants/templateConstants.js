@@ -15,6 +15,6 @@ export const COMPATIBILITY_LEVELS = Object.freeze({
   SPECIALIZED: 'specialized',
 });
 
-export const DEFAULT_TEMPLATE_ID = 'classic-ats';
+export const DEFAULT_TEMPLATE_ID = 'technical-prime-ats';
 
 export const ATS_DISCLAIMER_KEY = 'templates:atsDisclaimer';

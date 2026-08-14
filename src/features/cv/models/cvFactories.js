@@ -186,6 +186,9 @@ export function createEmptyCV(overrides = {}) {
       pageSize: 'A4',
       margins: 'normal',
       sectionSpacing: 'normal',
+      density: 'balanced',
+      showSectionDividers: true,
+      headingStyle: 'standard',
     },
 
     metadata: {

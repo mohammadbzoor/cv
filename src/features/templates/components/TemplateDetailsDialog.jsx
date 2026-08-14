@@ -1,81 +1,87 @@
-import { ShieldCheck, LayoutTemplate, Info } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { LayoutTemplate, CheckCircle2, Info } from 'lucide-react';
 import { Modal } from '../../../components/ui/Modal';
 import { Button } from '../../../components/ui/Button';
 import { TemplateThumbnail } from './TemplateThumbnail';
 import { TemplateCompatibilityBadge } from './TemplateCompatibilityBadge';
+import { getTemplateName } from '../registry/templateMetadata';
 
-/**
- * Modal dialog for inspecting template details and ATS disclaimer.
- */
 export function TemplateDetailsDialog({ template, isOpen, onClose, onSelect }) {
   const { t } = useTranslation('templates');
 
   if (!template) return null;
 
+  const templateName = getTemplateName(template.id);
+
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={t(template.nameKey)}
-      size="lg"
+      title={templateName}
+      size="md"
     >
-      <div className="space-y-6">
-        {/* ATS Disclaimer */}
-        <div className="p-4 bg-primary-subtle border border-primary/20 rounded-xl text-xs text-primary flex items-start gap-3">
-          <Info className="w-4 h-4 shrink-0 mt-0.5" aria-hidden="true" />
-          <p className="leading-relaxed">{t('atsDisclaimer')}</p>
+      <div className="space-y-6 text-start">
+        {/* Enlarged Thumbnail */}
+        <div className="h-64 bg-app-bg rounded-xl overflow-hidden flex items-center justify-center p-3 border border-border/40">
+          <TemplateThumbnail variant={template.thumbnailVariant} className="max-w-[240px]" />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Miniature Thumbnail */}
-          <div className="bg-surface-muted p-4 rounded-xl border border-border flex items-center justify-center">
-            <TemplateThumbnail variant={template.thumbnailVariant} className="max-w-[200px]" />
+        {/* Info Header */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between gap-2 flex-wrap">
+            <h3 className="text-lg font-bold text-foreground">{templateName}</h3>
+            <TemplateCompatibilityBadge level={template.compatibilityLevel} />
           </div>
 
-          {/* Metadata */}
-          <div className="space-y-4 text-xs">
-            <div className="space-y-1">
-              <TemplateCompatibilityBadge level={template.compatibilityLevel} size="md" />
-              <p className="text-foreground-secondary leading-relaxed pt-1">
-                {t(template.descriptionKey)}
-              </p>
-            </div>
+          <p className="text-xs text-foreground-secondary leading-relaxed">
+            {t(template.descriptionKey)}
+          </p>
+        </div>
 
-            <div className="space-y-1">
-              <strong className="font-bold text-foreground block">{t('recommendedFor')}</strong>
-              <div className="flex flex-wrap gap-1">
-                {template.recommendedFor?.map((role, i) => (
-                  <span key={i} className="px-2 py-0.5 bg-surface-muted border border-border rounded text-[11px] text-foreground-secondary">
-                    {role}
-                  </span>
+        {/* Details Grid */}
+        <div className="space-y-3 border-t border-b border-border/60 py-4 text-xs">
+          <div>
+            <span className="font-bold text-foreground block mb-1">{t('recommendedFor')}:</span>
+            <div className="flex flex-wrap gap-1.5">
+              {template.recommendedFor?.map((role) => (
+                <span key={role} className="px-2.5 py-1 bg-surface border border-border rounded-md font-medium text-foreground">
+                  {role}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {template.keyTraits && (
+            <div>
+              <span className="font-bold text-foreground block mb-1">{t('keyTraits')}:</span>
+              <ul className="list-disc list-inside text-foreground-secondary space-y-0.5">
+                {template.keyTraits.map((trait) => (
+                  <li key={trait}>{trait}</li>
                 ))}
-              </div>
+              </ul>
             </div>
+          )}
 
-            <div className="space-y-1">
-              <strong className="font-bold text-foreground block">{t('supportedSections')}</strong>
-              <p className="text-foreground-secondary uppercase tracking-wider font-mono text-[11px]">
-                {template.supportedSections?.join(' • ')}
-              </p>
-            </div>
+          <div className="p-3 bg-secondary-subtle/50 border border-secondary/20 rounded-xl text-foreground-secondary flex items-start gap-2">
+            <Info className="w-4 h-4 text-secondary shrink-0 mt-0.5" />
+            <span className="leading-relaxed">{t('atsDisclaimer')}</span>
           </div>
         </div>
 
-        {/* Modal Action Bar */}
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-border/60">
-          <Button type="button" variant="outline" size="md" onClick={onClose}>
-            {t('close')}
+        {/* Action Button */}
+        <div className="flex justify-end gap-3 pt-2">
+          <Button type="button" variant="outline" size="sm" onClick={onClose}>
+            {t('cancel', { defaultValue: 'Close' })}
           </Button>
 
           <Button
             type="button"
             variant="primary"
-            size="md"
+            size="sm"
             leadingIcon={LayoutTemplate}
             onClick={() => {
-              onSelect(template.id);
               onClose();
+              onSelect(template.id);
             }}
           >
             {t('useTemplate')}

@@ -1,39 +1,158 @@
 {
-  "pageTitle": "Resume Template Gallery",
-  "pageDesc": "Choose from professionally formatted English resume templates optimized for Applicant Tracking Systems (ATS).",
-  "atsDisclaimer": "Optimized for straightforward parsing by common applicant tracking systems. Results may vary between platforms.",
-  "browseTemplates": "Browse All Templates",
+  "eyebrow": "Template Studio",
+  "pageTitle": "Professional Resume Template Studio",
+  "pageDesc": "Explore, customize, and evaluate ATS-oriented English resume templates with live A4 preview, plain text reading, and local structure checks.",
+  "atsDisclaimer": "These templates prioritize clear structure and readable text. Parsing behavior may vary between applicant tracking systems.",
+  "browseTemplates": "Browse Templates Studio",
   "useTemplate": "Use This Template",
-  "selected": "Current Template",
-  "preview": "Preview Template",
+  "useTemplateAndOpenBuilder": "Use Template & Open Builder",
+  "selected": "Selected",
+  "activeTemplate": "Active Template",
+  "preview": "Quick Preview",
+  "clickToPreview": "Click to view full preview",
   "close": "Close",
+  "cancel": "Cancel",
   "recommendedFor": "Recommended For",
+  "keyTraits": "Key Design Traits",
   "supportedSections": "Supported Sections",
-  "compatibility": "ATS Compatibility",
-  "noTemplatesFound": "No templates found matching the selected category.",
-  "categories": {
-    "all": "All Templates",
-    "ats": "ATS Optimized",
-    "specialized": "Specialized",
-    "visually-enhanced": "Visually Enhanced"
+  "compatibility": {
+    "all": "All Compatibility Levels",
+    "atsOptimized": "ATS Optimized",
+    "visuallyEnhanced": "Visually Enhanced"
   },
   "compatibilityBadges": {
     "ats-optimized": "ATS Optimized",
     "visually-enhanced": "Visually Enhanced",
     "specialized": "Specialized Role"
   },
+  "categories": {
+    "all": "All Categories",
+    "ats": "ATS Optimized",
+    "specialized": "Specialized",
+    "visually-enhanced": "Visually Enhanced"
+  },
+  "showingCount": "Showing {{count}} of {{total}} templates",
+  "englishCvNotice": "English CV Document • LTR",
+  "searchPlaceholder": "Search by name, role, tech stack, or category...",
+  "clearSearch": "Clear search query",
+  "categoryLabel": "Template Category",
+  "compatibilityLabel": "Compatibility Level",
+  "clearFilters": "Clear all filters",
+  "noTemplatesFound": "No templates match your current search or filter criteria.",
+  "previewingYourCv": "Previewing Your CV Data",
+  "previewingSampleData": "Previewing Sample Data",
+  "tabVisualPreview": "Visual Preview",
+  "tabPlainTextReading": "Plain Text Reading",
+  "tabStructureCheck": "ATS Structure Check",
+  "zoom": "Zoom Level",
+  "fullscreen": "Fullscreen Preview",
+  "exitFullscreen": "Exit Fullscreen",
+  "quickCustomizationTitle": "Template Quick Customization",
+  "contentDensity": "Content Density",
+  "density": {
+    "comfortable": "Comfortable",
+    "balanced": "Balanced",
+    "compact": "Compact"
+  },
+  "showSectionDividers": "Show Section Dividers",
+  "headingStyle": "Section Heading Style",
+  "headingStyles": {
+    "standard": "Standard UPPERCASE",
+    "understated": "Understated Title Case",
+    "prominent": "Prominent Bold"
+  },
+  "sectionManagerTitle": "Section Order & Visibility",
+  "resetRecommendedOrder": "Reset to Template Order",
+  "resetOrder": "Reset Order",
+  "compare": "Compare",
+  "compareTemplatesTitle": "Compare Template Designs",
+  "compareTemplatesDesc": "Side-by-side technical comparison of selected template structures.",
+  "compareSelectedCount": "{{count}} template(s) selected for comparison",
+  "openComparison": "Open Comparison View",
+  "clearComparison": "Clear Comparison",
+  "customizationSupport": "Customization Support",
+  "selectedTemplateLabel": "Selected Studio Template",
+  "preservesDataNotice": "Switching templates preserves all your text content and section updates.",
+  "plainTextReadingTitle": "Structured Plain Text Stream",
+  "copyPlainText": "Copy Plain Text",
+  "copiedText": "Copied to Clipboard!",
+  "noPlainTextContent": "No text content available to display.",
+  "atsStructureCheckTitle": "Local ATS Structure Evaluation",
+  "atsStructureCheckDesc": "Evaluates document layout against standard applicant tracking system extraction principles.",
+  "atsChecks": {
+    "singleColumn": {
+      "title": "Single-Column Architecture",
+      "desc": "Uses a continuous top-to-bottom single column flow for reliable reading order."
+    },
+    "textBased": {
+      "title": "Selectable Text Content",
+      "desc": "All text rendered as selectable DOM text without canvas or image conversion."
+    },
+    "noTables": {
+      "title": "No Layout Tables",
+      "desc": "Layout structured without HTML <table> elements to prevent multi-cell text mixing."
+    },
+    "noSkillBars": {
+      "title": "No Decorative Skill Bars",
+      "desc": "Skills listed as readable text tags without arbitrary percentage graphics."
+    },
+    "noPhoto": {
+      "title": "No Profile Photo",
+      "desc": "Omits headshot images in compliance with standard US/UK ATS guidelines."
+    },
+    "contactInBody": {
+      "title": "Contact Details in Main Flow",
+      "desc": "Email, phone, and location placed in primary body header rather than margin headers."
+    },
+    "standardHeadings": {
+      "title": "Standard Section Labels",
+      "desc": "Uses recognized English section headers (Experience, Education, Skills, Summary)."
+    },
+    "safeFont": {
+      "title": "Standard Web Typography",
+      "desc": "Applies clean, universally supported sans-serif fonts."
+    },
+    "fontSize": {
+      "title": "Readable Text Size",
+      "desc": "Text sized safely (10pt–12pt equivalent) to prevent extraction clipping."
+    },
+    "readingOrder": {
+      "title": "Logical DOM Sequence",
+      "desc": "Visual section placement matches DOM reading order exactly."
+    },
+    "validOrder": {
+      "title": "Complete Section Hierarchy",
+      "desc": "Core sections arranged in logical reverse-chronological sequence."
+    },
+    "safeLinks": {
+      "title": "Safe Hyperlink URLs",
+      "desc": "Links formatted with valid http, mailto, or tel protocols."
+    }
+  },
   "items": {
+    "technicalPrimeATS": {
+      "name": "Technical Prime ATS",
+      "description": "Flagship ATS-optimized single-column layout with grouped technical skills, ideal for engineering and tech roles."
+    },
     "classicATS": {
       "name": "Classic ATS",
-      "description": "Ultra-clean single-column vertical layout ensuring maximum parsing compatibility across standard ATS software."
+      "description": "Ultra-clean single-column vertical layout ensuring maximum parsing clarity across standard recruitment platforms."
     },
     "professionalATS": {
       "name": "Professional ATS",
-      "description": "Refined executive presentation with subtle accent dividers, ideal for management and corporate roles."
+      "description": "Refined executive presentation with subtle accent dividers, ideal for corporate and management roles."
+    },
+    "compactATS": {
+      "name": "Compact ATS",
+      "description": "Single-column layout with tight spacing and concise typography intended for single-page CVs."
+    },
+    "executiveATS": {
+      "name": "Executive ATS",
+      "description": "Bold header styling with dedicated executive summary box and achievement-oriented experience layout."
     },
     "developer": {
-      "name": "Developer ATS",
-      "description": "Technical layout highlighting core skills, technology stacks, GitHub repositories, and software projects."
+      "name": "Developer Portfolio",
+      "description": "Specialized technical layout highlighting technology stacks, GitHub repositories, and software projects."
     }
   }
 }

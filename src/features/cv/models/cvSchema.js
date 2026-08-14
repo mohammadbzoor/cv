@@ -3,10 +3,13 @@ import {
   CURRENT_CV_SCHEMA_VERSION,
   CV_DOCUMENT_LANGUAGE,
   CV_DOCUMENT_DIRECTION,
+  DEFAULT_TEMPLATE_ID,
   SUPPORTED_FONT_SIZES,
   SUPPORTED_LINE_HEIGHTS,
   SUPPORTED_PAGE_SIZES,
   SUPPORTED_MARGIN_SIZES,
+  SUPPORTED_DENSITIES,
+  SUPPORTED_HEADING_STYLES,
 } from './cvConstants';
 
 // Helper for optional string fields accepting empty string or URL
@@ -108,7 +111,7 @@ export const customSectionSchema = z.object({
 });
 
 export const designSettingsSchema = z.object({
-  templateId: z.string().min(1).default('classic-ats'),
+  templateId: z.string().min(1).default(DEFAULT_TEMPLATE_ID),
   primaryColor: z.string().default('#1e293b'),
   fontFamily: z.string().default('Inter'),
   fontSize: z.enum(SUPPORTED_FONT_SIZES).default('md'),
@@ -116,6 +119,9 @@ export const designSettingsSchema = z.object({
   pageSize: z.enum(SUPPORTED_PAGE_SIZES).default('A4'),
   margins: z.enum(SUPPORTED_MARGIN_SIZES).default('normal'),
   sectionSpacing: z.string().default('normal'),
+  density: z.enum(SUPPORTED_DENSITIES).default('balanced'),
+  showSectionDividers: z.boolean().default(true),
+  headingStyle: z.enum(SUPPORTED_HEADING_STYLES).default('standard'),
 });
 
 export const metadataSchema = z.object({

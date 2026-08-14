@@ -1,4 +1,4 @@
-import { ArrowUp, ArrowDown, Eye, EyeOff } from 'lucide-react';
+import { ArrowUp, ArrowDown, Eye, EyeOff, RotateCcw } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { getSectionLabel } from '../utils/getSectionLabel';
 import { Button } from '../../../components/ui/Button';
@@ -6,8 +6,8 @@ import { Button } from '../../../components/ui/Button';
 /**
  * Section Visibility & Ordering control panel.
  */
-export function SectionManager({ sectionOrder = [], hiddenSections = [], onReorder, onToggleVisibility }) {
-  const { t } = useTranslation('builder');
+export function SectionManager({ sectionOrder = [], hiddenSections = [], onReorder, onToggleVisibility, onResetOrder }) {
+  const { t } = useTranslation(['builder', 'templates']);
   const hiddenSet = new Set(hiddenSections);
 
   function handleMove(index, direction) {
@@ -25,10 +25,25 @@ export function SectionManager({ sectionOrder = [], hiddenSections = [], onReord
   }
 
   return (
-    <div className="space-y-3 bg-surface border border-border p-4 rounded-xl shadow-2xs">
-      <h3 className="text-xs font-bold text-foreground uppercase tracking-wider border-b border-border/60 pb-2">
-        {t('sectionsManager')}
-      </h3>
+    <div className="space-y-3 bg-surface border border-border p-4 rounded-xl shadow-2xs text-start">
+      <div className="flex items-center justify-between border-b border-border/60 pb-2">
+        <h3 className="text-xs font-bold text-foreground uppercase tracking-wider">
+          {t('builder:sectionsManager')}
+        </h3>
+
+        {typeof onResetOrder === 'function' && (
+          <Button
+            type="button"
+            variant="ghost"
+            size="xs"
+            leadingIcon={RotateCcw}
+            onClick={onResetOrder}
+            title={t('templates:resetRecommendedOrder')}
+          >
+            {t('templates:resetOrder', { defaultValue: 'Reset' })}
+          </Button>
+        )}
+      </div>
 
       <ul className="space-y-2">
         {sectionOrder.map((sectionKey, index) => {
@@ -56,8 +71,8 @@ export function SectionManager({ sectionOrder = [], hiddenSections = [], onReord
                   size="sm"
                   disabled={isFirst}
                   onClick={() => handleMove(index, -1)}
-                  aria-label={t('moveUp')}
-                  title={t('moveUp')}
+                  aria-label={t('builder:moveUp')}
+                  title={t('builder:moveUp')}
                   className="h-7 w-7 p-0"
                 >
                   <ArrowUp className="w-3.5 h-3.5" aria-hidden="true" />
@@ -69,8 +84,8 @@ export function SectionManager({ sectionOrder = [], hiddenSections = [], onReord
                   size="sm"
                   disabled={isLast}
                   onClick={() => handleMove(index, 1)}
-                  aria-label={t('moveDown')}
-                  title={t('moveDown')}
+                  aria-label={t('builder:moveDown')}
+                  title={t('builder:moveDown')}
                   className="h-7 w-7 p-0"
                 >
                   <ArrowDown className="w-3.5 h-3.5" aria-hidden="true" />
@@ -81,8 +96,8 @@ export function SectionManager({ sectionOrder = [], hiddenSections = [], onReord
                   variant="ghost"
                   size="sm"
                   onClick={() => onToggleVisibility(sectionKey)}
-                  aria-label={isHidden ? t('showSection') : t('hideSection')}
-                  title={isHidden ? t('showSection') : t('hideSection')}
+                  aria-label={isHidden ? t('builder:showSection') : t('builder:hideSection')}
+                  title={isHidden ? t('builder:showSection') : t('builder:hideSection')}
                   className="h-7 w-7 p-0"
                 >
                   {isHidden ? (

@@ -5,14 +5,20 @@ import { TEMPLATES_METADATA } from '../features/templates/registry/templateMetad
 
 describe('Template Filtering Utilities', () => {
   it('returns all templates when category is all or empty', () => {
-    expect(filterTemplates(TEMPLATES_METADATA, TEMPLATE_CATEGORIES.ALL)).toHaveLength(3);
-    expect(filterTemplates(TEMPLATES_METADATA, '')).toHaveLength(3);
+    expect(filterTemplates(TEMPLATES_METADATA, TEMPLATE_CATEGORIES.ALL)).toHaveLength(6);
+    expect(filterTemplates(TEMPLATES_METADATA, '')).toHaveLength(6);
   });
 
   it('filters templates by ATS category', () => {
     const atsOnly = filterTemplates(TEMPLATES_METADATA, TEMPLATE_CATEGORIES.ATS);
-    expect(atsOnly).toHaveLength(2);
-    expect(atsOnly.map((t) => t.id)).toEqual(['classic-ats', 'professional-ats']);
+    expect(atsOnly).toHaveLength(5);
+    expect(atsOnly.map((t) => t.id)).toEqual([
+      'technical-prime-ats',
+      'classic-ats',
+      'professional-ats',
+      'compact-ats',
+      'executive-ats',
+    ]);
   });
 
   it('filters templates by Specialized category', () => {

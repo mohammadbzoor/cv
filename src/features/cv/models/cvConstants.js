@@ -8,11 +8,11 @@ export const CURRENT_CV_SCHEMA_VERSION = 1;
 export const CV_DOCUMENT_LANGUAGE = 'en';
 export const CV_DOCUMENT_DIRECTION = 'ltr';
 
-export const DEFAULT_TEMPLATE_ID = 'classic-ats';
+export const DEFAULT_TEMPLATE_ID = 'technical-prime-ats';
 
 export const DEFAULT_SECTION_ORDER = Object.freeze([
   'summary',
-  'experience',
+  'experiences',
   'education',
   'skills',
   'projects',
@@ -22,7 +22,7 @@ export const DEFAULT_SECTION_ORDER = Object.freeze([
 
 export const SUPPORTED_SECTION_TYPES = Object.freeze([
   'summary',
-  'experience',
+  'experiences',
   'education',
   'skills',
   'projects',
@@ -35,6 +35,8 @@ export const SUPPORTED_FONT_SIZES = Object.freeze(['sm', 'md', 'lg']);
 export const SUPPORTED_LINE_HEIGHTS = Object.freeze(['tight', 'normal', 'relaxed']);
 export const SUPPORTED_PAGE_SIZES = Object.freeze(['A4']);
 export const SUPPORTED_MARGIN_SIZES = Object.freeze(['compact', 'normal', 'spacious']);
+export const SUPPORTED_DENSITIES = Object.freeze(['comfortable', 'balanced', 'compact']);
+export const SUPPORTED_HEADING_STYLES = Object.freeze(['standard', 'understated', 'prominent']);
 
 export const SUPPORTED_PROFICIENCY_LEVELS = Object.freeze([
   'native',

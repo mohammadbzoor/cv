@@ -31,6 +31,9 @@ export function getDefaultDesignSettings() {
     pageSize: 'A4',
     margins: 'normal',
     sectionSpacing: 'normal',
+    density: 'balanced',
+    showSectionDividers: true,
+    headingStyle: 'standard',
   };
 }
 

@@ -1,39 +1,158 @@
 {
-  "pageTitle": "معرض قوالب السيرة الذاتية",
-  "pageDesc": "اختر من بين قوالب السيرة الذاتية الإنجليزية المصممة خصيصاً للتوافق مع أنظمة التوظيف ATS.",
-  "atsDisclaimer": "مُصممة للتحليل المباشر بواسطة أنظمة تتبع المتقدمين الشائعة (ATS). قد تختلف النتائج بين منصات التوظيف.",
-  "browseTemplates": "استعراض جميع القوالب",
-  "useTemplate": "استخدام هذا القالب",
-  "selected": "القالب المختار",
-  "preview": "معاينة القالب",
+  "eyebrow": "استوديو القوالب",
+  "pageTitle": "استوديو قوالب السيرة الذاتية الاحترافي",
+  "pageDesc": "استعرض وخصص وقيّم قوالب السير الذاتية الإنجليزية المخصصة لأنظمة ATS مع معاينة حية A4، قراءة نصية مجردة، وفحص هيكلي محلي.",
+  "atsDisclaimer": "تعطي هذه القوالب الأولوية للهيكلية الواضحة والنص القابل للقراءة. قد تختلف نتائج التحليل بين منصات التوظيف.",
+  "browseTemplates": "استعرض استوديو القوالب",
+  "useTemplate": "استخدم هذا القالب",
+  "useTemplateAndOpenBuilder": "استخدم القالب وافتح المحرر",
+  "selected": "محدد",
+  "activeTemplate": "القالب النشط",
+  "preview": "معاينة سريعة",
+  "clickToPreview": "انقر لعرض المعاينة الكاملة",
   "close": "إغلاق",
-  "recommendedFor": "موصى به لـ",
+  "cancel": "إلغاء",
+  "recommendedFor": "يوصى به لـ",
+  "keyTraits": "أبرز سمات التصميم",
   "supportedSections": "الأقسام المدعومة",
-  "compatibility": "توافق أنظمة التوظيف",
-  "noTemplatesFound": "لم يتم العثور على قوالب تطابق التصنيف المحدد.",
-  "categories": {
-    "all": "جميع القوالب",
-    "ats": "معتمدة لأنظمة ATS",
-    "specialized": "متخصصة",
-    "visually-enhanced": "محسنة بصرياً"
+  "compatibility": {
+    "all": "جميع مستويات التوافق",
+    "atsOptimized": "محسّن لـ ATS",
+    "visuallyEnhanced": "تصميم بصري محّسن"
   },
   "compatibilityBadges": {
-    "ats-optimized": "محسّن لأنظمة ATS",
-    "visually-enhanced": "مظهر بصري محسّن",
-    "specialized": "قالب متخصص"
+    "ats-optimized": "محسّن لـ ATS",
+    "visually-enhanced": "تصميم بصري محّسن",
+    "specialized": "دور تخصصي"
+  },
+  "categories": {
+    "all": "جميع التصنيفات",
+    "ats": "محسّن لـ ATS",
+    "specialized": "تخصصي",
+    "visually-enhanced": "تصميم بصري محّسن"
+  },
+  "showingCount": "عرض {{count}} من أصل {{total}} قوالب",
+  "englishCvNotice": "مستند سيرة إنجليزي • LTR",
+  "searchPlaceholder": "ابحث بالاسم، الوصف، المهارات، أو التصنيف...",
+  "clearSearch": "مسح نص البحث",
+  "categoryLabel": "تصنيف القالب",
+  "compatibilityLabel": "مستوى التوافق",
+  "clearFilters": "إعادة ضبط الفلاتر",
+  "noTemplatesFound": "لا توجد قوالب تطابق معايير البحث أو الفلاتر المحددة.",
+  "previewingYourCv": "معاينة بيانات سيرتك الذاتية",
+  "previewingSampleData": "معاينة البيانات التوضيحية",
+  "tabVisualPreview": "المعاينة البصرية",
+  "tabPlainTextReading": "القراءة النصية المجردة",
+  "tabStructureCheck": "فحص هيكلية ATS",
+  "zoom": "مستوى التقريب",
+  "fullscreen": "ملء الشاشة",
+  "exitFullscreen": "إغلاق ملء الشاشة",
+  "quickCustomizationTitle": "التخصيص السريع للقالب",
+  "contentDensity": "كثافة المحتوى",
+  "density": {
+    "comfortable": "مريح (Comfortable)",
+    "balanced": "متوازن (Balanced)",
+    "compact": "مضغوط (Compact)"
+  },
+  "showSectionDividers": "إظهار خطوط الفواصل بين الأقسام",
+  "headingStyle": "نمط عناوين الأقسام",
+  "headingStyles": {
+    "standard": "قياسي كبير (UPPERCASE)",
+    "understated": "هادئ بسيطة",
+    "prominent": "بارز عريض"
+  },
+  "sectionManagerTitle": "ترتيب ورؤية الأقسام",
+  "resetRecommendedOrder": "إعادة الترتيب الموصى به القالب",
+  "resetOrder": "إعادة الترتيب",
+  "compare": "مقارنة",
+  "compareTemplatesTitle": "مقارنة تصميمات القوالب",
+  "compareTemplatesDesc": "مقارنة فنية جنباً إلى جنب بين هيكليات القوالب المحددة.",
+  "compareSelectedCount": "تم تحديد {{count}} قالب للمقارنة",
+  "openComparison": "فتح عرض المقارنة",
+  "clearComparison": "مسح المقارنة",
+  "customizationSupport": "دعم التخصيص",
+  "selectedTemplateLabel": "قالب الاستوديو المحدد",
+  "preservesDataNotice": "تغيير القالب يحافظ على كافة نصوصك وتعديلاتها دون فقدان.",
+  "plainTextReadingTitle": "تدفق النص المجرد المنظم",
+  "copyPlainText": "نسخ النص المجرد",
+  "copiedText": "تم النسخ للحافظة!",
+  "noPlainTextContent": "لا يوجد محتوى نصي لعرضه.",
+  "atsStructureCheckTitle": "تقييم هيكلية ATS المحلي",
+  "atsStructureCheckDesc": "تقييم تخطيط المستند مقابل مبادئ استخراج أنظمة تتبع المتقدمين القياسية.",
+  "atsChecks": {
+    "singleColumn": {
+      "title": "معمارية العمود الواحد",
+      "desc": "استخدام تدفق مستمر من الأعلى للأسفل لضمان موثوقية تسلسل القراءة."
+    },
+    "textBased": {
+      "title": "محتوى نصي قابل للتحديد",
+      "desc": "جميع النصوص مصيرة كنصوص DOM قابلة للتحديد دون استخدام الصور."
+    },
+    "noTables": {
+      "title": "بدون جداول تخطيط",
+      "desc": "هيكلية بدون عناصر <table> لمنع اختلاط النصوص بين الخلايا."
+    },
+    "noSkillBars": {
+      "title": "بدون أشرطة مهارات زخرفية",
+      "desc": "عرض المهارات كنصوص ووسوم واضحة دون رسوم بيانية عشوائية."
+    },
+    "noPhoto": {
+      "title": "بدون صورة شخصية",
+      "desc": "استبعاد الصورة الشخصية توافقاً مع إرشادات ATS القياسية."
+    },
+    "contactInBody": {
+      "title": "بيانات الاتصال في جسم المستند",
+      "desc": "وضع البريد والهاتف في رأس المستند الرئيسي وليس في الهوامش."
+    },
+    "standardHeadings": {
+      "title": "عناوين أقسام قياسية",
+      "desc": "استخدام عناوين إنجليزية معروفة (Experience, Education, Skills, Summary)."
+    },
+    "safeFont": {
+      "title": "خطوط ويب قياسية",
+      "desc": "تطبيق خطوط واضحة ومدعومة عالمياً."
+    },
+    "fontSize": {
+      "title": "حجم خط قابل للقراءة",
+      "desc": "حجم نصوص آمن لمنع قطع البيانات أثناء الاستخراج."
+    },
+    "readingOrder": {
+      "title": "تسلسل قراءة منطقي",
+      "desc": "تطابق موقع العناصر البصري مع تسلسل قراءة DOM تماماً."
+    },
+    "validOrder": {
+      "title": "هيكلية أقسام مكتملة",
+      "desc": "ترتيب الأقسام الرئيسية بتسلسل زمني عكسي منطقي."
+    },
+    "safeLinks": {
+      "title": "روابط تشعبية آمنة",
+      "desc": "تنسيق الروابط ببروتوكولات آمنة مثل http أو mailto أو tel."
+    }
   },
   "items": {
+    "technicalPrimeATS": {
+      "name": "Technical Prime ATS",
+      "description": "القالب الرئيسي المحسّن لـ ATS بتنسيق العمود الواحد والمهارات التقنية المجمعة، مثالي للمطورين والمهندسين."
+    },
     "classicATS": {
       "name": "Classic ATS",
-      "description": "قالب تخطيط عمودي كلاسيكي فائق البساطة، يضمن أعلى درجات وضوح القراءة والتحليل لدى أنظمة ATS المسحية."
+      "description": "تخطيط عمودي بسيط جداً يضمن أعلى دقة قراءة عبر أنظمة التوظيف القياسية."
     },
     "professionalATS": {
       "name": "Professional ATS",
-      "description": "تنسيق مهني أنيق مع فاصل عناوين ناعم، ممتاز للأدوار الإدارية والاستشارية والمؤسسية."
+      "description": "عرض تنفيذي راقٍ بخطوط فاصلة أنيقة، مثالي للإداريين والأدوار القيادية."
+    },
+    "compactATS": {
+      "name": "Compact ATS",
+      "description": "تنسيق مدمج وتقسيم مسافات دقيق مخصص للسير الذاتية ذات الصفحة الواحدة."
+    },
+    "executiveATS": {
+      "name": "Executive ATS",
+      "description": "تصميم رئيسي بارز مع مربع ملخص تنفيذي وتخطيط يركز على الإنجازات والأرقام."
     },
     "developer": {
-      "name": "Developer ATS",
-      "description": "قالب مهيكل للمطورين والمهندسين يبرز المهارات التقنية، المشاريع والروابط ورخص التقنيات."
+      "name": "Developer Portfolio",
+      "description": "تخطيط تقني تخصصي يبرز الأدوات التقنية والمشاريع وروابط GitHub."
     }
   }
 }

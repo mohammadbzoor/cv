@@ -13,7 +13,7 @@ describe('Zustand Template Selection & Data Preservation', () => {
 
     store.replaceCVData(initialCv);
 
-    expect(useCVStore.getState().cvData.design.templateId).toBe('classic-ats');
+    expect(useCVStore.getState().cvData.design.templateId).toBe('technical-prime-ats');
 
     // Change template to professional-ats
     store.setTemplate('professional-ats');

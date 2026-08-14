@@ -4,7 +4,10 @@ import {
   CV_DOCUMENT_LANGUAGE,
   CV_DOCUMENT_DIRECTION,
   DEFAULT_SECTION_ORDER,
+  DEFAULT_TEMPLATE_ID,
   SUPPORTED_PAGE_SIZES,
+  SUPPORTED_DENSITIES,
+  SUPPORTED_HEADING_STYLES,
 } from '../models/cvConstants';
 
 /**
@@ -33,12 +36,26 @@ export function normalizeCVData(input) {
     ...(raw.personalInfo && typeof raw.personalInfo === 'object' ? raw.personalInfo : {}),
   };
 
+  const rawDesign = raw.design && typeof raw.design === 'object' ? raw.design : {};
+
   const design = {
     ...base.design,
-    ...(raw.design && typeof raw.design === 'object' ? raw.design : {}),
-    pageSize: SUPPORTED_PAGE_SIZES.includes(raw.design?.pageSize)
-      ? raw.design.pageSize
+    ...rawDesign,
+    templateId: typeof rawDesign.templateId === 'string' && rawDesign.templateId.trim() !== ''
+      ? rawDesign.templateId
+      : DEFAULT_TEMPLATE_ID,
+    pageSize: SUPPORTED_PAGE_SIZES.includes(rawDesign.pageSize)
+      ? rawDesign.pageSize
       : 'A4',
+    density: SUPPORTED_DENSITIES.includes(rawDesign.density)
+      ? rawDesign.density
+      : 'balanced',
+    showSectionDividers: typeof rawDesign.showSectionDividers === 'boolean'
+      ? rawDesign.showSectionDividers
+      : true,
+    headingStyle: SUPPORTED_HEADING_STYLES.includes(rawDesign.headingStyle)
+      ? rawDesign.headingStyle
+      : 'standard',
   };
 
   const metadata = {
