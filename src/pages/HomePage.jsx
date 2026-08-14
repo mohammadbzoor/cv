@@ -6,6 +6,8 @@ import { PageContainer } from '../components/layout/PageContainer';
 import { PageHeader } from '../components/layout/PageHeader';
 import { useLanguage } from '../hooks/useLanguage';
 
+import { featureFlags } from '../features/release/config/featureFlags';
+
 /**
  * HomePage component.
  * Main landing page rendered inside PublicLayout.
@@ -39,18 +41,20 @@ export default function HomePage() {
         </p>
         <div className="pt-2 flex flex-wrap gap-4 justify-start">
           <Link
-            to={ROUTE_PATHS.DESIGN_SYSTEM}
+            to={ROUTE_PATHS.CREATE}
             className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-on-primary font-medium text-sm rounded-lg hover:bg-primary-hover focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 transition-colors shadow-2xs"
           >
-            <span>{t('navigation:viewDesignSystem')}</span>
+            <span>{t('navigation:createCV', { defaultValue: 'Create Resume' })}</span>
             <ActionArrow className="w-4 h-4" aria-hidden="true" />
           </Link>
-          <Link
-            to="/test-404-route"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-transparent text-foreground font-medium text-sm rounded-lg border border-border hover:bg-surface-muted focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 transition-colors"
-          >
-            <span>{t('navigation:testNotFound')}</span>
-          </Link>
+          {featureFlags.enableDevelopmentRoutes && (
+            <Link
+              to={ROUTE_PATHS.DESIGN_SYSTEM}
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-transparent text-foreground font-medium text-sm rounded-lg border border-border hover:bg-surface-muted focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 transition-colors"
+            >
+              <span>{t('navigation:viewDesignSystem')}</span>
+            </Link>
+          )}
         </div>
       </section>
 

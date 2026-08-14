@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Save, Undo2, Redo2, Download, FileCheck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -6,7 +7,8 @@ import { ROUTE_PATHS } from '../../../app/routePaths';
 import { Button } from '../../../components/ui/Button';
 import { ThemeToggle } from '../../../components/ui/ThemeToggle';
 import { LanguageSwitcher } from '../../../components/ui/LanguageSwitcher';
-import { SaveStatus } from './SaveStatus';
+import { AutosaveStatus } from '../../autosave/components/AutosaveStatus';
+import { ExportDialog } from '../../export/components/ExportDialog';
 
 export function BuilderHeader({
   title = 'My Resume Document',
@@ -15,17 +17,25 @@ export function BuilderHeader({
   onRedo,
   canUndo,
   canRedo,
-  isDirty,
-  status,
+  onCancelAutosave,
 }) {
   const { t } = useTranslation(['builder', 'common']);
   const { isRTL } = useLanguage();
   const navigate = useNavigate();
+  const [showExportDialog, setShowExportDialog] = useState(false);
 
   const BackIcon = isRTL ? ArrowRight : ArrowLeft;
 
+  function handleManualSave() {
+    onCancelAutosave?.();
+    onSave?.();
+  }
+
   return (
-    <header className="h-16 bg-surface border-b border-border px-4 md:px-6 flex items-center justify-between shrink-0 shadow-2xs gap-4 z-20">
+    <header
+      data-builder-header
+      className="h-16 bg-surface border-b border-border px-4 md:px-6 flex items-center justify-between shrink-0 shadow-2xs gap-4 z-20"
+    >
       {/* Left: Back button & Title */}
       <div className="flex items-center gap-3 min-w-0">
         <Button
@@ -51,7 +61,7 @@ export function BuilderHeader({
 
       {/* Middle: Save Status */}
       <div className="hidden lg:flex items-center gap-2">
-        <SaveStatus isDirty={isDirty} status={status} />
+        <AutosaveStatus />
       </div>
 
       {/* Right: Actions, Controls & Theme/Lang */}
@@ -85,7 +95,7 @@ export function BuilderHeader({
           variant="primary"
           size="sm"
           leadingIcon={Save}
-          onClick={onSave}
+          onClick={handleManualSave}
           title={t('builder:save')}
         >
           <span className="hidden md:inline">{t('common:save')}</span>
@@ -95,12 +105,25 @@ export function BuilderHeader({
           type="button"
           variant="outline"
           size="sm"
-          disabled
           leadingIcon={Download}
+          onClick={() => setShowExportDialog(true)}
           title={t('builder:exportPdf')}
-          className="hidden xl:inline-flex opacity-60"
+          className="hidden xl:inline-flex"
         >
           {t('builder:exportPdf')}
+        </Button>
+
+        {/* Mobile export button */}
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => setShowExportDialog(true)}
+          title={t('builder:exportPdf')}
+          aria-label={t('builder:exportPdf')}
+          className="xl:hidden"
+        >
+          <Download className="w-4 h-4" aria-hidden="true" />
         </Button>
 
         <div className="h-5 w-px bg-border/80 mx-1" />
@@ -108,6 +131,12 @@ export function BuilderHeader({
         <ThemeToggle />
         <LanguageSwitcher />
       </div>
+
+      {/* Export Dialog */}
+      <ExportDialog
+        isOpen={showExportDialog}
+        onClose={() => setShowExportDialog(false)}
+      />
     </header>
   );
 }

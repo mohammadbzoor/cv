@@ -1,23 +1,69 @@
+/* eslint-disable react-refresh/only-export-components */
+import { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import { ROUTE_PATHS } from './routePaths';
 import { PublicLayout } from '../components/layout/PublicLayout';
+import { RouteLoadingFallback } from '../components/feedback/RouteLoadingFallback';
+import { featureFlags } from '../features/release/config/featureFlags';
 
 import HomePage from '../pages/HomePage';
-import CreatePage from '../pages/CreatePage';
-import UploadPage from '../pages/UploadPage';
-import AnalyzePage from '../pages/AnalyzePage';
-import MatchPage from '../pages/MatchPage';
-import ImprovePage from '../pages/ImprovePage';
-import TemplatesPage from '../pages/TemplatesPage';
-import HelpPage from '../pages/HelpPage';
 import NotFoundPage from '../pages/NotFoundPage';
-import DesignSystemPage from '../pages/DesignSystemPage';
-import CVStorePage from '../pages/CVStorePage';
-import BuilderPage from '../pages/BuilderPage';
+
+// Lazy-loaded pages for code splitting
+const CreatePage = lazy(() => import('../pages/CreatePage'));
+const UploadPage = lazy(() => import('../pages/UploadPage'));
+const AnalyzePage = lazy(() => import('../pages/AnalyzePage'));
+const MatchPage = lazy(() => import('../pages/MatchPage'));
+const ImprovePage = lazy(() => import('../pages/ImprovePage'));
+const TemplatesPage = lazy(() => import('../pages/TemplatesPage'));
+const HelpPage = lazy(() => import('../pages/HelpPage'));
+const BuilderPage = lazy(() => import('../pages/BuilderPage'));
+const DesignSystemPage = lazy(() => import('../pages/DesignSystemPage'));
+const CVStorePage = lazy(() => import('../pages/CVStorePage'));
+
+/**
+ * Builds development routes conditionally based on feature flags.
+ * When disabled (production default), these paths render NotFoundPage.
+ */
+function getDevelopmentRoutes() {
+  if (featureFlags.enableDevelopmentRoutes) {
+    return [
+      {
+        path: ROUTE_PATHS.DESIGN_SYSTEM,
+        element: (
+          <Suspense fallback={<RouteLoadingFallback />}>
+            <DesignSystemPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: ROUTE_PATHS.CV_STORE,
+        element: (
+          <Suspense fallback={<RouteLoadingFallback />}>
+            <CVStorePage />
+          </Suspense>
+        ),
+      },
+    ];
+  }
+
+  // In production, dev routes show NotFound
+  return [
+    {
+      path: ROUTE_PATHS.DESIGN_SYSTEM,
+      element: <NotFoundPage />,
+    },
+    {
+      path: ROUTE_PATHS.CV_STORE,
+      element: <NotFoundPage />,
+    },
+  ];
+}
 
 /**
  * Main router definition for CV Platform.
- * Configured with PublicLayout route hierarchy for public pages and standalone routes for studio builder & dev tools.
+ * Uses React.lazy for code splitting on heavy pages.
+ * Development routes are hidden in production by default.
  */
 export const router = createBrowserRouter([
   {
@@ -29,31 +75,59 @@ export const router = createBrowserRouter([
       },
       {
         path: ROUTE_PATHS.CREATE,
-        element: <CreatePage />,
+        element: (
+          <Suspense fallback={<RouteLoadingFallback />}>
+            <CreatePage />
+          </Suspense>
+        ),
       },
       {
         path: ROUTE_PATHS.UPLOAD,
-        element: <UploadPage />,
+        element: (
+          <Suspense fallback={<RouteLoadingFallback />}>
+            <UploadPage />
+          </Suspense>
+        ),
       },
       {
         path: ROUTE_PATHS.ANALYZE,
-        element: <AnalyzePage />,
+        element: (
+          <Suspense fallback={<RouteLoadingFallback />}>
+            <AnalyzePage />
+          </Suspense>
+        ),
       },
       {
         path: ROUTE_PATHS.MATCH,
-        element: <MatchPage />,
+        element: (
+          <Suspense fallback={<RouteLoadingFallback />}>
+            <MatchPage />
+          </Suspense>
+        ),
       },
       {
         path: ROUTE_PATHS.IMPROVE,
-        element: <ImprovePage />,
+        element: (
+          <Suspense fallback={<RouteLoadingFallback />}>
+            <ImprovePage />
+          </Suspense>
+        ),
       },
       {
         path: ROUTE_PATHS.TEMPLATES,
-        element: <TemplatesPage />,
+        element: (
+          <Suspense fallback={<RouteLoadingFallback />}>
+            <TemplatesPage />
+          </Suspense>
+        ),
       },
       {
         path: ROUTE_PATHS.HELP,
-        element: <HelpPage />,
+        element: (
+          <Suspense fallback={<RouteLoadingFallback />}>
+            <HelpPage />
+          </Suspense>
+        ),
       },
       {
         path: ROUTE_PATHS.NOT_FOUND,
@@ -63,14 +137,11 @@ export const router = createBrowserRouter([
   },
   {
     path: ROUTE_PATHS.BUILDER,
-    element: <BuilderPage />,
+    element: (
+      <Suspense fallback={<RouteLoadingFallback />}>
+        <BuilderPage />
+      </Suspense>
+    ),
   },
-  {
-    path: ROUTE_PATHS.DESIGN_SYSTEM,
-    element: <DesignSystemPage />,
-  },
-  {
-    path: ROUTE_PATHS.CV_STORE,
-    element: <CVStorePage />,
-  },
+  ...getDevelopmentRoutes(),
 ]);

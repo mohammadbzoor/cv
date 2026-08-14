@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next';
 import { useCVStore } from '../../cv/store/useCVStore';
 import {
   selectCVData,
-  selectStatus,
   selectIsDirty,
   selectCanUndo,
   selectCanRedo,
@@ -15,11 +14,11 @@ import { PreviewPanel } from './PreviewPanel';
 import { BuilderUnsavedGuard } from './BuilderUnsavedGuard';
 import { useBuilderLayout } from '../hooks/useBuilderLayout';
 import { useBuilderKeyboardShortcuts } from '../hooks/useBuilderKeyboardShortcuts';
+import { useAutosave } from '../../autosave/hooks/useAutosave';
 
 export function BuilderLayout() {
   const { t } = useTranslation('builder');
   const cvData = useCVStore(selectCVData);
-  const status = useCVStore(selectStatus);
   const isDirty = useCVStore(selectIsDirty);
   const canUndo = useCVStore(selectCanUndo);
   const canRedo = useCVStore(selectCanRedo);
@@ -31,7 +30,11 @@ export function BuilderLayout() {
 
   const { activeTab, setActiveTab } = useBuilderLayout('preview');
 
+  // Activate debounced autosave at Builder root level (once)
+  const { cancelPendingAutosave } = useAutosave({ enabled: true });
+
   function handleSave() {
+    cancelPendingAutosave();
     if (cvData) {
       replaceCVData(cvData);
       markSaved();
@@ -58,15 +61,17 @@ export function BuilderLayout() {
         onRedo={redo}
         canUndo={canUndo}
         canRedo={canRedo}
-        isDirty={isDirty}
-        status={status}
+        onCancelAutosave={cancelPendingAutosave}
       />
 
       {/* Main Studio Body Layout */}
       <div className="flex-1 flex overflow-hidden relative">
         {/* Desktop 3-Column Layout (lg+) */}
         <div className="hidden lg:flex w-full h-full">
-          <aside className="w-80 xl:w-96 bg-surface border-e border-border h-full flex flex-col shrink-0">
+          <aside
+            data-content-panel
+            className="w-80 xl:w-96 bg-surface border-e border-border h-full flex flex-col shrink-0"
+          >
             <ContentPanel />
           </aside>
 
@@ -74,7 +79,10 @@ export function BuilderLayout() {
             <PreviewPanel />
           </main>
 
-          <aside className="w-72 xl:w-80 bg-surface border-s border-border h-full flex flex-col shrink-0">
+          <aside
+            data-design-panel
+            className="w-72 xl:w-80 bg-surface border-s border-border h-full flex flex-col shrink-0"
+          >
             <DesignPanel />
           </aside>
         </div>
@@ -83,7 +91,7 @@ export function BuilderLayout() {
         <div className="flex flex-col w-full h-full lg:hidden">
           <div className="flex-1 overflow-hidden">
             {activeTab === 'content' && (
-              <div className="h-full bg-surface">
+              <div className="h-full bg-surface" data-content-panel>
                 <ContentPanel />
               </div>
             )}
@@ -95,14 +103,17 @@ export function BuilderLayout() {
             )}
 
             {activeTab === 'design' && (
-              <div className="h-full bg-surface">
+              <div className="h-full bg-surface" data-design-panel>
                 <DesignPanel />
               </div>
             )}
           </div>
 
           {/* Bottom Mobile Viewport Tab Bar */}
-          <nav className="h-14 bg-surface border-t border-border flex items-center justify-around shrink-0 px-2">
+          <nav
+            data-mobile-tab-bar
+            className="h-14 bg-surface border-t border-border flex items-center justify-around shrink-0 px-2"
+          >
             <button
               type="button"
               onClick={() => setActiveTab('content')}

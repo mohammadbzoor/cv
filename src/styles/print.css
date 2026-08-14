@@ -1,0 +1,159 @@
+/**
+ * Print Stylesheet for CV Platform.
+ * Designed to render ONLY the CV document ([data-cv-document]) on paper.
+ * All application chrome (header, panels, navigation, overlays) is hidden during print.
+ *
+ * Usage: Imported once in globals.css or main.jsx.
+ */
+
+@media print {
+  /* ── Page Setup ── */
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  /* ── Reset html & body for print ── */
+  html,
+  body {
+    background: white !important;
+    color: black !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ── Hide ALL application chrome ── */
+  /* Navigation & Layout */
+  nav,
+  header:not([data-cv-document] header),
+  footer,
+  /* Builder panels & controls */
+  [data-builder-header],
+  [data-content-panel],
+  [data-design-panel],
+  [data-zoom-controls],
+  [data-mobile-tab-bar],
+  /* Overlays & dialogs */
+  [role="dialog"],
+  [data-modal-overlay],
+  /* UI elements not relevant to print */
+  [data-skip-link],
+  [data-dev-notice],
+  [data-draft-badge],
+  [data-save-status],
+  [data-autosave-status],
+  [data-draft-recovery],
+  /* Buttons & interactive controls outside CV */
+  .no-print,
+  button:not([data-cv-document] button) {
+    display: none !important;
+  }
+
+  /* ── Ensure ONLY CV document is visible and printable ── */
+  [data-cv-document] {
+    display: block !important;
+    position: static !important;
+    width: 210mm !important;
+    min-height: 297mm !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+    color: #1a1a1a !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    transform: none !important;
+    overflow: visible !important;
+    page-break-before: auto;
+  }
+
+  /* ── Reset CV document zoom/scale ── */
+  [data-cv-document],
+  [data-cv-document] * {
+    transform: none !important;
+  }
+
+  /* ── Ancestors of [data-cv-document] must be visible ── */
+  [data-cv-document],
+  [data-cv-document] ~ *,
+  body > *:has([data-cv-document]),
+  #root:has([data-cv-document]) {
+    display: block !important;
+    position: static !important;
+    overflow: visible !important;
+    width: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* ── Ensure the #root itself is simple ── */
+  #root {
+    display: block !important;
+    overflow: visible !important;
+  }
+
+  /* ── Sensible page break rules ── */
+  /* Keep section headings with their first content */
+  [data-cv-document] h1,
+  [data-cv-document] h2,
+  [data-cv-document] h3 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /* Avoid breaking inside small items */
+  [data-cv-document] article > section {
+    break-inside: avoid-page;
+    page-break-inside: avoid;
+  }
+
+  /* For large sections, allow natural page breaks */
+  [data-cv-document] section:has(> div:nth-child(5)) {
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+
+  /* Keep experience/education cards together when short */
+  [data-cv-document] section > div {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* ── Typography for print ── */
+  [data-cv-document] {
+    font-size: 10pt;
+    line-height: 1.4;
+  }
+
+  /* ── Links: show URL in parentheses for print ── */
+  [data-cv-document] a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 8pt;
+    color: #555;
+    word-break: break-all;
+  }
+
+  /* Don't show URL for email/tel links */
+  [data-cv-document] a[href^="mailto:"]::after,
+  [data-cv-document] a[href^="tel:"]::after {
+    content: none;
+  }
+
+  /* ── Ensure text remains selectable & extractable ── */
+  [data-cv-document] * {
+    -webkit-user-select: text !important;
+    user-select: text !important;
+  }
+}

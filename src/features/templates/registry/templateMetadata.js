@@ -56,3 +56,19 @@ export const TEMPLATES_METADATA = Object.freeze([
     version: 1,
   },
 ]);
+
+/**
+ * Returns a human-readable template name for a given template ID.
+ * Used by ExportDialog to display the current template without i18n dependency.
+ *
+ * @param {string} templateId
+ * @returns {string}
+ */
+export function getTemplateName(templateId) {
+  const nameMap = {
+    'classic-ats': 'Classic ATS',
+    'professional-ats': 'Professional ATS',
+    'developer': 'Developer',
+  };
+  return nameMap[templateId] || templateId || 'Classic ATS';
+}

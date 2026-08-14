@@ -16,6 +16,7 @@ import arUpload from './locales/ar/upload.json';
 import arAnalyze from './locales/ar/analyze.json';
 import arMatch from './locales/ar/match.json';
 import arImprove from './locales/ar/improve.json';
+import arExport from './locales/ar/export.json';
 
 import enCommon from './locales/en/common.json';
 import enNavigation from './locales/en/navigation.json';
@@ -31,6 +32,7 @@ import enUpload from './locales/en/upload.json';
 import enAnalyze from './locales/en/analyze.json';
 import enMatch from './locales/en/match.json';
 import enImprove from './locales/en/improve.json';
+import enExport from './locales/en/export.json';
 
 function getInitialLanguage() {
   try {
@@ -63,6 +65,7 @@ i18n
         analyze: arAnalyze,
         match: arMatch,
         improve: arImprove,
+        export: arExport,
       },
       en: {
         common: enCommon,
@@ -79,6 +82,7 @@ i18n
         analyze: enAnalyze,
         match: enMatch,
         improve: enImprove,
+        export: enExport,
       },
     },
     lng: getInitialLanguage(),
@@ -99,6 +103,7 @@ i18n
       'analyze',
       'match',
       'improve',
+      'export',
     ],
     interpolation: {
       escapeValue: false, // React already escapes string values
