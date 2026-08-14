@@ -1,4 +1,4 @@
-# CV Platform — Front-End MVP
+# CV Platform — Front-End MVP & SaaS Experience
 
 An internationalized, accessible, multi-template Resume Builder & AI Intelligence Platform built with React 19, Vite, Tailwind CSS, Zustand, and React Hook Form.
 
@@ -6,6 +6,11 @@ An internationalized, accessible, multi-template Resume Builder & AI Intelligenc
 
 ## 🌟 Key Features
 
+- **Professional SaaS Landing Page (`/`)**: Hero section with HTML/CSS miniature CV paper sheet, trust principles, 8 platform services, 4-step workflow, feature highlights, studio builder showcase, template cards, ATS compatibility explanation, privacy guarantees, FAQ accordion, and final CTA.
+- **Motion Design System**: Accessible entry animations (`MotionReveal`, `MotionStagger`, `MotionSection`) powered by `IntersectionObserver` with full support for `prefers-reduced-motion`.
+- **Demo Auth Architecture (`/login`, `/register`, `/forgot-password`)**: Complete front-end authentication UI flow with React Hook Form, Zod validation, password strength meter, show/hide toggle, and explicit demo notices. **Never stores passwords or tokens**.
+- **User Settings & Preferences (`/settings`)**: Comprehensive settings panel covering Profile, Appearance (Light/Dark/System), Language (Arabic/English), Notifications (local reminders), Privacy guarantees, Local Data management (JSON export & granular clearance), and Account session controls.
+- **Navbar Account Menu**: Accessible dropdown menu for logged-in demo users with avatar initials, profile summary, quick links, and one-click demo session termination.
 - **Multi-Step Resume Wizard (`/create`)**: Step-by-step form navigation with Zod validation for Personal Info, Summary, Experience, Education, and Skills.
 - **Studio Builder Engine (`/builder`)**: Live A4 preview sheet, inline text editing (`EditableField`), section reordering (`SectionManager`), zoom controls, and keyboard shortcuts (`Ctrl+S`, `Ctrl+Z`, `Ctrl+Y`).
 - **Template Registry & Gallery (`/templates`)**: 3 ATS-optimized and visually enhanced templates (`Classic ATS`, `Professional ATS`, `Developer`).
@@ -17,8 +22,6 @@ An internationalized, accessible, multi-template Resume Builder & AI Intelligenc
   - **Job Description Match (`/match`)**: Match percentage, skill overlap, missing skills detection with authenticity confirmation dialog.
   - **Content Improvement (`/improve`)**: `DiffViewer` showing original vs suggested text with granular accept/reject controls.
 - **Dual Language & RTL/LTR**: Application UI available in Arabic (RTL) and English (LTR). CV document content strictly enforced in **English only and LTR only** (`lang="en" dir="ltr"`).
-- **Light / Dark / System Theme**: High-contrast theme system with white paper sheet preservation for resume document preview.
-- **Error Handling & Code Splitting**: Application-level Error Boundary (`AppErrorBoundary`) and route-level `React.lazy` code splitting.
 
 ---
 
@@ -31,7 +34,7 @@ An internationalized, accessible, multi-template Resume Builder & AI Intelligenc
 - **Form Validation**: React Hook Form, Zod 4
 - **Localization**: i18next, react-i18next
 - **Icons**: Lucide React
-- **Testing**: Vitest 4 (107 unit & integration tests)
+- **Testing**: Vitest 4 (132 unit & integration tests)
 - **Linting**: ESLint 10
 
 ---
@@ -43,35 +46,32 @@ src/
 ├── app/                      # Router, Providers, Route Constants, App Entry
 ├── components/
 │   ├── feedback/             # AppErrorBoundary, RouteLoadingFallback
-│   ├── layout/               # AppLayout, PublicLayout, PageContainer, PageHeader
-│   └── ui/                   # Button, Modal, ConfirmDialog, Input, Select, Badge...
+│   ├── layout/               # AppLayout, PublicLayout, Navbar (AccountMenu), PageContainer
+│   └── ui/                   # Button, Modal, ConfirmDialog, DropdownMenu, Input, Switch...
 ├── contexts/                 # ThemeContext, LanguageContext
 ├── features/
 │   ├── ai-services/          # Mock API Client, Zod Schemas, Mock Data Generators
-│   ├── analyze/              # Analysis Page Services & Overview Components
+│   ├── auth/                 # Demo Auth Store, Login/Register/Forgot Forms, Demo Notices
 │   ├── autosave/             # Debounced Autosave Hook, Status Badge, Draft Recovery
 │   ├── builder/              # Studio Builder Layout, Preview Panel, Inline Editor
 │   ├── create-wizard/        # Step Navigation & Multi-step Form Logic
 │   ├── cv/                   # CV Store, Data Models, Defaults, Factories, Validation
 │   ├── export/               # Print Service, Export Dialog, Readiness Checkers
-│   ├── improve/              # Suggestion Apply Utility & DiffViewer Component
-│   ├── match/                # Job Description Matcher & Honesty Dialog
+│   ├── home/                 # Hero, Services, HowItWorks, Features, Builder/Template Showcases
+│   ├── motion/               # MotionReveal, MotionStagger, ReducedMotionFallback, Tokens
 │   ├── release/              # Feature Flags & Development Route Controls
+│   ├── settings/             # Settings Layout, Navigation, Profile, Appearance, Local Data
 │   ├── templates/            # Template Registry, Renderer & 3 Resume Templates
 │   └── upload/               # File Validation & Drag-and-Drop Dropzone
+├── hooks/                    # useTheme, useLanguage, useDocumentMetadata
 ├── i18n/                     # i18next configuration & ar/en translation dictionaries
-├── pages/                    # Route pages (HomePage, BuilderPage, CreatePage...)
+├── pages/                    # HomePage, BuilderPage, LoginPage, RegisterPage, SettingsPage...
 └── styles/                   # globals.css, print.css, accessibility.css
 ```
 
 ---
 
 ## 🚀 Getting Started
-
-### Prerequisites
-
-- Node.js >= 18.0.0
-- npm >= 9.0.0
 
 ### Installation
 
@@ -93,8 +93,6 @@ VITE_API_BASE_URL=http://localhost:5000/api
 VITE_ENABLE_DEVELOPMENT_ROUTES=false
 ```
 
-- `VITE_ENABLE_DEVELOPMENT_ROUTES`: Set to `true` to enable developer routes (`/design-system`, `/cv-store`) in production builds. Defaults to `true` in development (`import.meta.env.DEV`).
-
 ### Development Server
 
 ```bash
@@ -106,7 +104,7 @@ App will start at `http://localhost:5173`.
 ### Automated Testing & Linting
 
 ```bash
-# Run unit & integration test suite (107 tests)
+# Run unit & integration test suite (132 tests)
 npm run test
 
 # Run ESLint code quality check
@@ -117,40 +115,17 @@ npm run lint
 
 ```bash
 npm run build
-
-# Preview production build locally
 npm run preview
 ```
 
 ---
 
-## 🖨️ Print & PDF Export Strategy
+## 🔒 Security & Front-End Demo Auth Statement
 
-This MVP uses the native **Browser Print API** (`window.print()`) for PDF generation:
-
-1. Clicking **Export PDF** opens an **Export Dialog** validating document completeness.
-2. If ready, clicking **Open Print Dialog** temporarily sets `document.title` to a sanitized document name (e.g., `alex-johnson-resume`).
-3. Native `window.print()` opens the browser's print interface.
-4. User selects **Save as PDF** in destination dropdown, configures paper size to **A4**, and saves.
-5. Print CSS (`print.css`) hides all UI chrome, navigation, headers, and panels, rendering ONLY the white A4 resume sheet (`[data-cv-document]`).
-6. Text remains selectable and extractable for ATS parsers — no image conversion or canvas screenshots are used.
-
----
-
-## ♿ Accessibility & Performance
-
-- **Accessibility**: Reviewed against common WCAG interaction patterns (semantic headings, ARIA live regions, focus trapping in modals, keyboard navigation, minimum 44px touch targets, prefers-reduced-motion support).
-- **Code Splitting**: Route-level dynamic `React.lazy` loading reduces the initial JavaScript bundle from 723 kB down to **296 kB** (59% reduction).
-- **Zustand Selector Stability**: Uses frozen singleton fallbacks to eliminate unnecessary re-renders.
-
----
-
-## 🔒 Security & Privacy
-
-- All CV draft data is stored exclusively in the user's browser `localStorage`.
-- No API keys, secrets, or tracking telemetry are embedded.
-- AI services run via local deterministic mock handlers — no data is sent to external cloud APIs.
-- Uploaded `File` objects are validated locally and never persisted directly in state.
+- Authentication pages (`/login`, `/register`, `/forgot-password`) are **front-end demonstrations**.
+- **No passwords, tokens, or credentials are stored** in `localStorage`, `sessionStorage`, or state.
+- Logging out of a demo session **does NOT delete your local CV draft**.
+- Targeted data clearance options under `/settings` allow wiping local storage keys without clearing unrelated domain keys.
 
 ---
 
@@ -162,4 +137,4 @@ See [RELEASE_CHECKLIST.md](./RELEASE_CHECKLIST.md) for full MVP verification det
 
 ## 🔮 Next Roadmap Phase
 
-- **Backend Integration & Authentication**: Connect store persistence to PostgreSQL/MongoDB, implement OAuth login, and enable multi-resume cloud storage.
+- **Backend Authentication & Database Integration**: Connect to PostgreSQL/MongoDB, issue secure JWT HTTP-only cookies, and implement multi-resume cloud sync.

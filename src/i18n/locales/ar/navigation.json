@@ -4,21 +4,25 @@
   "switchLanguage": "تغيير اللغة",
   "openMenu": "فتح القائمة الرئيسية",
   "closeMenu": "إغلاق القائمة الرئيسية",
-  "backToHome": "الرجوع إلى الصفحة الرئيسية",
-  "testNotFound": "اختبار صفحة 404",
-  "viewDesignSystem": "عرض نظام التصميم والمكونات",
+  "backToHome": "العودة للرئيسية",
+  "testNotFound": "تجربة صفحة 404",
+  "viewDesignSystem": "استعراض نظام التصميم والمكونات",
   "primaryNav": "التنقل الرئيسي",
   "skipToContent": "الانتقال إلى المحتوى الرئيسي",
-  "breadcrumbs": "مسار التصفح",
-  "createCv": "إنشاء سيرة ذاتية",
+  "breadcrumbs": "مسار التنقل",
+  "createCv": "أنشئ سيرتك",
   "menu": "القائمة",
+  "settings": "الإعدادات",
+  "login": "تسجيل الدخول",
+  "createAccount": "إنشاء حساب",
+  "openBuilder": "فتح المحرر",
   "links": {
     "home": "الرئيسية",
-    "create": "إنشاء سيرة ذاتية",
+    "create": "أنشئ سيرتك",
     "analyze": "تحليل السيرة",
-    "match": "مطابقة الوظائف",
+    "match": "مطابقة الوظيفة",
     "improve": "تحسين المحتوى",
     "templates": "القوالب",
-    "help": "المساعدة والتعليمات"
+    "help": "المساعدة والدعم"
   }
 }

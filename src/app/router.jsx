@@ -18,6 +18,10 @@ const ImprovePage = lazy(() => import('../pages/ImprovePage'));
 const TemplatesPage = lazy(() => import('../pages/TemplatesPage'));
 const HelpPage = lazy(() => import('../pages/HelpPage'));
 const BuilderPage = lazy(() => import('../pages/BuilderPage'));
+const LoginPage = lazy(() => import('../pages/LoginPage'));
+const RegisterPage = lazy(() => import('../pages/RegisterPage'));
+const ForgotPasswordPage = lazy(() => import('../pages/ForgotPasswordPage'));
+const SettingsPage = lazy(() => import('../pages/SettingsPage'));
 const DesignSystemPage = lazy(() => import('../pages/DesignSystemPage'));
 const CVStorePage = lazy(() => import('../pages/CVStorePage'));
 
@@ -47,7 +51,6 @@ function getDevelopmentRoutes() {
     ];
   }
 
-  // In production, dev routes show NotFound
   return [
     {
       path: ROUTE_PATHS.DESIGN_SYSTEM,
@@ -63,7 +66,6 @@ function getDevelopmentRoutes() {
 /**
  * Main router definition for CV Platform.
  * Uses React.lazy for code splitting on heavy pages.
- * Development routes are hidden in production by default.
  */
 export const router = createBrowserRouter([
   {
@@ -130,6 +132,14 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: ROUTE_PATHS.SETTINGS,
+        element: (
+          <Suspense fallback={<RouteLoadingFallback />}>
+            <SettingsPage />
+          </Suspense>
+        ),
+      },
+      {
         path: ROUTE_PATHS.NOT_FOUND,
         element: <NotFoundPage />,
       },
@@ -140,6 +150,30 @@ export const router = createBrowserRouter([
     element: (
       <Suspense fallback={<RouteLoadingFallback />}>
         <BuilderPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: ROUTE_PATHS.LOGIN,
+    element: (
+      <Suspense fallback={<RouteLoadingFallback />}>
+        <LoginPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: ROUTE_PATHS.REGISTER,
+    element: (
+      <Suspense fallback={<RouteLoadingFallback />}>
+        <RegisterPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: ROUTE_PATHS.FORGOT_PASSWORD,
+    element: (
+      <Suspense fallback={<RouteLoadingFallback />}>
+        <ForgotPasswordPage />
       </Suspense>
     ),
   },

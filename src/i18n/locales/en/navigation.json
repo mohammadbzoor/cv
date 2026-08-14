@@ -12,6 +12,10 @@
   "breadcrumbs": "Breadcrumbs",
   "createCv": "Create CV",
   "menu": "Menu",
+  "settings": "Settings",
+  "login": "Sign In",
+  "createAccount": "Create Account",
+  "openBuilder": "Open Studio Builder",
   "links": {
     "home": "Home",
     "create": "Create CV",

@@ -1,142 +1,43 @@
-import { Link } from 'react-router-dom';
-import { FileCheck, ArrowRight, ArrowLeft, Layers, ShieldCheck, Code } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { ROUTE_PATHS } from '../app/routePaths';
 import { PageContainer } from '../components/layout/PageContainer';
-import { PageHeader } from '../components/layout/PageHeader';
-import { useLanguage } from '../hooks/useLanguage';
-
-import { featureFlags } from '../features/release/config/featureFlags';
+import { HomeHero } from '../features/home/components/HomeHero';
+import { TrustStrip } from '../features/home/components/TrustStrip';
+import { ServicesSection } from '../features/home/components/ServicesSection';
+import { HowItWorksSection } from '../features/home/components/HowItWorksSection';
+import { FeatureHighlights } from '../features/home/components/FeatureHighlights';
+import { BuilderShowcase } from '../features/home/components/BuilderShowcase';
+import { TemplatesShowcase } from '../features/home/components/TemplatesShowcase';
+import { ATSExplanationSection } from '../features/home/components/ATSExplanationSection';
+import { PrivacySection } from '../features/home/components/PrivacySection';
+import { HomeFAQSection } from '../features/home/components/HomeFAQSection';
+import { FinalCTASection } from '../features/home/components/FinalCTASection';
+import { useDocumentMetadata } from '../hooks/useDocumentMetadata';
 
 /**
- * HomePage component.
- * Main landing page rendered inside PublicLayout.
+ * HomePage Component.
+ * Assembles professional SaaS landing page sections.
  */
 export default function HomePage() {
-  const { t } = useTranslation(['home', 'navigation', 'common']);
-  const { isRTL } = useLanguage();
+  const { t } = useTranslation(['home', 'common']);
 
-  const ActionArrow = isRTL ? ArrowLeft : ArrowRight;
+  useDocumentMetadata({
+    title: `${t('common:appTitle')} — ${t('home:heroBadge')}`,
+    description: t('home:heroDescription'),
+  });
 
   return (
-    <PageContainer className="py-6 md:py-10 space-y-8">
-      {/* Page Header */}
-      <PageHeader
-        title={t('common:appTitle')}
-        description={t('home:heroDescription')}
-        eyebrow={t('home:heroBadge')}
-      />
-
-      {/* Hero Card */}
-      <section className="bg-surface rounded-2xl p-6 md:p-8 border border-border shadow-2xs text-start space-y-4">
-        <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary-subtle text-primary rounded-md text-xs font-semibold">
-          <Code className="w-4 h-4" aria-hidden="true" />
-          {t('home:heroBadge')}
-        </div>
-        <h2 className="text-2xl md:text-3xl font-extrabold text-foreground leading-snug">
-          {t('home:heroTitle')}
-        </h2>
-        <p className="text-foreground-secondary max-w-3xl text-sm md:text-base leading-relaxed">
-          {t('home:heroDescription')}
-        </p>
-        <div className="pt-2 flex flex-wrap gap-4 justify-start">
-          <Link
-            to={ROUTE_PATHS.CREATE}
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-on-primary font-medium text-sm rounded-lg hover:bg-primary-hover focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 transition-colors shadow-2xs"
-          >
-            <span>{t('navigation:createCV', { defaultValue: 'Create Resume' })}</span>
-            <ActionArrow className="w-4 h-4" aria-hidden="true" />
-          </Link>
-          {featureFlags.enableDevelopmentRoutes && (
-            <Link
-              to={ROUTE_PATHS.DESIGN_SYSTEM}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-transparent text-foreground font-medium text-sm rounded-lg border border-border hover:bg-surface-muted focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 transition-colors"
-            >
-              <span>{t('navigation:viewDesignSystem')}</span>
-            </Link>
-          )}
-        </div>
-      </section>
-
-      {/* Color Palette */}
-      <section className="bg-surface rounded-2xl p-6 md:p-8 border border-border shadow-2xs space-y-6">
-        <div>
-          <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
-            <Layers className="w-5 h-5 text-secondary" aria-hidden="true" />
-            {t('home:colorPaletteTitle')}
-          </h3>
-          <p className="text-xs text-foreground-secondary mt-1">
-            {t('home:colorPaletteSub')}
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-surface rounded-xl border border-border p-5 space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="font-bold text-sm text-foreground">Deep Slate</span>
-              <span className="w-5 h-5 rounded-full bg-primary border border-border" />
-            </div>
-            <div className="h-10 bg-primary-subtle border border-border/60 rounded-lg px-3 flex items-center justify-between text-xs text-primary font-mono">
-              <span>Primary</span>
-            </div>
-            <p className="text-xs text-foreground-secondary leading-relaxed">
-              {t('home:deepSlateDesc')}
-            </p>
-          </div>
-
-          <div className="bg-surface rounded-xl border border-border p-5 space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="font-bold text-sm text-foreground">Muted Sage</span>
-              <span className="w-5 h-5 rounded-full bg-secondary border border-border" />
-            </div>
-            <div className="h-10 bg-secondary-subtle border border-border/60 rounded-lg px-3 flex items-center justify-between text-xs text-secondary font-mono">
-              <span>Secondary</span>
-            </div>
-            <p className="text-xs text-foreground-secondary leading-relaxed">
-              {t('home:mutedSageDesc')}
-            </p>
-          </div>
-
-          <div className="bg-surface rounded-xl border border-border p-5 space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="font-bold text-sm text-foreground">Soft Terracotta</span>
-              <span className="w-5 h-5 rounded-full bg-accent border border-border" />
-            </div>
-            <div className="h-10 bg-accent-subtle border border-border/60 rounded-lg px-3 flex items-center justify-between text-xs text-accent font-mono">
-              <span>Accent</span>
-            </div>
-            <p className="text-xs text-foreground-secondary leading-relaxed">
-              {t('home:softTerracottaDesc')}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Verification Checklist */}
-      <section className="bg-surface rounded-2xl p-6 md:p-8 border border-border shadow-2xs space-y-4">
-        <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
-          <ShieldCheck className="w-5 h-5 text-success" aria-hidden="true" />
-          {t('home:checkListTitle')}
-        </h3>
-        <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs md:text-sm text-foreground-secondary">
-          <li className="flex items-center gap-2.5 p-3 bg-app-bg rounded-lg border border-border/60">
-            <FileCheck className="w-4 h-4 text-success shrink-0" aria-hidden="true" />
-            <span>{t('home:checkList1')}</span>
-          </li>
-          <li className="flex items-center gap-2.5 p-3 bg-app-bg rounded-lg border border-border/60">
-            <FileCheck className="w-4 h-4 text-success shrink-0" aria-hidden="true" />
-            <span>{t('home:checkList2')}</span>
-          </li>
-          <li className="flex items-center gap-2.5 p-3 bg-app-bg rounded-lg border border-border/60">
-            <FileCheck className="w-4 h-4 text-success shrink-0" aria-hidden="true" />
-            <span>{t('home:checkList3')}</span>
-          </li>
-          <li className="flex items-center gap-2.5 p-3 bg-app-bg rounded-lg border border-border/60">
-            <FileCheck className="w-4 h-4 text-success shrink-0" aria-hidden="true" />
-            <span>{t('home:checkList4')}</span>
-          </li>
-        </ul>
-      </section>
+    <PageContainer className="space-y-4">
+      <HomeHero />
+      <TrustStrip />
+      <ServicesSection />
+      <HowItWorksSection />
+      <FeatureHighlights />
+      <BuilderShowcase />
+      <TemplatesShowcase />
+      <ATSExplanationSection />
+      <PrivacySection />
+      <HomeFAQSection />
+      <FinalCTASection />
     </PageContainer>
   );
 }

@@ -1,16 +1,149 @@
 {
-  "badgePhase2": "Phase 3 Completed",
-  "heroBadge": "Infrastructure + Theme System + i18n Support",
-  "heroTitle": "Core Project Infrastructure Established Successfully",
-  "heroDescription": "The project is initialized with a theme system supporting Light, Dark, and System modes, alongside full Arabic and English support with dynamic text directions.",
-  "colorPaletteTitle": "Editorial Color Palette",
-  "colorPaletteSub": "Calm, warm color tokens that automatically adapt to light and dark themes",
-  "deepSlateDesc": "Primary buttons, key headings, and high priority elements.",
-  "mutedSageDesc": "Supporting elements, success indicators, and secondary links.",
-  "softTerracottaDesc": "Alerts, important badges, and cautious accent highlighting.",
-  "checkListTitle": "Criteria Verification",
-  "checkList1": "Light, Dark, and System theme preferences",
-  "checkList2": "Button, Input, Textarea, Card, and Badge components",
-  "checkList3": "React Router & Tailwind CSS v4 integration",
-  "checkList4": "Full Arabic & English support with dynamic RTL and LTR"
+  "heroBadge": "SaaS Resume Platform",
+  "heroTitle": "Build a focused, professional CV—and improve it for the opportunities you want.",
+  "heroDescription": "Create structured, ATS-oriented English resumes with a calm bilingual interface, live A4 preview, direct inline editing, and local privacy guarantees.",
+  "heroDemoPrivacyNote": "Designed around local-first privacy. Your draft remains strictly in your browser.",
+  "ctaCreateCv": "Create Your CV",
+  "ctaBrowseTemplates": "Explore Templates",
+  "ctaExploreAllTemplates": "View All Templates",
+  "trustStripTitle": "Built around practical CV workflows",
+  "trustPillar1": "English CV Builder",
+  "trustPillar2": "ATS-Oriented Templates",
+  "trustPillar3": "Private Local Drafts",
+  "trustPillar4": "Bilingual Interface",
+  "trustPillar5": "Print-Ready A4 PDF",
+  "servicesEyebrow": "Platform Services",
+  "servicesTitle": "Complete Resume Creation & Intelligence Tools",
+  "servicesDesc": "Everything you need to write, evaluate, match, and export professional resumes.",
+  "services": {
+    "create": {
+      "title": "Resume Builder Wizard",
+      "desc": "Step-by-step guided form populating personal info, summary, experience, and skills."
+    },
+    "upload": {
+      "title": "Upload & Extract Demo",
+      "desc": "Drag & drop existing PDF/DOCX files to extract structured draft content."
+    },
+    "analyze": {
+      "title": "Resume Structure Analysis",
+      "desc": "Evaluate ATS compatibility, structural completeness, strengths, and recommendations."
+    },
+    "match": {
+      "title": "Job Description Matcher",
+      "desc": "Compare your resume against target job requirements to highlight skill gaps."
+    },
+    "improve": {
+      "title": "Content Improvement",
+      "desc": "Review side-by-side text suggestions with granular accept/reject controls."
+    },
+    "templates": {
+      "title": "Template Gallery",
+      "desc": "Choose between ATS-optimized and visually enhanced document layouts."
+    },
+    "builder": {
+      "title": "Studio Builder Engine",
+      "desc": "Edit inline on a live A4 preview sheet with undo/redo and zoom controls."
+    },
+    "export": {
+      "title": "PDF Print Export",
+      "desc": "Export clean A4 PDF documents via your browser's native print interface."
+    }
+  },
+  "processEyebrow": "How It Works",
+  "processTitle": "Four Steps to Your Next Career Move",
+  "processDesc": "A straightforward editorial workflow designed for clarity and impact.",
+  "process": {
+    "step1": {
+      "title": "Add Your Information",
+      "desc": "Fill in your background details using our guided multi-step wizard."
+    },
+    "step2": {
+      "title": "Review & Enhance",
+      "desc": "Analyze structure, match job specs, and refine text with demo intelligence tools."
+    },
+    "step3": {
+      "title": "Select a Template",
+      "desc": "Apply ATS-optimized or modern developer layouts without losing data."
+    },
+    "step4": {
+      "title": "Edit & Export PDF",
+      "desc": "Fine-tune directly on live preview and print to PDF in seconds."
+    }
+  },
+  "featuresEyebrow": "Key Features",
+  "featuresTitle": "Built for High Impact Engineering & Professional Resumes",
+  "featuresDesc": "Focused toolsets designed to save time and output ATS-friendly documents.",
+  "features": {
+    "inlineEdit": {
+      "title": "Direct Inline Editing",
+      "desc": "Click any section directly on the live A4 preview sheet to edit text instantly."
+    },
+    "atsTemplates": {
+      "title": "ATS-Oriented Layouts",
+      "desc": "Clean typography and single-column formatting for parsing reliability."
+    },
+    "localPrivacy": {
+      "title": "Local-First Privacy",
+      "desc": "Drafts remain saved in your browser's local storage — no external tracking."
+    },
+    "bilingual": {
+      "title": "Bilingual Application UI",
+      "desc": "Switch interface language between Arabic and English seamlessly."
+    },
+    "printPdf": {
+      "title": "Native PDF Print",
+      "desc": "Generates clean A4 PDFs without canvas distortion or image text conversion."
+    },
+    "smartValidation": {
+      "title": "Zod Schema Validation",
+      "desc": "Guarantees valid document structure before export."
+    }
+  },
+  "builderShowcaseEyebrow": "Studio Workspace",
+  "builderShowcaseTitle": "Real-Time 3-Column Studio Builder",
+  "builderShowcaseDesc": "Content panel, live A4 document sheet, and design customization controls side by side.",
+  "templatesEyebrow": "Document Designs",
+  "templatesTitle": "Clean, Professional Resume Templates",
+  "templatesDesc": "Tested layouts prioritizing readability, structure, and professional presentation.",
+  "atsTitle": "Understanding ATS Compatibility",
+  "atsSubtitle": "Why clear structure matters for recruitment software",
+  "atsExplanationText": "Applicant Tracking Systems (ATS) parse resumes into structured candidate profiles. Our ATS-oriented templates prioritize single-column flow, standard headings, and clean text strings to maximize readability. Parsing behavior may vary between recruitment platforms.",
+  "atsDisclaimer": "Note: While our templates adhere to ATS design best practices, interview invitations depend on your qualifications and employer selection criteria.",
+  "privacyTitle": "Local Privacy First",
+  "privacySubtitle": "Your career data belongs strictly to you",
+  "privacyPoint1Title": "Browser Local Storage Only",
+  "privacyPoint1Desc": "All draft updates write directly to your local browser storage.",
+  "privacyPoint2Title": "No Unneeded Server Calls",
+  "privacyPoint2Desc": "Mock intelligence features execute locally without sending resume content to external servers.",
+  "faqEyebrow": "Got Questions?",
+  "faqTitle": "Frequently Asked Questions",
+  "faqDesc": "Everything you need to know about CV Platform.",
+  "faq": {
+    "q1": {
+      "question": "Is the resume document written in English?",
+      "answer": "Yes. The application UI supports both Arabic and English, but resume document content is strictly English and LTR only to maintain global standards."
+    },
+    "q2": {
+      "question": "Does the platform support Arabic interface?",
+      "answer": "Yes! You can switch the entire application interface to Arabic (RTL) or English (LTR) at any time from the top navigation."
+    },
+    "q3": {
+      "question": "Are my resume drafts saved automatically?",
+      "answer": "Yes. Drafts are automatically saved to your browser's localStorage using a debounced autosave mechanism."
+    },
+    "q4": {
+      "question": "Are the AI analysis and job matching real external services?",
+      "answer": "Currently, analysis, matching, and text improvement run via deterministic local mock services as part of our front-end SaaS demonstration."
+    },
+    "q5": {
+      "question": "How is the PDF document exported?",
+      "answer": "PDF export uses your browser's native print interface (window.print()). Selecting 'Save as PDF' generates a clean A4 PDF file with selectable text."
+    },
+    "q6": {
+      "question": "Does using these templates guarantee job interviews?",
+      "answer": "No software can guarantee interviews. Our templates are designed for high readability and ATS best practices, but hiring decisions depend on employer criteria."
+    }
+  },
+  "finalCtaTitle": "Ready to Build Your Professional Resume?",
+  "finalCtaDesc": "Start now with our guided wizard or explore our collection of ATS-oriented templates."
 }

@@ -108,6 +108,23 @@ export function MobileNavigation({ className }) {
                 <ThemeToggle />
               </div>
             </div>
+
+            <div className="pt-2 border-t border-border/60 flex flex-col gap-2">
+              <NavLink
+                to={ROUTE_PATHS.SETTINGS}
+                onClick={() => setIsOpen(false)}
+                className="text-xs font-semibold text-foreground-secondary hover:text-foreground py-1.5"
+              >
+                {t('navigation:settings', { defaultValue: 'Settings' })}
+              </NavLink>
+              <NavLink
+                to={ROUTE_PATHS.LOGIN}
+                onClick={() => setIsOpen(false)}
+                className="text-xs font-semibold text-primary hover:underline py-1.5"
+              >
+                {t('navigation:login', { defaultValue: 'Login / Account' })}
+              </NavLink>
+            </div>
           </div>
         </div>
       </Modal>
