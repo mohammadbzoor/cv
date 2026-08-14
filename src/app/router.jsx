@@ -12,10 +12,11 @@ import TemplatesPage from '../pages/TemplatesPage';
 import HelpPage from '../pages/HelpPage';
 import NotFoundPage from '../pages/NotFoundPage';
 import DesignSystemPage from '../pages/DesignSystemPage';
+import CVStorePage from '../pages/CVStorePage';
 
 /**
  * Main router definition for CV Platform.
- * Configured with PublicLayout route hierarchy for public pages and standalone route for design system.
+ * Configured with PublicLayout route hierarchy for public pages and standalone routes for development tools.
  */
 export const router = createBrowserRouter([
   {
@@ -62,5 +63,9 @@ export const router = createBrowserRouter([
   {
     path: ROUTE_PATHS.DESIGN_SYSTEM,
     element: <DesignSystemPage />,
+  },
+  {
+    path: ROUTE_PATHS.CV_STORE,
+    element: <CVStorePage />,
   },
 ]);

@@ -11,6 +11,9 @@
 ## 🛠️ التقنيات المستخدمة
 
 - **الواجهة الأمامية (Frontend):** React.js (v19)
+- **إدارة الحالة (State Management):** Zustand (v5)
+- **التحقق من البيانات (Schema Validation):** Zod (v4)
+- **اختبار الوحدات البرمجية (Unit Testing):** Vitest (v4)
 - **أداة البناء والتطوير:** Vite (v8)
 - **لغة البرمجة:** JavaScript (ES6+) و JSX
 - **التدويل والتعدد اللغوي:** i18next (v25) + react-i18next (v16)
@@ -44,126 +47,111 @@ npm install
 npm run dev
 ```
 
-### 3. فحص جودة الكود (ESLint Linter)
+### 3. تشغيل اختبارات الوحدات (Unit Tests)
+
+```bash
+npm run test
+```
+
+### 4. فحص جودة الكود (ESLint Linter)
 
 ```bash
 npm run lint
 ```
 
-### 4. إنشاء حزمة الإنتاج (Production Build)
+### 5. إنشاء حزمة الإنتاج (Production Build)
 
 ```bash
 npm run build
 ```
 
-### 5. المعاينة المحلية لحزمة الإنتاج (Preview Build)
+---
 
-```bash
-npm run preview
+## 🗄️ نموذج بيانات السيرة الذاتية وإدارة الحالة (CV Data Model & State Architecture)
+
+> **Architectural Decision (English-Only CV Document):**
+> "The platform interface supports Arabic and English. However, CV documents, templates, schema exports, and generated previews are strictly English-only (`document.language = 'en'`) and always render in LTR document direction (`document.direction = 'ltr'`)."
+
+```text
+src/
+├── utils/
+│   └── generateId.js            # مولد معرفات فريدة آمن للواجهة مع fallback
+│
+├── features/cv/
+│   ├── models/                  # ثوابت ونماذج البيانات
+│   │   ├── cvConstants.js       # الإصدار (v1)، ثوابت اللغة والاتجاه وثوابت التصميم
+│   │   ├── cvSchema.js          # مخططات Zod للتحقق الهيكلي من البيانات
+│   │   ├── cvDefaults.js        # القيم الافتراضية المستقلة
+│   │   └── cvFactories.js       # دالات المصنع (Factories) لإنشاء العناصر والأقسام
+│   │
+│   ├── store/                   # طبقة إدارة الحالة (Zustand Store)
+│   │   ├── useCVStore.js        # المتجر الرئيسي والحالات والإجراءات
+│   │   ├── cvSelectors.js       # محددات الحالة الموضعية لمنع Re-renders
+│   │   ├── cvPersistence.js     # حفظ المسودة محلياً في localStorage
+│   │   └── cvMigrations.js      # معمارية الهجرة وتحديث الإصدارات
+│   │
+│   ├── utils/                   # أدوات ومعالجة البيانات
+│   │   ├── updateByPath.js      # التحديث غير القابل للتعديل المباشر والحماية من Prototype Pollution
+│   │   ├── normalizeCVData.js   # تطبيع البيانات وضمان كمال الأقسام والمعرفات
+│   │   ├── validateCVData.js    # الفحص الهيكلي وفحص جاهزية التصدير (Export Readiness)
+│   │   └── cvJsonTransfer.js    # تسلسل واستيراد وتصدير ملفات JSON
+│   │
+│   └── development/             # أدوات فحص وتطوير المتجر
+│       ├── CVStoreInspector.jsx
+│       └── CVDataSummary.jsx
+│
+└── pages/
+    └── CVStorePage.jsx          # مسار تطويري مستقل (/cv-store) لاختبار حالة المتجر
 ```
+
+### 🔐 الخصوصية والتخزين المحلي (LocalStorage Privacy Notice)
+
+- يتم حفظ مسودة السيرة الذاتية محلياً تحت المفتاح: `cv-platform-cv-draft`.
+- التخزين المحلي مؤقت وخاص بنفس الجهاز المتصفح، ولا يتم رفع أي بيانات حساسة إلى سيرفرات خارجية في هذه المرحلة.
+- يتم تجريد سجل التراجع (Undo/Redo History) والأخطاء وحالات الحفظ المؤقتة عند الحفظ في `localStorage`.
 
 ---
 
 ## 🏛️ معمارية الهيكل والتنقل (Layout & Navigation Architecture)
 
-تم تأسيس نظام التخطيط والتنقل العام للتطبيق باستخدام عناصر دلالية ومرنة تعتمد معايير الوصول الشامل (WAI-ARIA):
-
 ```text
-src/
-├── constants/
-│   └── navigation.js            # المصفوفة المركزية الموحدة لجميع عناصر التنقل
-│
-├── components/layout/
-│   ├── AppLayout/               # الهيكل البنائي الأساسي (header, main #main-content, footer)
-│   ├── PublicLayout/            # تغليف الهيكل العام مع ScrollToTop و Outlet
-│   ├── Navbar/                  # ترويسة التطبيق الثابتة sticky
-│   ├── DesktopNavigation/       # روابط التنقل لسطح المكتب مع aria-current="page"
-│   ├── MobileNavigation/        # قائمة الهاتف الجانبية (Drawer) مع التغليق التلقائي عند تغيير المسار
-│   ├── Footer/                  # تذييل الصفحات مع الحقوق وسنة ديناميكية وتنويه لغة CV
-│   ├── PageContainer/           # حاوي قياسي متجاوب بمقاسات مختلفة (sm, md, lg, xl, full)
-│   ├── PageHeader/              # ترويسة الصفحة مع مسار التصفح والعناوين والإجراءات
-│   ├── SkipLink/                # رابط تخطي المحتوى لسهولة الوصول عبر لوحة المفاتيح
-│   ├── Logo/                    # الشعار المهني الرسمي
-│   ├── Breadcrumbs/             # مسار التصفح التفاعلي WAI-ARIA
-│   └── ScrollToTop/             # إعادة موضع التمرير لأعلى الصفحة عند التبديل
-│
-├── features/shared/components/
-│   └── FeaturePlaceholder.jsx   # مكون عرض الصفحات قيد التطوير المستقبلية
-│
-└── pages/
-    ├── HomePage.jsx             # الصفحة الرئيسية
-    ├── CreatePage.jsx           # صفحة إنشاء سيرة ذاتية
-    ├── UploadPage.jsx           # صفحة رفع وتصدير سيرة
-    ├── AnalyzePage.jsx          # صفحة تحليل السيرة الذاتية (ATS)
-    ├── MatchPage.jsx            # صفحة مطابقة الوظيفة
-    ├── ImprovePage.jsx          # صفحة تحسين المحتوى بالذكاء الاصطناعي
-    ├── TemplatesPage.jsx        # صفحة استعراض القوالب
-    ├── HelpPage.jsx             # صفحة المساعدة والتعليمات
-    ├── NotFoundPage.jsx         # صفحة 404
-    └── DesignSystemPage.jsx     # صفحة نظام التصميم التطويرية
+PublicLayout
+├── /                         (HomePage)
+├── /create                   (CreatePage)
+├── /upload                   (UploadPage)
+├── /analyze                  (AnalyzePage)
+├── /match                    (MatchPage)
+├── /improve                  (ImprovePage)
+├── /templates                (TemplatesPage)
+├── /help                     (HelpPage)
+└── *                         (NotFoundPage)
+
+Standalone Dev Routes:
+├── /design-system            (DesignSystemPage)
+└── /cv-store                (CVStorePage - Zustand Inspector)
 ```
 
 ---
 
-## 🌐 نظام التدويل واللغات (i18n Architecture)
+## ✅ ما تم إنجازه في المرحلة السادسة (Phase 6 Accomplishments)
 
-> **Architectural Principle:**
-> "The application interface supports Arabic and English. CV content, templates, preview, and export are English-only and always use LTR document direction."
-
-- **واجهة التطبيق (App Interface):** العربية (`ar` / RTL) والإنجليزية (`en` / LTR).
-- **مستند السيرة الذاتية مستقبلاً (CV Document):** لغة إنجليزية ثابتة (`en` / LTR) دائماً.
-- **مفتاح localStorage للغة:** `cv-platform-language`
-- **Namespaces:** `common`, `navigation`, `home`, `designSystem`, `feedback`, `pages`.
-
----
-
-## 🎨 نظام الثيمات (Theme System)
-
-| الوضع | الوصف |
-| :--- | :--- |
-| `light` | الوضع الفاتح |
-| `dark` | الوضع الداكن |
-| `system` | يتبع تفضيل نظام التشغيل تلقائياً |
-
-- **مفتاح التخزين في localStorage:** `cv-platform-theme`
-- **Anti-Flash Script:** يفحص السمة واللغة في `index.html` قبل بناء React لضمان عدم الوميض عند التحميل.
-
----
-
-## 🧩 مكتبة مكونات الواجهة (Core UI Components Library)
-
-- **Button**, **Input**, **Textarea**, **Select**, **Checkbox**, **RadioGroup**, **Switch**, **Modal**, **Tabs**, **Accordion**, **Skeleton**, **Spinner**, **EmptyState**, **ErrorState**, **ConfirmDialog**, **FormField**, **Tooltip**, **ThemeToggle**, **LanguageSwitcher**.
-
----
-
-## 🛠️ صفحة نظام التصميم (Design System Page)
-
-متاحة في بيئة التطوير على المسار:
-```text
-/design-system
-```
-
----
-
-## ✅ ما تم إنجازه في المرحلة الخامسة (Phase 5 Accomplishments)
-
-1. إعداد الثوابت المركزية لأسماء المسارات (`routePaths.js`) وعناصر التنقل (`navigation.js`).
-2. بناء الهيكل البنائي `AppLayout` و `PublicLayout` باستخدام عناصر HTML5 الدلالية (`<header>`, `<nav>`, `<main id="main-content">`, `<footer>`).
-3. إدراج مكون `SkipLink` للانتقال المباشر للمحتوى الرئيسي لتعزيز إمكانية الوصول.
-4. تطوير `Navbar` الثابت أعلى الصفحة و `DesktopNavigation` مع تمييز الصفحة الحالية بـ `aria-current="page"`.
-5. تطوير `MobileNavigation` (Drawer) متوافق مع الوصول الشامل وإغلاق تلقائي عند تغيير المسار.
-6. تطوير `Footer` مع التنويه المعماري للـ CV وإدراج السنة الحالية برمجياً.
-7. إنشاء المكونات المساندة `PageContainer` و `PageHeader` و `Logo` و `Breadcrumbs` و `ScrollToTop`.
-8. إنشاء الصفحات المؤقتة للمسارات المستقبلية ومكون `FeaturePlaceholder`.
-9. إعداد مسارات React Router بروابط فرعية (Nested Layout Routes).
-10. تحديث ملفات الترجمة واجتياز اختبارات ESLint وبناء الإنتاج بنجاح كامل.
+1. تثبيت وتكامل `zustand` (v5) و `zod` (v4) و `vitest` (v4).
+2. بناء نموذج بيانات السيرة الذاتية الموحد برقم إصدار `schemaVersion: 1` وتثبيت لغة المستند بـ `en` واتجاهه بـ `ltr`.
+3. تصميم مخططات Zod المقسمة للفحص الهيكلي وتطوير دالتي `validateCVData` و `validateCVForExport`.
+4. إنشاء دالات المصنع (`cvFactories.js`) ومولد المعرفات الآمن (`generateId.js`).
+5. بناء متجر Zustand (`useCVStore.js`) مع دعم الإجراءات المحددة، الحفظ التلقائي المحلي، والتراجع والإعادة (Undo/Redo) لـ 50 لقطة.
+6. تطوير أداة التحديث الآمنة المباشرة `updateByPath.js` والحماية ضد ثغرات Prototype Pollution.
+7. إنشاء دالات استيراد وتصدير ملفات JSON الآمنة بدون `eval`.
+8. إنشاء صفحة التطوير الفعالة على المسار `/cv-store` لاختبار الـ Store واستعراض حالة البيانات والـ JSON المباشر.
+9. كتابة **23 اختبار وحدة (Unit Tests)** وتجاوزها جميعها بنجاح عبر `npm run test`.
+10. اجتياز فحوصات ESLint وبناء الإنتاج بنجاح كامل بدون أخطاء أو تحذيرات.
 
 ---
 
 ## 🔮 المراحل القادمة (Upcoming Phases)
 
-- **المرحلة السادسة:** نموذج بيانات السيرة الذاتية وإدارة الحالة (CV Data Model & State Management / Zustand).
-- **المرحلة السابعة:** محرر السيرة الذاتية وقوالب العرض (CV Builder & Templates).
+- **المرحلة السابعة:** نموذج إدخال السيرة الذاتية ومحرر السيرة (Create CV Multi-Step Form & Builder UI).
+- **المرحلة الثامنة:** معروض القوالب والمعاينة المباشرة (CV Templates & Live Preview Engine).
 
 ---
 

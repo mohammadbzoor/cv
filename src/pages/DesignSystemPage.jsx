@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Search, Mail, Lock, AlertCircle, ArrowRight, ArrowLeft, Plus, Trash2, Download, Eye, Home } from 'lucide-react';
+import { Search, Mail, Lock, AlertCircle, ArrowRight, ArrowLeft, Plus, Trash2, Download, Eye, Home, Database } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { ROUTE_PATHS } from '../app/routePaths';
 import { ThemeToggle } from '../components/ui/ThemeToggle';
@@ -44,406 +44,256 @@ export default function DesignSystemPage() {
             <Badge variant="primary" size="sm">{t('designSystem:devPhase')}</Badge>
           </div>
           <div className="flex items-center gap-3">
+            <Link to={ROUTE_PATHS.CV_STORE}>
+              <Button size="sm" variant="outline" leadingIcon={Database}>
+                CV Store
+              </Button>
+            </Link>
+            <Link to={ROUTE_PATHS.HOME}>
+              <Button size="sm" variant="ghost" leadingIcon={Home}>
+                {t('navigation:home')}
+              </Button>
+            </Link>
             <LanguageSwitcher />
             <ThemeToggle />
-            <Link
-              to={ROUTE_PATHS.HOME}
-              className="inline-flex items-center gap-2 px-3 py-2 text-sm text-foreground-secondary hover:text-foreground transition-colors"
-            >
-              <Home className="w-4 h-4" aria-hidden="true" />
-              <span>{t('navigation:home')}</span>
-            </Link>
           </div>
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 py-8 md:py-12 space-y-16">
+      {/* Main Content */}
+      <main className="max-w-6xl mx-auto px-4 py-8 space-y-12">
+        {/* Colors Section */}
+        <section>
+          <SectionTitle>{t('designSystem:colorPalette')}</SectionTitle>
+          <SectionDescription>{t('designSystem:colorPaletteDesc')}</SectionDescription>
 
-        {/* 1. FOUNDATIONS */}
-        <div className="space-y-10">
-          <div className="border-b border-border/80 pb-3">
-            <span className="text-xs font-semibold text-primary uppercase tracking-wider">1. Foundations</span>
-          </div>
-
-          {/* Theme Toggle */}
-          <section>
-            <SectionTitle>{t('designSystem:themeToggleSectionTitle')}</SectionTitle>
-            <SectionDescription>{t('designSystem:themeToggleSectionDesc')}</SectionDescription>
-            <div className="bg-surface rounded-xl border border-border p-6 flex items-center gap-4 flex-wrap">
-              <ThemeToggle />
-              <LanguageSwitcher />
-              <span className="text-sm text-foreground-secondary">{t('designSystem:themeToggleInstruction')}</span>
-            </div>
-          </section>
-
-          {/* Design Tokens */}
-          <section>
-            <SectionTitle>{t('designSystem:tokensSectionTitle')}</SectionTitle>
-            <SectionDescription>{t('designSystem:tokensSectionDesc')}</SectionDescription>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-              {[
-                { label: 'Primary', cls: 'bg-primary' },
-                { label: 'Primary Hover', cls: 'bg-primary-hover' },
-                { label: 'Primary Subtle', cls: 'bg-primary-subtle' },
-                { label: 'Secondary', cls: 'bg-secondary' },
-                { label: 'Secondary Hover', cls: 'bg-secondary-hover' },
-                { label: 'Secondary Subtle', cls: 'bg-secondary-subtle' },
-                { label: 'Accent', cls: 'bg-accent' },
-                { label: 'Accent Hover', cls: 'bg-accent-hover' },
-                { label: 'Accent Subtle', cls: 'bg-accent-subtle' },
-                { label: 'Success', cls: 'bg-success' },
-                { label: 'Warning', cls: 'bg-warning' },
-                { label: 'Danger', cls: 'bg-danger' },
-                { label: 'Surface', cls: 'bg-surface' },
-                { label: 'Surface Elevated', cls: 'bg-surface-elevated' },
-                { label: 'Surface Muted', cls: 'bg-surface-muted' },
-                { label: 'App Background', cls: 'bg-app-bg' },
-              ].map(({ label, cls }) => (
-                <div key={label} className="rounded-lg border border-border overflow-hidden">
-                  <div className={`h-12 ${cls}`} />
-                  <div className="px-3 py-2 bg-surface">
-                    <span className="text-xs text-foreground-secondary font-mono">{label}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Typography */}
-          <section>
-            <SectionTitle>{t('designSystem:typographySectionTitle')}</SectionTitle>
-            <SectionDescription>{t('designSystem:typographySectionDesc')}</SectionDescription>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-surface rounded-xl border border-border p-6 space-y-4">
-              <p className="text-3xl font-extrabold text-foreground">{t('designSystem:headingMain')}</p>
-              <p className="text-2xl font-bold text-foreground">{t('designSystem:headingSecondary')}</p>
-              <p className="text-xl font-bold text-foreground">{t('designSystem:headingSub')}</p>
-              <p className="text-lg font-semibold text-foreground">{t('designSystem:headingSmall')}</p>
-              <p className="text-base text-foreground">{t('designSystem:bodyText')}</p>
-              <p className="text-sm text-foreground-secondary">{t('designSystem:secondaryText')}</p>
-              <p className="text-xs text-foreground-muted">{t('designSystem:mutedText')}</p>
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-foreground">Deep Slate</span>
+                <span className="w-6 h-6 rounded-full bg-primary border border-border" />
+              </div>
+              <p className="text-xs text-foreground-secondary">{t('designSystem:deepSlateDesc')}</p>
             </div>
-          </section>
-        </div>
 
-        {/* 2. BUTTONS & INPUT PRIMITIVES */}
-        <div className="space-y-10">
-          <div className="border-b border-border/80 pb-3">
-            <span className="text-xs font-semibold text-primary uppercase tracking-wider">2. Core Primitives (Buttons & Text)</span>
+            <div className="bg-surface rounded-xl border border-border p-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-foreground">Muted Sage</span>
+                <span className="w-6 h-6 rounded-full bg-secondary border border-border" />
+              </div>
+              <p className="text-xs text-foreground-secondary">{t('designSystem:mutedSageDesc')}</p>
+            </div>
+
+            <div className="bg-surface rounded-xl border border-border p-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-foreground">Soft Terracotta</span>
+                <span className="w-6 h-6 rounded-full bg-accent border border-border" />
+              </div>
+              <p className="text-xs text-foreground-secondary">{t('designSystem:softTerracottaDesc')}</p>
+            </div>
           </div>
+        </section>
 
-          {/* Buttons */}
-          <section>
-            <SectionTitle>{t('designSystem:buttonsSectionTitle')}</SectionTitle>
-            <SectionDescription>{t('designSystem:buttonsSectionDesc')}</SectionDescription>
+        {/* Buttons Section */}
+        <section>
+          <SectionTitle>{t('designSystem:buttons')}</SectionTitle>
+          <SectionDescription>{t('designSystem:buttonsDesc')}</SectionDescription>
 
-            <div className="space-y-8">
-              <div className="bg-surface rounded-xl border border-border p-6 space-y-4">
-                <h3 className="text-sm font-semibold text-foreground-secondary">{t('designSystem:variantsSub')}</h3>
-                <div className="flex flex-wrap gap-3">
-                  <Button variant="primary">{t('designSystem:primaryBtn')}</Button>
-                  <Button variant="secondary">{t('designSystem:secondaryBtn')}</Button>
-                  <Button variant="outline">{t('designSystem:outlineBtn')}</Button>
-                  <Button variant="ghost">{t('designSystem:ghostBtn')}</Button>
-                  <Button variant="danger">{t('designSystem:dangerBtn')}</Button>
-                </div>
-              </div>
-
-              <div className="bg-surface rounded-xl border border-border p-6 space-y-4">
-                <h3 className="text-sm font-semibold text-foreground-secondary">{t('designSystem:sizesSub')}</h3>
-                <div className="flex flex-wrap items-center gap-3">
-                  <Button size="sm">{t('designSystem:btnSmall')}</Button>
-                  <Button size="md">{t('designSystem:btnMedium')}</Button>
-                  <Button size="lg">{t('designSystem:btnLarge')}</Button>
-                  <Button size="icon" aria-label="Add item">
-                    <Plus className="w-5 h-5" aria-hidden="true" />
-                  </Button>
-                </div>
-              </div>
-
-              <div className="bg-surface rounded-xl border border-border p-6 space-y-4">
-                <h3 className="text-sm font-semibold text-foreground-secondary">{t('designSystem:withIconsSub')}</h3>
-                <div className="flex flex-wrap gap-3">
-                  <Button leadingIcon={Download}>{t('designSystem:download')}</Button>
-                  <Button variant="secondary" trailingIcon={ActionArrow}>{t('designSystem:next')}</Button>
-                  <Button variant="danger" leadingIcon={Trash2}>{t('designSystem:delete')}</Button>
-                  <Button variant="outline" leadingIcon={Eye}>{t('designSystem:preview')}</Button>
-                </div>
-              </div>
-
-              <div className="bg-surface rounded-xl border border-border p-6 space-y-4">
-                <h3 className="text-sm font-semibold text-foreground-secondary">{t('designSystem:statesSub')}</h3>
-                <div className="flex flex-wrap gap-3">
-                  <Button loading>{t('designSystem:loadingBtn')}</Button>
-                  <Button variant="secondary" loading>{t('designSystem:savingBtn')}</Button>
-                  <Button disabled>{t('designSystem:disabledBtn')}</Button>
-                  <Button variant="outline" disabled>{t('designSystem:disabledOutline')}</Button>
-                </div>
+          <div className="bg-surface rounded-xl border border-border p-6 space-y-6">
+            <div className="space-y-3">
+              <h3 className="text-sm font-semibold text-foreground-secondary">{t('designSystem:variants')}</h3>
+              <div className="flex flex-wrap items-center gap-3">
+                <Button variant="primary">{t('designSystem:primaryBtn')}</Button>
+                <Button variant="secondary">{t('designSystem:secondaryBtn')}</Button>
+                <Button variant="outline">{t('designSystem:outlineBtn')}</Button>
+                <Button variant="ghost">{t('designSystem:ghostBtn')}</Button>
+                <Button variant="danger">{t('designSystem:dangerBtn')}</Button>
               </div>
             </div>
-          </section>
 
-          {/* Text Input */}
-          <section>
-            <SectionTitle>{t('designSystem:inputSectionTitle')}</SectionTitle>
-            <SectionDescription>{t('designSystem:inputSectionDesc')}</SectionDescription>
+            <div className="space-y-3">
+              <h3 className="text-sm font-semibold text-foreground-secondary">{t('designSystem:sizes')}</h3>
+              <div className="flex flex-wrap items-end gap-3">
+                <Button size="sm">{t('designSystem:smallBtn')}</Button>
+                <Button size="md">{t('designSystem:mediumBtn')}</Button>
+                <Button size="lg">{t('designSystem:largeBtn')}</Button>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <h3 className="text-sm font-semibold text-foreground-secondary">{t('designSystem:withIcons')}</h3>
+              <div className="flex flex-wrap items-center gap-3">
+                <Button leadingIcon={Plus}>{t('designSystem:addBtn')}</Button>
+                <Button trailingIcon={ActionArrow} variant="secondary">{t('designSystem:continueBtn')}</Button>
+                <Button leadingIcon={Download} variant="outline">{t('designSystem:downloadBtn')}</Button>
+                <Button leadingIcon={Trash2} variant="danger">{t('designSystem:deleteBtn')}</Button>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <h3 className="text-sm font-semibold text-foreground-secondary">{t('designSystem:states')}</h3>
+              <div className="flex flex-wrap items-center gap-3">
+                <Button loading>{t('designSystem:loadingBtn')}</Button>
+                <Button disabled>{t('designSystem:disabledBtn')}</Button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Inputs Section */}
+        <section>
+          <SectionTitle>{t('designSystem:formInputs')}</SectionTitle>
+          <SectionDescription>{t('designSystem:formInputsDesc')}</SectionDescription>
+
+          <div className="bg-surface rounded-xl border border-border p-6 space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Input
+                label={t('designSystem:emailLabel')}
+                placeholder="name@company.com"
+                helperText={t('designSystem:emailHelper')}
+                startIcon={Mail}
+              />
+              <Input
+                label={t('designSystem:passwordLabel')}
+                type="password"
+                placeholder="••••••••"
+                error={t('designSystem:passwordError')}
+                startIcon={Lock}
+                required
+              />
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-surface rounded-xl border border-border p-6 space-y-5">
-                <Input
-                  label={t('designSystem:fullNameLabel')}
-                  placeholder={t('designSystem:fullNamePlaceholder')}
-                  helperText={t('designSystem:fullNameHelper')}
-                />
-                <Input
-                  label={t('designSystem:emailLabel')}
-                  type="email"
-                  placeholder={t('designSystem:emailPlaceholder')}
-                  startIcon={Mail}
-                  required
-                />
-                <Input
-                  label={t('designSystem:passwordLabel')}
-                  type="password"
-                  placeholder="••••••••"
-                  startIcon={Lock}
-                  endIcon={Eye}
-                />
-              </div>
-
-              <div className="bg-surface rounded-xl border border-border p-6 space-y-5">
-                <Input
-                  label={t('designSystem:searchLabel')}
-                  placeholder={t('designSystem:searchPlaceholder')}
-                  startIcon={Search}
-                  helperText={t('designSystem:searchHelper')}
-                />
-                <Input
-                  label={t('designSystem:jobTitleLabel')}
-                  placeholder={t('designSystem:jobTitlePlaceholder')}
-                  error={t('designSystem:requiredFieldError')}
-                  endIcon={AlertCircle}
-                  required
-                />
-                <Input
-                  label={t('designSystem:disabledInputLabel')}
-                  placeholder={t('designSystem:disabledInputPlaceholder')}
-                  disabled
-                />
-              </div>
+              <Input
+                label={t('designSystem:searchLabel')}
+                placeholder={t('designSystem:searchPlaceholder')}
+                startIcon={Search}
+              />
+              <Input
+                label={t('designSystem:disabledInputLabel')}
+                value={t('designSystem:disabledInputValue')}
+                disabled
+              />
             </div>
-          </section>
 
-          {/* Textarea */}
-          <section>
-            <SectionTitle>{t('designSystem:textareaSectionTitle')}</SectionTitle>
-            <SectionDescription>{t('designSystem:textareaSectionDesc')}</SectionDescription>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-surface rounded-xl border border-border p-6 space-y-5">
-                <Textarea
-                  label={t('designSystem:summaryLabel')}
-                  placeholder={t('designSystem:summaryPlaceholder')}
-                  helperText={t('designSystem:summaryHelper')}
-                />
-                <Textarea
-                  label={t('designSystem:charLimitLabel')}
-                  placeholder={t('designSystem:charLimitPlaceholder')}
-                  maxLength={200}
-                  showCharacterCount
-                  defaultValue={t('designSystem:charLimitDefault')}
-                />
-              </div>
-
-              <div className="bg-surface rounded-xl border border-border p-6 space-y-5">
-                <Textarea
-                  label={t('designSystem:notesErrorLabel')}
-                  placeholder="..."
-                  error={t('designSystem:notesErrorMsg')}
-                />
-                <Textarea
-                  label={t('designSystem:disabledInputLabel')}
-                  placeholder={t('designSystem:disabledInputPlaceholder')}
-                  disabled
-                  rows={3}
-                />
-              </div>
-            </div>
-          </section>
-        </div>
-
-        {/* 3. FORM CONTROLS */}
-        <div className="space-y-10">
-          <div className="border-b border-border/80 pb-3">
-            <span className="text-xs font-semibold text-primary uppercase tracking-wider">3. Advanced Form Controls</span>
+            <Textarea
+              label={t('designSystem:bioLabel')}
+              placeholder={t('designSystem:bioPlaceholder')}
+              helperText={t('designSystem:bioHelper')}
+              maxLength={200}
+              showCount
+            />
           </div>
-          <FormControlsSection />
-        </div>
+        </section>
 
-        {/* 4. NAVIGATION & CARDS */}
-        <div className="space-y-10">
-          <div className="border-b border-border/80 pb-3">
-            <span className="text-xs font-semibold text-primary uppercase tracking-wider">4. Navigation & Containers</span>
-          </div>
+        {/* Form Controls Section */}
+        <FormControlsSection />
 
-          <NavigationSection />
+        {/* Navigation Controls Section */}
+        <NavigationSection />
 
-          {/* Cards */}
-          <section>
-            <SectionTitle>{t('designSystem:cardsSectionTitle')}</SectionTitle>
-            <SectionDescription>{t('designSystem:cardsSectionDesc')}</SectionDescription>
+        {/* Overlays Section */}
+        <OverlaysSection />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card variant="default">
-                <CardHeader>
-                  <CardTitle>{t('designSystem:defaultCardTitle')}</CardTitle>
-                  <CardDescription>{t('designSystem:defaultCardDesc')}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-foreground-secondary">{t('designSystem:defaultCardContent')}</p>
-                </CardContent>
-                <CardFooter>
-                  <Button size="sm">{t('designSystem:cardAction')}</Button>
-                  <Button size="sm" variant="ghost">{t('designSystem:cardCancel')}</Button>
-                </CardFooter>
-              </Card>
+        {/* Feedback Section */}
+        <FeedbackSection />
 
-              <Card variant="elevated">
-                <CardHeader>
-                  <CardTitle>{t('designSystem:elevatedCardTitle')}</CardTitle>
-                  <CardDescription>{t('designSystem:elevatedCardDesc')}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-foreground-secondary">{t('designSystem:elevatedCardContent')}</p>
-                </CardContent>
-                <CardFooter>
-                  <Button size="sm" variant="secondary">{t('designSystem:viewDetails')}</Button>
-                </CardFooter>
-              </Card>
+        {/* Cards Section */}
+        <section>
+          <SectionTitle>{t('designSystem:cards')}</SectionTitle>
+          <SectionDescription>{t('designSystem:cardsDesc')}</SectionDescription>
 
-              <Card variant="outlined">
-                <CardHeader>
-                  <CardTitle>{t('designSystem:outlinedCardTitle')}</CardTitle>
-                  <CardDescription>{t('designSystem:outlinedCardDesc')}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-foreground-secondary">{t('designSystem:outlinedCardContent')}</p>
-                </CardContent>
-              </Card>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>{t('designSystem:cardTitle1')}</CardTitle>
+                <CardDescription>{t('designSystem:cardDesc1')}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-xs text-foreground-secondary leading-relaxed">
+                  {t('designSystem:cardContent1')}
+                </p>
+              </CardContent>
+              <CardFooter>
+                <Button size="sm" variant="outline" className="w-full">{t('designSystem:viewDetails')}</Button>
+              </CardFooter>
+            </Card>
 
-              <Card variant="muted">
-                <CardHeader>
-                  <CardTitle>{t('designSystem:mutedCardTitle')}</CardTitle>
-                  <CardDescription>{t('designSystem:mutedCardDesc')}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-foreground-secondary">{t('designSystem:mutedCardContent')}</p>
-                </CardContent>
-              </Card>
-            </div>
-          </section>
-
-          {/* Badges */}
-          <section>
-            <SectionTitle>{t('designSystem:badgesSectionTitle')}</SectionTitle>
-            <SectionDescription>{t('designSystem:badgesSectionDesc')}</SectionDescription>
-
-            <div className="bg-surface rounded-xl border border-border p-6 space-y-6">
-              <div>
-                <h3 className="text-sm font-semibold text-foreground-secondary mb-3">{t('designSystem:mediumSize')}</h3>
-                <div className="flex flex-wrap gap-3">
-                  <Badge variant="neutral">{t('designSystem:badgeNeutral')}</Badge>
-                  <Badge variant="primary">{t('designSystem:badgePrimary')}</Badge>
-                  <Badge variant="secondary">{t('designSystem:badgeSecondary')}</Badge>
-                  <Badge variant="success">{t('designSystem:badgeSuccess')}</Badge>
-                  <Badge variant="warning">{t('designSystem:badgeWarning')}</Badge>
-                  <Badge variant="danger">{t('designSystem:badgeDanger')}</Badge>
-                  <Badge variant="accent">{t('designSystem:badgeAccent')}</Badge>
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle>{t('designSystem:cardTitle2')}</CardTitle>
+                  <Badge variant="success">{t('designSystem:activeBadge')}</Badge>
                 </div>
-              </div>
+                <CardDescription>{t('designSystem:cardDesc2')}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-xs text-foreground-secondary leading-relaxed">
+                  {t('designSystem:cardContent2')}
+                </p>
+              </CardContent>
+              <CardFooter>
+                <Button size="sm" variant="primary" className="w-full">{t('designSystem:editCv')}</Button>
+              </CardFooter>
+            </Card>
 
-              <div>
-                <h3 className="text-sm font-semibold text-foreground-secondary mb-3">{t('designSystem:smallSize')}</h3>
-                <div className="flex flex-wrap gap-3">
-                  <Badge variant="neutral" size="sm">{t('designSystem:badgeNeutral')}</Badge>
-                  <Badge variant="primary" size="sm">{t('designSystem:badgePrimary')}</Badge>
-                  <Badge variant="secondary" size="sm">{t('designSystem:badgeSecondary')}</Badge>
-                  <Badge variant="success" size="sm">{t('designSystem:badgeSuccess')}</Badge>
-                  <Badge variant="warning" size="sm">{t('designSystem:badgeWarning')}</Badge>
-                  <Badge variant="danger" size="sm">{t('designSystem:badgeDanger')}</Badge>
-                  <Badge variant="accent" size="sm">{t('designSystem:badgeAccent')}</Badge>
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle>{t('designSystem:cardTitle3')}</CardTitle>
+                  <Badge variant="warning">{t('designSystem:draftBadge')}</Badge>
                 </div>
+                <CardDescription>{t('designSystem:cardDesc3')}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-xs text-foreground-secondary leading-relaxed">
+                  {t('designSystem:cardContent3')}
+                </p>
+              </CardContent>
+              <CardFooter className="flex gap-2">
+                <Button size="sm" variant="outline" leadingIcon={Eye} className="flex-1">{t('designSystem:previewBtn')}</Button>
+                <Button size="sm" variant="primary" leadingIcon={Plus} className="flex-1">{t('designSystem:createBtn')}</Button>
+              </CardFooter>
+            </Card>
+          </div>
+        </section>
+
+        {/* Badges Section */}
+        <section>
+          <SectionTitle>{t('designSystem:badges')}</SectionTitle>
+          <SectionDescription>{t('designSystem:badgesDesc')}</SectionDescription>
+
+          <div className="bg-surface rounded-xl border border-border p-6 space-y-6">
+            <div className="space-y-3">
+              <h3 className="text-sm font-semibold text-foreground-secondary">{t('designSystem:badgeVariants')}</h3>
+              <div className="flex flex-wrap items-center gap-3">
+                <Badge variant="primary">{t('designSystem:primaryBadge')}</Badge>
+                <Badge variant="secondary">{t('designSystem:secondaryBadge')}</Badge>
+                <Badge variant="outline">{t('designSystem:outlineBadge')}</Badge>
+                <Badge variant="success">{t('designSystem:successBadge')}</Badge>
+                <Badge variant="warning">{t('designSystem:warningBadge')}</Badge>
+                <Badge variant="error">{t('designSystem:errorBadge')}</Badge>
               </div>
             </div>
-          </section>
-        </div>
 
-        {/* 5. OVERLAYS */}
-        <div className="space-y-10">
-          <div className="border-b border-border/80 pb-3">
-            <span className="text-xs font-semibold text-primary uppercase tracking-wider">5. Overlays & Dialogs</span>
-          </div>
-          <OverlaysSection />
-        </div>
-
-        {/* 6. FEEDBACK & STATES */}
-        <div className="space-y-10">
-          <div className="border-b border-border/80 pb-3">
-            <span className="text-xs font-semibold text-primary uppercase tracking-wider">6. Feedback & Application States</span>
-          </div>
-          <FeedbackSection />
-        </div>
-
-        {/* 7. BILINGUAL & LTR CV FIELD TEST */}
-        <div className="space-y-10">
-          <div className="border-b border-border/80 pb-3">
-            <span className="text-xs font-semibold text-primary uppercase tracking-wider">7. Bilingual & Document Direction Tests</span>
-          </div>
-          <section>
-            <SectionTitle>{t('designSystem:bilingualTestSectionTitle')}</SectionTitle>
-            <SectionDescription>{t('designSystem:bilingualTestSectionDesc')}</SectionDescription>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Interface Direction & Text Test</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-sm text-foreground leading-relaxed">
-                    {t('designSystem:rtlTestParagraph')}
-                  </p>
-                  <div className="flex flex-wrap gap-3">
-                    <Button leadingIcon={Plus} size="sm">{t('designSystem:cardAction')}</Button>
-                    <Input placeholder={t('designSystem:searchPlaceholder')} startIcon={Search} />
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>{t('designSystem:futureCvFieldTitle')}</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <Input
-                    label={t('designSystem:jobTitleLabel')}
-                    value="Full Stack Developer"
-                    dir="ltr"
-                    lang="en"
-                    readOnly
-                    helperText={t('designSystem:futureCvFieldHelper')}
-                  />
-                </CardContent>
-              </Card>
+            <div className="space-y-3">
+              <h3 className="text-sm font-semibold text-foreground-secondary">{t('designSystem:badgeSizes')}</h3>
+              <div className="flex flex-wrap items-end gap-3">
+                <Badge size="sm">{t('designSystem:smallBadge')}</Badge>
+                <Badge size="md">{t('designSystem:mediumBadge')}</Badge>
+              </div>
             </div>
-          </section>
-        </div>
 
+            <div className="space-y-3">
+              <h3 className="text-sm font-semibold text-foreground-secondary">{t('designSystem:badgeWithIcons')}</h3>
+              <div className="flex flex-wrap items-center gap-3">
+                <Badge variant="success" icon={AlertCircle}>{t('designSystem:atsMatchBadge')}</Badge>
+                <Badge variant="warning" icon={AlertCircle}>{t('designSystem:needsReviewBadge')}</Badge>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
-
-      {/* Footer */}
-      <footer className="bg-surface border-t border-border py-6 mt-auto">
-        <div className="max-w-6xl mx-auto px-4 text-center text-xs text-foreground-muted">
-          <p>{t('designSystem:footerText')}</p>
-        </div>
-      </footer>
     </div>
   );
 }

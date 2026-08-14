@@ -13,5 +13,6 @@ export const ROUTE_PATHS = Object.freeze({
   BUILDER: '/builder/:cvId?',
   HELP: '/help',
   DESIGN_SYSTEM: '/design-system',
+  CV_STORE: '/cv-store',
   NOT_FOUND: '*',
 });
