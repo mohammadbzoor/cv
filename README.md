@@ -11,6 +11,7 @@
 ## 🛠️ التقنيات المستخدمة
 
 - **الواجهة الأمامية (Frontend):** React.js (v19)
+- **نماذج البيانات وإدارتها (Forms):** React Hook Form (v7) + Zod Resolvers (v4)
 - **إدارة الحالة (State Management):** Zustand (v5)
 - **التحقق من البيانات (Schema Validation):** Zod (v4)
 - **اختبار الوحدات البرمجية (Unit Testing):** Vitest (v4)
@@ -67,91 +68,80 @@ npm run build
 
 ---
 
-## 🗄️ نموذج بيانات السيرة الذاتية وإدارة الحالة (CV Data Model & State Architecture)
+## 🧙‍♂️ معمارية معالج إنشاء السيرة الذاتية (Create CV Multi-Step Wizard)
 
-> **Architectural Decision (English-Only CV Document):**
-> "The platform interface supports Arabic and English. However, CV documents, templates, schema exports, and generated previews are strictly English-only (`document.language = 'en'`) and always render in LTR document direction (`document.direction = 'ltr'`)."
+> **قاعدة لغة محتوى السيرة الذاتية (English-Only Content):**
+> "تتبع نصوص الواجهة والتعليمات لغة التطبيق الحالية (عربي/إنجليزي)، بينما تُدخل جميع حقول السيرة الذاتية باللغة الإنجليزية حصرأً مع ضبط الاتجاه تلقائياً إلى LTR (`lang='en' dir='ltr'`)."
+
+### 📌 خطوات المعالج (9 Steps)
+
+1. **Welcome**: ترحيب وتوضيح قواعد المحتوى وخيار متابعة المسودة أو البدء بسيرة جديدة مع حوار التأكيد.
+2. **Personal Information**: بيانات الاسم الكامل، المسمى الوظيفي، التواصل والروابط المهنية مع وسم `autocomplete`.
+3. **Professional Summary**: النص الملخص مع عداد الحروف ونصائح كتابة الملخص المهني.
+4. **Experience**: الخبرات العملية الديناميكية عبر `useFieldArray` مع فحص منطق التواريخ وخيار الوظيفة الحالية.
+5. **Education**: المؤهلات التعليمية والدرجات العلمية والجامعات.
+6. **Skills**: المهارات التقنية والشخصية مع فئات ودرجات الإتقان.
+7. **Projects**: المشاريع البارزة مع روابط المعاينة والمستودع والتقنيات المستخدمة.
+8. **Additional Information**: الشهادات المعتمدة واللغات المتحدثة في تبويبات منظمة.
+9. **Review & Confirm**: مراجعة شاملة لجميع الأقسام، أزرار للانتقال السريع للخطوة، وفحص جاهزية التصدير (Export Readiness).
 
 ```text
-src/
+src/features/create/
+├── constants/
+│   └── wizardSteps.js           # تعريف الـ 9 خطوات وحقول التحقق الخاصة بكل خطوة
+├── schemas/
+│   └── createCVWizardSchema.js  # مخطط Zod المحسّن مع تحققات التواريخ المتقاطعة
 ├── utils/
-│   └── generateId.js            # مولد معرفات فريدة آمن للواجهة مع fallback
-│
-├── features/cv/
-│   ├── models/                  # ثوابت ونماذج البيانات
-│   │   ├── cvConstants.js       # الإصدار (v1)، ثوابت اللغة والاتجاه وثوابت التصميم
-│   │   ├── cvSchema.js          # مخططات Zod للتحقق الهيكلي من البيانات
-│   │   ├── cvDefaults.js        # القيم الافتراضية المستقلة
-│   │   └── cvFactories.js       # دالات المصنع (Factories) لإنشاء العناصر والأقسام
-│   │
-│   ├── store/                   # طبقة إدارة الحالة (Zustand Store)
-│   │   ├── useCVStore.js        # المتجر الرئيسي والحالات والإجراءات
-│   │   ├── cvSelectors.js       # محددات الحالة الموضعية لمنع Re-renders
-│   │   ├── cvPersistence.js     # حفظ المسودة محلياً في localStorage
-│   │   └── cvMigrations.js      # معمارية الهجرة وتحديث الإصدارات
-│   │
-│   ├── utils/                   # أدوات ومعالجة البيانات
-│   │   ├── updateByPath.js      # التحديث غير القابل للتعديل المباشر والحماية من Prototype Pollution
-│   │   ├── normalizeCVData.js   # تطبيع البيانات وضمان كمال الأقسام والمعرفات
-│   │   ├── validateCVData.js    # الفحص الهيكلي وفحص جاهزية التصدير (Export Readiness)
-│   │   └── cvJsonTransfer.js    # تسلسل واستيراد وتصدير ملفات JSON
-│   │
-│   └── development/             # أدوات فحص وتطوير المتجر
-│       ├── CVStoreInspector.jsx
-│       └── CVDataSummary.jsx
-│
-└── pages/
-    └── CVStorePage.jsx          # مسار تطويري مستقل (/cv-store) لاختبار حالة المتجر
+│   ├── mapStoreToForm.js        # تحويل بيانات Zustand إلى قيم React Hook Form الإبتدائية
+│   ├── mapFormToStore.js        # تحويل قيم Form إلى كائن Zustand cvData المطبع
+│   ├── getStepFields.js         # إرجاع حقول الخطوة للتحقق المرحلي
+│   └── focusFirstError.js       # التركيز التلقائي على أول حقل خاطئ للوصول الشامل
+├── components/
+│   ├── CreateCVWizard.jsx       # الحاوي الرئيسي المصل بالقوالب والحالة
+│   ├── WizardProgress.jsx       # شريط التقدم المتجاوب (Stepper للمكتب والجوال)
+│   ├── WizardNavigation.jsx     # شريط التنقل (السابق، التالي، حفظ مسودة، إنهاء)
+│   ├── EnglishContentNotice.jsx # تنبيه لغة محتوى السيرة الإنجليزية
+│   ├── FormSection.jsx          # حاوي أقسام الخطوات
+│   ├── ArrayItemCard.jsx        # حاوي عناصر القوائم الديناميكية مع حوار التأكيد
+│   ├── ReviewSection.jsx        # قسم المراجعة وزر التعديل المباشر
+│   └── UnsavedWizardGuard.jsx   # حماية التعديلات غير المحفوظة عند إغلاق التبويب
+└── steps/                       # الخطوات الـ 9 الفرعية
+    ├── WelcomeStep.jsx
+    ├── PersonalInfoStep.jsx
+    ├── SummaryStep.jsx
+    ├── ExperienceStep.jsx
+    ├── EducationStep.jsx
+    ├── SkillsStep.jsx
+    ├── ProjectsStep.jsx
+    ├── AdditionalInfoStep.jsx
+    └── ReviewStep.jsx
 ```
 
-### 🔐 الخصوصية والتخزين المحلي (LocalStorage Privacy Notice)
+---
+
+## 🔐 الخصوصية والتخزين المحلي (LocalStorage Privacy Notice)
 
 - يتم حفظ مسودة السيرة الذاتية محلياً تحت المفتاح: `cv-platform-cv-draft`.
 - التخزين المحلي مؤقت وخاص بنفس الجهاز المتصفح، ولا يتم رفع أي بيانات حساسة إلى سيرفرات خارجية في هذه المرحلة.
-- يتم تجريد سجل التراجع (Undo/Redo History) والأخطاء وحالات الحفظ المؤقتة عند الحفظ في `localStorage`.
 
 ---
 
-## 🏛️ معمارية الهيكل والتنقل (Layout & Navigation Architecture)
+## ✅ ما تم إنجازه في المرحلة السابعة (Sprint 7 Accomplishments)
 
-```text
-PublicLayout
-├── /                         (HomePage)
-├── /create                   (CreatePage)
-├── /upload                   (UploadPage)
-├── /analyze                  (AnalyzePage)
-├── /match                    (MatchPage)
-├── /improve                  (ImprovePage)
-├── /templates                (TemplatesPage)
-├── /help                     (HelpPage)
-└── *                         (NotFoundPage)
-
-Standalone Dev Routes:
-├── /design-system            (DesignSystemPage)
-└── /cv-store                (CVStorePage - Zustand Inspector)
-```
-
----
-
-## ✅ ما تم إنجازه في المرحلة السادسة (Phase 6 Accomplishments)
-
-1. تثبيت وتكامل `zustand` (v5) و `zod` (v4) و `vitest` (v4).
-2. بناء نموذج بيانات السيرة الذاتية الموحد برقم إصدار `schemaVersion: 1` وتثبيت لغة المستند بـ `en` واتجاهه بـ `ltr`.
-3. تصميم مخططات Zod المقسمة للفحص الهيكلي وتطوير دالتي `validateCVData` و `validateCVForExport`.
-4. إنشاء دالات المصنع (`cvFactories.js`) ومولد المعرفات الآمن (`generateId.js`).
-5. بناء متجر Zustand (`useCVStore.js`) مع دعم الإجراءات المحددة، الحفظ التلقائي المحلي، والتراجع والإعادة (Undo/Redo) لـ 50 لقطة.
-6. تطوير أداة التحديث الآمنة المباشرة `updateByPath.js` والحماية ضد ثغرات Prototype Pollution.
-7. إنشاء دالات استيراد وتصدير ملفات JSON الآمنة بدون `eval`.
-8. إنشاء صفحة التطوير الفعالة على المسار `/cv-store` لاختبار الـ Store واستعراض حالة البيانات والـ JSON المباشر.
-9. كتابة **23 اختبار وحدة (Unit Tests)** وتجاوزها جميعها بنجاح عبر `npm run test`.
-10. اجتياز فحوصات ESLint وبناء الإنتاج بنجاح كامل بدون أخطاء أو تحذيرات.
+1. تثبيت وتكامل `react-hook-form` (v7) و `@hookform/resolvers` (v4).
+2. بناء معالج إنشاء السيرة الذاتية الكامل ذو الـ 9 خطوات في صفحة `/create`.
+3. ربط `FormProvider` مع متجر Zustand عبر تحويلات `mapStoreToForm` و `mapFormToStore`.
+4. دعم حفظ المسودة اليدوي والمرحلي مع الحفظ التلقائي في `localStorage`.
+5. حظر أخطاء التواريخ المتقاطعة (تاريخ الانتهاء قبل البداية).
+6. دعم الحقول الإنجليزية الثابتة `lang="en" dir="ltr"` مع تنبيه بصري واضح.
+7. كتابة **30 اختبار وحدة** عبر `npm run test` وتجاوزها بنجاح 100%.
+8. اجتياز فحوصات ESLint وبناء الإنتاج بنجاح كامل دون تحذيرات أو أخطاء.
 
 ---
 
 ## 🔮 المراحل القادمة (Upcoming Phases)
 
-- **المرحلة السابعة:** نموذج إدخال السيرة الذاتية ومحرر السيرة (Create CV Multi-Step Form & Builder UI).
-- **المرحلة الثامنة:** معروض القوالب والمعاينة المباشرة (CV Templates & Live Preview Engine).
+- **المرحلة الثامنة:** محرر السيرة الذاتية ومعاين القوالب المباشر (CV Builder Core & Live Preview Engine).
 
 ---
 
