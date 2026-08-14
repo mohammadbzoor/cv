@@ -11,7 +11,7 @@
 ## 🛠️ التقنيات المستخدمة
 
 - **الواجهة الأمامية (Frontend):** React.js (v19)
-- **محرر المستند والمعاينة الحية:** CV Studio Builder Engine (A4 Live Preview + Inline Editing)
+- **نظام القوالب والمعاينة الحية:** Template Registry + Template Renderer (Classic ATS, Professional ATS, Developer ATS)
 - **نماذج البيانات وإدارتها (Forms):** React Hook Form (v7) + Zod Resolvers (v4)
 - **إدارة الحالة (State Management):** Zustand (v5)
 - **التحقق من البيانات (Schema Validation):** Zod (v4)
@@ -69,71 +69,61 @@ npm run build
 
 ---
 
-## 🏗️ معمارية المحرر والمعاينة الحية (CV Builder Studio Architecture)
+## 🎨 نظام القوالب ومعرض السير الذاتية (Template System & Gallery Architecture)
 
-> **حصرية اتجاه ومحتوى السيرة الذاتية (English-Only & LTR Document):**
-> "جميع حقول ومكونات ورقة المعاينة الحية والتعديل المباشر تلتزم دائماً بخصائص `lang='en' dir='ltr'` وخلفية بيضاء محايدة لصفحة A4، بغض النظر عن لغة واجهة المنصة الخارجية أو نمط الألوان (Dark/Light Mode)."
+> **إشعار توافق أنظمة ATS (ATS Disclaimer):**
+> "جميع القوالب مصممة للتحليل المباشر بواسطة أنظمة تتبع المتقدمين الشائعة (ATS). قد تختلف النتائج بين منصات التوظيف (Optimized for straightforward parsing by common applicant tracking systems. Results may vary between platforms)."
 
-### 🎨 مكونات محرك المحرر (Sprint 8 Features)
+### 🏛️ القوالب الأساسية الثلاثة (Sprint 9 Templates)
 
-1. **Builder Layout**: تقسيم ثلاثي الأجزاء للماكينات المكتبية (لوحة المحتوى، ورقة المعاينة A4، ولوحة التصميم) مع تبويب سفلي متجاوب للشاشات الصغيرة والجوال (`Content` / `Preview` / `Design`).
-2. **Builder Header**: شريط الأدوات العلوي مع مؤشر حالة الحفظ المحلي (`Saved locally`, `Unsaved changes`)، أزرار التراجع والإعادة (`Undo`/`Redo`)، حفظ المسودة، والتنقل السريع.
-3. **Live A4 Preview & BuilderDraftTemplate**: محرك معاينة ورقة A4 حقيقي (`210mm x 297mm`) مع قالب مسودة داخلي يعكس البيانات فورياً ويرتب الأقسام حسب `sectionOrder` ويستثني `hiddenSections`.
-4. **Inline Editing (`EditableField`)**: إمكانية التعديل المباشر التفاعلي عند النقر على حقول النص في ورقة المعاينة الحية، مع اختصارات الحفظ والإلغاء (`Enter`, `Shift+Enter`, `Escape`, `Blur`).
-5. **Section Manager**: إدارة ترتيب الأقسام عبر أزرار التحريك للأعلى والأسفل (`Up`/`Down`) وإمكانية إخفاء/إظهار أي قسم (`EyeToggle`).
-6. **Design Panel**: التحكم بلون التمييز الرئيسي (مع تنقية وتأمين رموز Hex)، نوع الخط من قائمة مسموحة (`SAFE_FONT_FAMILIES`)، حجم الخط، تباعد الأسطر والهوامش.
-7. **Zoom Controls**: التحكم بمستوى تكبير المعاينة (`50%` إلى `150%`) مع خيار ملاءمة الشاشة (`Fit Window`) وإعادة الضبط.
-8. **Keyboard Shortcuts**: دعم اختصارات لوحة المفاتيح `Ctrl+S` للحفظ، `Ctrl+Z` للتراجع، و `Ctrl+Y` / `Ctrl+Shift+Z` للإعادة.
-9. **Unsaved Guard**: حماية التعديلات غير المحفوظة عند محاولة محو المسودة أو إغلاق التبويب (`beforeunload`).
+1. **Classic ATS** (`ats-optimized`): قالب تخطيط عمودي كلاسيكي فائق البساطة خالٍ من الأعمدة والجداول المعقدة، يضمن أعلى توافق مسحي عبر أنظمة التوظيف.
+2. **Professional ATS** (`ats-optimized`): قالب تنفيذي مهني مع فواصل ناعمة وتنسيق أنيق ومناسب للمناصب الإدارية والمؤسسية.
+3. **Developer ATS** (`visually-enhanced` / `specialized`): قالب تقني متخصص للمطورين يبرز المهارات البرمجية، المشاريع، وروابط مستودعات GitHub والتقنيات.
 
 ```text
-src/features/builder/
-├── constants/ (builderConstants.js)
-├── utils/ (calculatePreviewScale.js, builderValidation.js, getSectionLabel.js)
-├── hooks/ (usePreviewZoom.js, useInlineEditing.js, useBuilderKeyboardShortcuts.js, useBuilderLayout.js)
+src/features/templates/
+├── constants/ (templateConstants.js)
+├── registry/ (templateRegistry.js, templateMetadata.js)
+├── utils/ (getTemplateById.js, getVisibleTemplateSections.js, filterTemplates.js, validateTemplateDefinition.js)
 ├── components/
-│   ├── BuilderLayout.jsx
-│   ├── BuilderHeader.jsx
-│   ├── ContentPanel.jsx
-│   ├── DesignPanel.jsx
-│   ├── PreviewPanel.jsx
-│   ├── CVPreview.jsx
-│   ├── PreviewPage.jsx
-│   ├── BuilderDraftTemplate.jsx
-│   ├── EditableField.jsx
-│   ├── SectionManager.jsx
-│   ├── SaveStatus.jsx
-│   ├── ZoomControls.jsx
-│   ├── EmptyDocumentNotice.jsx
-│   └── BuilderUnsavedGuard.jsx
-└── sections/ (PersonalInfoEditor.jsx, SummaryEditor.jsx, ExperienceEditor.jsx, EducationEditor.jsx, SkillsEditor.jsx, ProjectsEditor.jsx, CertificatesEditor.jsx, LanguagesEditor.jsx)
+│   ├── TemplateRenderer.jsx         # المحرك العام لعرض القالب المحدد
+│   ├── TemplateGallery.jsx          # المعرض التفاعلي للقوالب
+│   ├── TemplateCard.jsx             # بطاقة القالب مع خيار الاستخدام والمعاينة
+│   ├── TemplateFilters.jsx          # تصفية القوالب حسب التصنيف
+│   ├── TemplateThumbnail.jsx        # المصغرات البصرية الخفيفة عبر CSS
+│   ├── TemplateDetailsDialog.jsx    # حوار معاينة تفاصيل القالب وإشعار ATS
+│   └── TemplateCompatibilityBadge.jsx # شارة توافق أنظمة التوظيف
+└── templates/                       # القوالب الفردية
+    ├── shared/ (templateSharedUtils.js)
+    ├── ClassicATS/ (ClassicATSTemplate.jsx)
+    ├── ProfessionalATS/ (ProfessionalATSTemplate.jsx)
+    └── Developer/ (DeveloperTemplate.jsx)
 ```
 
 ---
 
-## 🔐 الخصوصية والتخزين المحلي (LocalStorage Privacy Notice)
+## 🔐 الخصوصية والحفاظ على البيانات (Data Preservation Policy)
 
-- يتم حفظ مسودة السيرة الذاتية محلياً تحت المفتاح: `cv-platform-cv-draft`.
-- التخزين المحلي مؤقت وخاص بنفس الجهاز المتصفح، ولا يتم رفع أي بيانات حساسة إلى سيرفرات خارجية في هذه المرحلة.
+- تغيير القالب من المعرض أو من Builder لا يؤدي إطلاقاً إلى مسح أو تغيير أية بيانات في السيرة الذاتية (`personalInfo`, `summary`, `experiences`, `education`, `skills`, `projects`, `certificates`, `languages`).
+- يتم تحديث `templateId` فقط مع حفظ اللقطة في سجل التراجع والتكرار (`Undo`/`Redo`).
 
 ---
 
-## ✅ ما تم إنجازه في المرحلة الثامنة (Sprint 8 Accomplishments)
+## ✅ ما تم إنجازه في المرحلة التاسعة (Sprint 9 Accomplishments)
 
-1. إنشاء المسار المستقل `/builder` وتحديث `ReviewStep` لتفعيل زر "Open CV Builder".
-2. بناء معمارية المحرر المتجاوبة `BuilderLayout` بخياراتها الثلاثية والمتحركة للجوال.
-3. تطوير مكون التعديل المباشر `EditableField` وتأمين عدم تسرب أكواد HTML أو تغيرات غير مرغوبة.
-4. تطوير معاينة ورقة A4 حية برمجية تدعم زوم `50%-150%` وملاءمة الشاشة.
-5. إنشاء لوحة التحكم الأقسام `SectionManager` للتنظيم والإخفاء.
-6. إضافة اختصارات لوحة المفاتيح `Ctrl+S`, `Ctrl+Z`, `Ctrl+Y`.
-7. كتابة **37 اختبار وحدة** عبر `npm run test` وتجاوزها بنجاح 100%.
-8. اجتياز فحوصات ESLint وبناء الإنتاج بنجاح كامل دون تحذيرات أو أخطاء.
+1. تأسيس سجل القوالب المركزي (`templateRegistry.js`) وعرض المكونات عبر `TemplateRenderer.jsx`.
+2. تصميم القوالب الثلاثة الأولى (`Classic ATS`, `Professional ATS`, `Developer ATS`) باللغة الإنجليزية واتجاه LTR حصرأً.
+3. بناء معرض القوالب التفاعلي في صفحة `/templates` مع تصفية التصنيفات وشارات التوافق مع ATS.
+4. دمج نظام القوالب مباشرة داخل محرر Builder Studio واستبدال المسودة المؤقتة بالنظام الجديد.
+5. المحافظة الكاملة على التعديل المباشر (`EditableField`) والترتيب والإخفاء وإعدادات الألوان والخطوط.
+6. كتابة **49 اختبار وحدة** عبر `npm run test` وتجاوزها بنجاح 100%.
+7. اجتياز فحوصات ESLint وبناء الإنتاج بنجاح كامل دون تحذيرات أو أخطاء.
 
 ---
 
 ## 🔮 المراحل القادمة (Upcoming Phases)
 
-- **المرحلة التاسعة:** سجل القوالب وقوالب ATS الاحترافية (Template Registry & ATS Templates Engine).
+- **المرحلة العاشرة:** واجهات رفع وتحليل وتطابق وتحسين السير الذاتية (Upload, Analyze, Match & Improve Interfaces).
 
 ---
 

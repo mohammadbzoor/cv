@@ -1,0 +1,39 @@
+{
+  "pageTitle": "Resume Template Gallery",
+  "pageDesc": "Choose from professionally formatted English resume templates optimized for Applicant Tracking Systems (ATS).",
+  "atsDisclaimer": "Optimized for straightforward parsing by common applicant tracking systems. Results may vary between platforms.",
+  "browseTemplates": "Browse All Templates",
+  "useTemplate": "Use This Template",
+  "selected": "Current Template",
+  "preview": "Preview Template",
+  "close": "Close",
+  "recommendedFor": "Recommended For",
+  "supportedSections": "Supported Sections",
+  "compatibility": "ATS Compatibility",
+  "noTemplatesFound": "No templates found matching the selected category.",
+  "categories": {
+    "all": "All Templates",
+    "ats": "ATS Optimized",
+    "specialized": "Specialized",
+    "visually-enhanced": "Visually Enhanced"
+  },
+  "compatibilityBadges": {
+    "ats-optimized": "ATS Optimized",
+    "visually-enhanced": "Visually Enhanced",
+    "specialized": "Specialized Role"
+  },
+  "items": {
+    "classicATS": {
+      "name": "Classic ATS",
+      "description": "Ultra-clean single-column vertical layout ensuring maximum parsing compatibility across standard ATS software."
+    },
+    "professionalATS": {
+      "name": "Professional ATS",
+      "description": "Refined executive presentation with subtle accent dividers, ideal for management and corporate roles."
+    },
+    "developer": {
+      "name": "Developer ATS",
+      "description": "Technical layout highlighting core skills, technology stacks, GitHub repositories, and software projects."
+    }
+  }
+}

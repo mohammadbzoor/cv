@@ -11,6 +11,7 @@ import arPages from './locales/ar/pages.json';
 import arCv from './locales/ar/cv.json';
 import arCreate from './locales/ar/create.json';
 import arBuilder from './locales/ar/builder.json';
+import arTemplates from './locales/ar/templates.json';
 
 import enCommon from './locales/en/common.json';
 import enNavigation from './locales/en/navigation.json';
@@ -21,6 +22,7 @@ import enPages from './locales/en/pages.json';
 import enCv from './locales/en/cv.json';
 import enCreate from './locales/en/create.json';
 import enBuilder from './locales/en/builder.json';
+import enTemplates from './locales/en/templates.json';
 
 function getInitialLanguage() {
   try {
@@ -48,6 +50,7 @@ i18n
         cv: arCv,
         create: arCreate,
         builder: arBuilder,
+        templates: arTemplates,
       },
       en: {
         common: enCommon,
@@ -59,12 +62,13 @@ i18n
         cv: enCv,
         create: enCreate,
         builder: enBuilder,
+        templates: enTemplates,
       },
     },
     lng: getInitialLanguage(),
     fallbackLng: FALLBACK_LANGUAGE,
     defaultNS: 'common',
-    ns: ['common', 'navigation', 'home', 'designSystem', 'feedback', 'pages', 'cv', 'create', 'builder'],
+    ns: ['common', 'navigation', 'home', 'designSystem', 'feedback', 'pages', 'cv', 'create', 'builder', 'templates'],
     interpolation: {
       escapeValue: false, // React already escapes string values
     },

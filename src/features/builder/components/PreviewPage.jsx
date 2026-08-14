@@ -1,6 +1,6 @@
 import { useCVStore } from '../../cv/store/useCVStore';
-import { selectCVData } from '../../cv/store/cvSelectors';
-import { BuilderDraftTemplate } from './BuilderDraftTemplate';
+import { selectCVData, selectTemplateId } from '../../cv/store/cvSelectors';
+import { TemplateRenderer } from '../../templates/components/TemplateRenderer';
 import { EmptyDocumentNotice } from './EmptyDocumentNotice';
 
 /**
@@ -9,6 +9,8 @@ import { EmptyDocumentNotice } from './EmptyDocumentNotice';
  */
 export function PreviewPage() {
   const cvData = useCVStore(selectCVData);
+  const templateId = useCVStore(selectTemplateId);
+  const updateField = useCVStore((state) => state.updateField);
 
   const hasContent = Boolean(
     cvData?.personalInfo?.fullName ||
@@ -25,7 +27,16 @@ export function PreviewPage() {
       dir="ltr"
       className="w-[210mm] min-h-[297mm] bg-white text-slate-900 shadow-xl rounded-sm overflow-hidden select-text relative transition-shadow"
     >
-      {hasContent ? <BuilderDraftTemplate /> : <EmptyDocumentNotice />}
+      {hasContent ? (
+        <TemplateRenderer
+          templateId={templateId}
+          cvData={cvData}
+          editable={true}
+          onFieldCommit={(path, val) => updateField(path, val)}
+        />
+      ) : (
+        <EmptyDocumentNotice />
+      )}
     </div>
   );
 }

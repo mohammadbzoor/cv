@@ -1,0 +1,39 @@
+{
+  "pageTitle": "معرض قوالب السيرة الذاتية",
+  "pageDesc": "اختر من بين قوالب السيرة الذاتية الإنجليزية المصممة خصيصاً للتوافق مع أنظمة التوظيف ATS.",
+  "atsDisclaimer": "مُصممة للتحليل المباشر بواسطة أنظمة تتبع المتقدمين الشائعة (ATS). قد تختلف النتائج بين منصات التوظيف.",
+  "browseTemplates": "استعراض جميع القوالب",
+  "useTemplate": "استخدام هذا القالب",
+  "selected": "القالب المختار",
+  "preview": "معاينة القالب",
+  "close": "إغلاق",
+  "recommendedFor": "موصى به لـ",
+  "supportedSections": "الأقسام المدعومة",
+  "compatibility": "توافق أنظمة التوظيف",
+  "noTemplatesFound": "لم يتم العثور على قوالب تطابق التصنيف المحدد.",
+  "categories": {
+    "all": "جميع القوالب",
+    "ats": "معتمدة لأنظمة ATS",
+    "specialized": "متخصصة",
+    "visually-enhanced": "محسنة بصرياً"
+  },
+  "compatibilityBadges": {
+    "ats-optimized": "محسّن لأنظمة ATS",
+    "visually-enhanced": "مظهر بصري محسّن",
+    "specialized": "قالب متخصص"
+  },
+  "items": {
+    "classicATS": {
+      "name": "Classic ATS",
+      "description": "قالب تخطيط عمودي كلاسيكي فائق البساطة، يضمن أعلى درجات وضوح القراءة والتحليل لدى أنظمة ATS المسحية."
+    },
+    "professionalATS": {
+      "name": "Professional ATS",
+      "description": "تنسيق مهني أنيق مع فاصل عناوين ناعم، ممتاز للأدوار الإدارية والاستشارية والمؤسسية."
+    },
+    "developer": {
+      "name": "Developer ATS",
+      "description": "قالب مهيكل للمطورين والمهندسين يبرز المهارات التقنية، المشاريع والروابط ورخص التقنيات."
+    }
+  }
+}
