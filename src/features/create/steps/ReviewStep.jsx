@@ -1,4 +1,5 @@
 import { useFormContext } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { CheckCircle2, AlertCircle, LayoutTemplate } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { validateCVForExport } from '../../cv/utils/validateCVData';
@@ -6,10 +7,16 @@ import { mapFormToStore } from '../utils/mapFormToStore';
 import { FormSection } from '../components/FormSection';
 import { ReviewSection } from '../components/ReviewSection';
 import { Button } from '../../../components/ui/Button';
+import { useCVStore } from '../../cv/store/useCVStore';
+import { ROUTE_PATHS } from '../../../app/routePaths';
 
 export function ReviewStep({ onJumpToStep, isFinished }) {
   const { t } = useTranslation('create');
+  const navigate = useNavigate();
   const { getValues } = useFormContext();
+
+  const replaceCVData = useCVStore((state) => state.replaceCVData);
+  const markSaved = useCVStore((state) => state.markSaved);
 
   const formValues = getValues();
   const cvStoreData = mapFormToStore(formValues);
@@ -22,6 +29,12 @@ export function ReviewStep({ onJumpToStep, isFinished }) {
   const projects = formValues.projects || [];
   const certificates = formValues.certificates || [];
   const languages = formValues.languages || [];
+
+  function handleOpenBuilder() {
+    replaceCVData(cvStoreData);
+    markSaved();
+    navigate(ROUTE_PATHS.BUILDER);
+  }
 
   return (
     <FormSection
@@ -36,7 +49,7 @@ export function ReviewStep({ onJumpToStep, isFinished }) {
             <div className="space-y-1">
               <strong className="font-bold block">Document Ready for Export & Template Rendering!</strong>
               <p className="text-foreground-secondary">
-                All structural and export completeness requirements are met. You can now finalize your resume data.
+                All structural and export completeness requirements are met. You can now open your resume in the Studio Builder.
               </p>
             </div>
           </div>
@@ -67,7 +80,7 @@ export function ReviewStep({ onJumpToStep, isFinished }) {
               </p>
             </div>
             <div className="pt-2">
-              <Button disabled leadingIcon={LayoutTemplate}>
+              <Button leadingIcon={LayoutTemplate} onClick={handleOpenBuilder}>
                 {t('openBuilder')}
               </Button>
             </div>

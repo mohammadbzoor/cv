@@ -20,6 +20,7 @@ export const selectSectionOrder = (state) => state.cvData?.sectionOrder || EMPTY
 export const selectHiddenSections = (state) => state.cvData?.hiddenSections || EMPTY_ARRAY;
 
 export const selectCVStatus = (state) => state.status;
+export const selectStatus = selectCVStatus;
 export const selectIsDirty = (state) => state.isDirty;
 export const selectCanUndo = (state) => state.history.length > 0;
 export const selectCanRedo = (state) => state.future.length > 0;

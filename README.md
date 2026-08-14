@@ -11,6 +11,7 @@
 ## 🛠️ التقنيات المستخدمة
 
 - **الواجهة الأمامية (Frontend):** React.js (v19)
+- **محرر المستند والمعاينة الحية:** CV Studio Builder Engine (A4 Live Preview + Inline Editing)
 - **نماذج البيانات وإدارتها (Forms):** React Hook Form (v7) + Zod Resolvers (v4)
 - **إدارة الحالة (State Management):** Zustand (v5)
 - **التحقق من البيانات (Schema Validation):** Zod (v4)
@@ -68,53 +69,44 @@ npm run build
 
 ---
 
-## 🧙‍♂️ معمارية معالج إنشاء السيرة الذاتية (Create CV Multi-Step Wizard)
+## 🏗️ معمارية المحرر والمعاينة الحية (CV Builder Studio Architecture)
 
-> **قاعدة لغة محتوى السيرة الذاتية (English-Only Content):**
-> "تتبع نصوص الواجهة والتعليمات لغة التطبيق الحالية (عربي/إنجليزي)، بينما تُدخل جميع حقول السيرة الذاتية باللغة الإنجليزية حصرأً مع ضبط الاتجاه تلقائياً إلى LTR (`lang='en' dir='ltr'`)."
+> **حصرية اتجاه ومحتوى السيرة الذاتية (English-Only & LTR Document):**
+> "جميع حقول ومكونات ورقة المعاينة الحية والتعديل المباشر تلتزم دائماً بخصائص `lang='en' dir='ltr'` وخلفية بيضاء محايدة لصفحة A4، بغض النظر عن لغة واجهة المنصة الخارجية أو نمط الألوان (Dark/Light Mode)."
 
-### 📌 خطوات المعالج (9 Steps)
+### 🎨 مكونات محرك المحرر (Sprint 8 Features)
 
-1. **Welcome**: ترحيب وتوضيح قواعد المحتوى وخيار متابعة المسودة أو البدء بسيرة جديدة مع حوار التأكيد.
-2. **Personal Information**: بيانات الاسم الكامل، المسمى الوظيفي، التواصل والروابط المهنية مع وسم `autocomplete`.
-3. **Professional Summary**: النص الملخص مع عداد الحروف ونصائح كتابة الملخص المهني.
-4. **Experience**: الخبرات العملية الديناميكية عبر `useFieldArray` مع فحص منطق التواريخ وخيار الوظيفة الحالية.
-5. **Education**: المؤهلات التعليمية والدرجات العلمية والجامعات.
-6. **Skills**: المهارات التقنية والشخصية مع فئات ودرجات الإتقان.
-7. **Projects**: المشاريع البارزة مع روابط المعاينة والمستودع والتقنيات المستخدمة.
-8. **Additional Information**: الشهادات المعتمدة واللغات المتحدثة في تبويبات منظمة.
-9. **Review & Confirm**: مراجعة شاملة لجميع الأقسام، أزرار للانتقال السريع للخطوة، وفحص جاهزية التصدير (Export Readiness).
+1. **Builder Layout**: تقسيم ثلاثي الأجزاء للماكينات المكتبية (لوحة المحتوى، ورقة المعاينة A4، ولوحة التصميم) مع تبويب سفلي متجاوب للشاشات الصغيرة والجوال (`Content` / `Preview` / `Design`).
+2. **Builder Header**: شريط الأدوات العلوي مع مؤشر حالة الحفظ المحلي (`Saved locally`, `Unsaved changes`)، أزرار التراجع والإعادة (`Undo`/`Redo`)، حفظ المسودة، والتنقل السريع.
+3. **Live A4 Preview & BuilderDraftTemplate**: محرك معاينة ورقة A4 حقيقي (`210mm x 297mm`) مع قالب مسودة داخلي يعكس البيانات فورياً ويرتب الأقسام حسب `sectionOrder` ويستثني `hiddenSections`.
+4. **Inline Editing (`EditableField`)**: إمكانية التعديل المباشر التفاعلي عند النقر على حقول النص في ورقة المعاينة الحية، مع اختصارات الحفظ والإلغاء (`Enter`, `Shift+Enter`, `Escape`, `Blur`).
+5. **Section Manager**: إدارة ترتيب الأقسام عبر أزرار التحريك للأعلى والأسفل (`Up`/`Down`) وإمكانية إخفاء/إظهار أي قسم (`EyeToggle`).
+6. **Design Panel**: التحكم بلون التمييز الرئيسي (مع تنقية وتأمين رموز Hex)، نوع الخط من قائمة مسموحة (`SAFE_FONT_FAMILIES`)، حجم الخط، تباعد الأسطر والهوامش.
+7. **Zoom Controls**: التحكم بمستوى تكبير المعاينة (`50%` إلى `150%`) مع خيار ملاءمة الشاشة (`Fit Window`) وإعادة الضبط.
+8. **Keyboard Shortcuts**: دعم اختصارات لوحة المفاتيح `Ctrl+S` للحفظ، `Ctrl+Z` للتراجع، و `Ctrl+Y` / `Ctrl+Shift+Z` للإعادة.
+9. **Unsaved Guard**: حماية التعديلات غير المحفوظة عند محاولة محو المسودة أو إغلاق التبويب (`beforeunload`).
 
 ```text
-src/features/create/
-├── constants/
-│   └── wizardSteps.js           # تعريف الـ 9 خطوات وحقول التحقق الخاصة بكل خطوة
-├── schemas/
-│   └── createCVWizardSchema.js  # مخطط Zod المحسّن مع تحققات التواريخ المتقاطعة
-├── utils/
-│   ├── mapStoreToForm.js        # تحويل بيانات Zustand إلى قيم React Hook Form الإبتدائية
-│   ├── mapFormToStore.js        # تحويل قيم Form إلى كائن Zustand cvData المطبع
-│   ├── getStepFields.js         # إرجاع حقول الخطوة للتحقق المرحلي
-│   └── focusFirstError.js       # التركيز التلقائي على أول حقل خاطئ للوصول الشامل
+src/features/builder/
+├── constants/ (builderConstants.js)
+├── utils/ (calculatePreviewScale.js, builderValidation.js, getSectionLabel.js)
+├── hooks/ (usePreviewZoom.js, useInlineEditing.js, useBuilderKeyboardShortcuts.js, useBuilderLayout.js)
 ├── components/
-│   ├── CreateCVWizard.jsx       # الحاوي الرئيسي المصل بالقوالب والحالة
-│   ├── WizardProgress.jsx       # شريط التقدم المتجاوب (Stepper للمكتب والجوال)
-│   ├── WizardNavigation.jsx     # شريط التنقل (السابق، التالي، حفظ مسودة، إنهاء)
-│   ├── EnglishContentNotice.jsx # تنبيه لغة محتوى السيرة الإنجليزية
-│   ├── FormSection.jsx          # حاوي أقسام الخطوات
-│   ├── ArrayItemCard.jsx        # حاوي عناصر القوائم الديناميكية مع حوار التأكيد
-│   ├── ReviewSection.jsx        # قسم المراجعة وزر التعديل المباشر
-│   └── UnsavedWizardGuard.jsx   # حماية التعديلات غير المحفوظة عند إغلاق التبويب
-└── steps/                       # الخطوات الـ 9 الفرعية
-    ├── WelcomeStep.jsx
-    ├── PersonalInfoStep.jsx
-    ├── SummaryStep.jsx
-    ├── ExperienceStep.jsx
-    ├── EducationStep.jsx
-    ├── SkillsStep.jsx
-    ├── ProjectsStep.jsx
-    ├── AdditionalInfoStep.jsx
-    └── ReviewStep.jsx
+│   ├── BuilderLayout.jsx
+│   ├── BuilderHeader.jsx
+│   ├── ContentPanel.jsx
+│   ├── DesignPanel.jsx
+│   ├── PreviewPanel.jsx
+│   ├── CVPreview.jsx
+│   ├── PreviewPage.jsx
+│   ├── BuilderDraftTemplate.jsx
+│   ├── EditableField.jsx
+│   ├── SectionManager.jsx
+│   ├── SaveStatus.jsx
+│   ├── ZoomControls.jsx
+│   ├── EmptyDocumentNotice.jsx
+│   └── BuilderUnsavedGuard.jsx
+└── sections/ (PersonalInfoEditor.jsx, SummaryEditor.jsx, ExperienceEditor.jsx, EducationEditor.jsx, SkillsEditor.jsx, ProjectsEditor.jsx, CertificatesEditor.jsx, LanguagesEditor.jsx)
 ```
 
 ---
@@ -126,22 +118,22 @@ src/features/create/
 
 ---
 
-## ✅ ما تم إنجازه في المرحلة السابعة (Sprint 7 Accomplishments)
+## ✅ ما تم إنجازه في المرحلة الثامنة (Sprint 8 Accomplishments)
 
-1. تثبيت وتكامل `react-hook-form` (v7) و `@hookform/resolvers` (v4).
-2. بناء معالج إنشاء السيرة الذاتية الكامل ذو الـ 9 خطوات في صفحة `/create`.
-3. ربط `FormProvider` مع متجر Zustand عبر تحويلات `mapStoreToForm` و `mapFormToStore`.
-4. دعم حفظ المسودة اليدوي والمرحلي مع الحفظ التلقائي في `localStorage`.
-5. حظر أخطاء التواريخ المتقاطعة (تاريخ الانتهاء قبل البداية).
-6. دعم الحقول الإنجليزية الثابتة `lang="en" dir="ltr"` مع تنبيه بصري واضح.
-7. كتابة **30 اختبار وحدة** عبر `npm run test` وتجاوزها بنجاح 100%.
+1. إنشاء المسار المستقل `/builder` وتحديث `ReviewStep` لتفعيل زر "Open CV Builder".
+2. بناء معمارية المحرر المتجاوبة `BuilderLayout` بخياراتها الثلاثية والمتحركة للجوال.
+3. تطوير مكون التعديل المباشر `EditableField` وتأمين عدم تسرب أكواد HTML أو تغيرات غير مرغوبة.
+4. تطوير معاينة ورقة A4 حية برمجية تدعم زوم `50%-150%` وملاءمة الشاشة.
+5. إنشاء لوحة التحكم الأقسام `SectionManager` للتنظيم والإخفاء.
+6. إضافة اختصارات لوحة المفاتيح `Ctrl+S`, `Ctrl+Z`, `Ctrl+Y`.
+7. كتابة **37 اختبار وحدة** عبر `npm run test` وتجاوزها بنجاح 100%.
 8. اجتياز فحوصات ESLint وبناء الإنتاج بنجاح كامل دون تحذيرات أو أخطاء.
 
 ---
 
 ## 🔮 المراحل القادمة (Upcoming Phases)
 
-- **المرحلة الثامنة:** محرر السيرة الذاتية ومعاين القوالب المباشر (CV Builder Core & Live Preview Engine).
+- **المرحلة التاسعة:** سجل القوالب وقوالب ATS الاحترافية (Template Registry & ATS Templates Engine).
 
 ---
 
