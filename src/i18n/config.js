@@ -12,6 +12,10 @@ import arCv from './locales/ar/cv.json';
 import arCreate from './locales/ar/create.json';
 import arBuilder from './locales/ar/builder.json';
 import arTemplates from './locales/ar/templates.json';
+import arUpload from './locales/ar/upload.json';
+import arAnalyze from './locales/ar/analyze.json';
+import arMatch from './locales/ar/match.json';
+import arImprove from './locales/ar/improve.json';
 
 import enCommon from './locales/en/common.json';
 import enNavigation from './locales/en/navigation.json';
@@ -23,6 +27,10 @@ import enCv from './locales/en/cv.json';
 import enCreate from './locales/en/create.json';
 import enBuilder from './locales/en/builder.json';
 import enTemplates from './locales/en/templates.json';
+import enUpload from './locales/en/upload.json';
+import enAnalyze from './locales/en/analyze.json';
+import enMatch from './locales/en/match.json';
+import enImprove from './locales/en/improve.json';
 
 function getInitialLanguage() {
   try {
@@ -51,6 +59,10 @@ i18n
         create: arCreate,
         builder: arBuilder,
         templates: arTemplates,
+        upload: arUpload,
+        analyze: arAnalyze,
+        match: arMatch,
+        improve: arImprove,
       },
       en: {
         common: enCommon,
@@ -63,12 +75,31 @@ i18n
         create: enCreate,
         builder: enBuilder,
         templates: enTemplates,
+        upload: enUpload,
+        analyze: enAnalyze,
+        match: enMatch,
+        improve: enImprove,
       },
     },
     lng: getInitialLanguage(),
     fallbackLng: FALLBACK_LANGUAGE,
     defaultNS: 'common',
-    ns: ['common', 'navigation', 'home', 'designSystem', 'feedback', 'pages', 'cv', 'create', 'builder', 'templates'],
+    ns: [
+      'common',
+      'navigation',
+      'home',
+      'designSystem',
+      'feedback',
+      'pages',
+      'cv',
+      'create',
+      'builder',
+      'templates',
+      'upload',
+      'analyze',
+      'match',
+      'improve',
+    ],
     interpolation: {
       escapeValue: false, // React already escapes string values
     },

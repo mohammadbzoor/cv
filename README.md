@@ -11,6 +11,8 @@
 ## 🛠️ التقنيات المستخدمة
 
 - **الواجهة الأمامية (Frontend):** React.js (v19)
+- **خدمات الذكاء الاصطناعي والمحاكاة (AI Intelligence Services):** Mock Service Layer + Zod Response Schemas
+- **استخراج البيانات والمطابقة (Upload, Analyze, Match, Improve):** Async Mock Client + AbortController + Diff Viewer
 - **نظام القوالب والمعاينة الحية:** Template Registry + Template Renderer (Classic ATS, Professional ATS, Developer ATS)
 - **نماذج البيانات وإدارتها (Forms):** React Hook Form (v7) + Zod Resolvers (v4)
 - **إدارة الحالة (State Management):** Zustand (v5)
@@ -69,61 +71,72 @@ npm run build
 
 ---
 
-## 🎨 نظام القوالب ومعرض السير الذاتية (Template System & Gallery Architecture)
+## 🤖 طبقة خدمات الذكاء الاصطناعي والمحاكاة (Intelligence Services Architecture)
 
-> **إشعار توافق أنظمة ATS (ATS Disclaimer):**
-> "جميع القوالب مصممة للتحليل المباشر بواسطة أنظمة تتبع المتقدمين الشائعة (ATS). قد تختلف النتائج بين منصات التوظيف (Optimized for straightforward parsing by common applicant tracking systems. Results may vary between platforms)."
+> **إشعار النمط التجريبي للمحاكاة (Demo Simulation Notice):**
+> "جميع واجهات الرفع، التحليل الهيكلي، مطابقة الوصف الوظيفي، وتوليد التحسينات تعمل حالياً عبر طبقة خدمات محاكاة محلية آمنة (Mock Service Layer) مدعومة بعقود Zod القياسية لتسهيل الربط مع السيرفرات الحقيقية مستقبلاً دون إعادة بناء الواجهات."
 
-### 🏛️ القوالب الأساسية الثلاثة (Sprint 9 Templates)
+### 🏛️ المكونات والواجهات الرئيسية (Sprint 10 Modules)
 
-1. **Classic ATS** (`ats-optimized`): قالب تخطيط عمودي كلاسيكي فائق البساطة خالٍ من الأعمدة والجداول المعقدة، يضمن أعلى توافق مسحي عبر أنظمة التوظيف.
-2. **Professional ATS** (`ats-optimized`): قالب تنفيذي مهني مع فواصل ناعمة وتنسيق أنيق ومناسب للمناصب الإدارية والمؤسسية.
-3. **Developer ATS** (`visually-enhanced` / `specialized`): قالب تقني متخصص للمطورين يبرز المهارات البرمجية، المشاريع، وروابط مستودعات GitHub والتقنيات.
+1. **مكون الرفع والاستخراج (`UploadPage` & `DropZone`):**
+   - منطقة سحب وإسقاط متوافقة مع معايير الوصولية تدعم ملفات PDF و DOCX بحجم أقصى 5MB (`validateFile`).
+   - استخراج بيانات محاكاة ومراجعتها قبل استكمال التعديل في المحرر (`replaceCVData`).
+2. **واجهة التحليل الهيكلي (`AnalyzePage`):**
+   - تقييم جاهزية السيرة الذاتية (من 100) وتفصيل النتائج حسب الأقسام (Structure, Readability, Impact, ATS Compatibility, Completeness).
+   - عرض نقاط القوة، نقاط التراجع، وتوصيات التحسين القابلة للتطبيق.
+3. **واجهة مطابقة الوصف الوظيفي (`MatchPage`):**
+   - إدخال الوصف الوظيفي المستهدف (English/LTR) وحساب نسبة المطابقة وتصنيف المهارات المتطابقة والمفقودة.
+   - خيار "إضافة للمؤهلات" مع حوار تأكيد المصداقية والنزاهة (`ConfirmDialog`) لإضافة المهارة إلى Zustand Store.
+4. **واجهة تحسين المحتوى والتعديلات (`ImprovePage` & `DiffViewer`):**
+   - عرض الفروقات بين النص الأصلي والنص المقترح مع تبيان السبب والتصنيف.
+   - إمكانية القبول أو الرفض الفردي، أو قبول جميع التعديلات التوافقية بنقرة واحدة، مع حماية المسارات الحساسة واكتشاف التعارضات.
 
 ```text
-src/features/templates/
-├── constants/ (templateConstants.js)
-├── registry/ (templateRegistry.js, templateMetadata.js)
-├── utils/ (getTemplateById.js, getVisibleTemplateSections.js, filterTemplates.js, validateTemplateDefinition.js)
-├── components/
-│   ├── TemplateRenderer.jsx         # المحرك العام لعرض القالب المحدد
-│   ├── TemplateGallery.jsx          # المعرض التفاعلي للقوالب
-│   ├── TemplateCard.jsx             # بطاقة القالب مع خيار الاستخدام والمعاينة
-│   ├── TemplateFilters.jsx          # تصفية القوالب حسب التصنيف
-│   ├── TemplateThumbnail.jsx        # المصغرات البصرية الخفيفة عبر CSS
-│   ├── TemplateDetailsDialog.jsx    # حوار معاينة تفاصيل القالب وإشعار ATS
-│   └── TemplateCompatibilityBadge.jsx # شارة توافق أنظمة التوظيف
-└── templates/                       # القوالب الفردية
-    ├── shared/ (templateSharedUtils.js)
-    ├── ClassicATS/ (ClassicATSTemplate.jsx)
-    ├── ProfessionalATS/ (ProfessionalATSTemplate.jsx)
-    └── Developer/ (DeveloperTemplate.jsx)
+src/
+├── features/ai-services/
+│   ├── contracts/ (serviceContracts.js, serviceStatus.js)
+│   ├── mocks/ (mockAnalysisResult.js, mockMatchResult.js, mockImprovementResult.js, mockExtractedCV.js)
+│   ├── services/ (mockServiceClient.js)
+│   └── utils/ (createServiceError.js)
+│
+├── features/upload/
+│   ├── components/ (DropZone.jsx, SelectedFile.jsx)
+│   └── utils/ (validateFile.js)
+│
+├── features/analyze/
+│   ├── components/ (AnalysisOverview.jsx)
+│   ├── services/ (analyzeService.js)
+│   └── hooks/ (useAnalyzeCV.js)
+│
+├── features/match/
+│   ├── components/ (MatchOverview.jsx)
+│   ├── services/ (matchService.js)
+│   └── hooks/ (useMatchCV.js)
+│
+└── features/improve/
+    ├── components/ (DiffViewer.jsx)
+    ├── utils/ (applySuggestion.js)
+    ├── services/ (improveService.js)
+    └── hooks/ (useImproveCV.js)
 ```
 
 ---
 
-## 🔐 الخصوصية والحفاظ على البيانات (Data Preservation Policy)
+## ✅ ما تم إنجازه في المرحلة العاشرة (Sprint 10 Accomplishments)
 
-- تغيير القالب من المعرض أو من Builder لا يؤدي إطلاقاً إلى مسح أو تغيير أية بيانات في السيرة الذاتية (`personalInfo`, `summary`, `experiences`, `education`, `skills`, `projects`, `certificates`, `languages`).
-- يتم تحديث `templateId` فقط مع حفظ اللقطة في سجل التراجع والتكرار (`Undo`/`Redo`).
-
----
-
-## ✅ ما تم إنجازه في المرحلة التاسعة (Sprint 9 Accomplishments)
-
-1. تأسيس سجل القوالب المركزي (`templateRegistry.js`) وعرض المكونات عبر `TemplateRenderer.jsx`.
-2. تصميم القوالب الثلاثة الأولى (`Classic ATS`, `Professional ATS`, `Developer ATS`) باللغة الإنجليزية واتجاه LTR حصرأً.
-3. بناء معرض القوالب التفاعلي في صفحة `/templates` مع تصفية التصنيفات وشارات التوافق مع ATS.
-4. دمج نظام القوالب مباشرة داخل محرر Builder Studio واستبدال المسودة المؤقتة بالنظام الجديد.
-5. المحافظة الكاملة على التعديل المباشر (`EditableField`) والترتيب والإخفاء وإعدادات الألوان والخطوط.
-6. كتابة **49 اختبار وحدة** عبر `npm run test` وتجاوزها بنجاح 100%.
+1. تأسيس طبقة العقود `serviceContracts.js` والعميل المحلي `mockServiceClient.js` المدعوم بـ AbortController و delay محاكي.
+2. تطوير مكون الرفع `DropZone` وفحص الامتدادات والأحجام (`.pdf`, `.docx`, 5MB) مع خيارات الاستبدال والحذف.
+3. بناء واجهة التحليل `AnalyzePage` وعرض النسب المئوية والتفاصيل والضعف والقوة.
+4. بناء واجهة المطابقة `MatchPage` وحقول الوصف الوظيفي (LTR) وتأكيد مصداقية المهارات عند الإضافة.
+5. بناء واجهة التحسين `ImprovePage` ومكون عرض الفروق `DiffViewer` وقبول/رفض المقترحات وتأثيرها المباشر في Zustand Store.
+6. كتابة **65 اختبار وحدة** عبر `npm run test` وتجاوزها بنجاح 100%.
 7. اجتياز فحوصات ESLint وبناء الإنتاج بنجاح كامل دون تحذيرات أو أخطاء.
 
 ---
 
 ## 🔮 المراحل القادمة (Upcoming Phases)
 
-- **المرحلة العاشرة:** واجهات رفع وتحليل وتطابق وتحسين السير الذاتية (Upload, Analyze, Match & Improve Interfaces).
+- **المرحلة الحادية عشرة:** طباعة وتصدير PDF، التخزين التلقائي، التكامل وإطلاق النسخة الأولية (Print/PDF Export, Autosave, Integration & Final MVP Release).
 
 ---
 

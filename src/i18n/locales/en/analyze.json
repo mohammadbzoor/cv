@@ -1,0 +1,19 @@
+{
+  "pageTitle": "Professional Resume Analysis",
+  "pageDesc": "Receive automated structural audit feedback and ATS parsing compatibility scores for your resume.",
+  "sourceSelect": "Analysis Data Source",
+  "analyzeCurrentCV": "Analyze Current CV Draft",
+  "uploadNewFile": "Upload New Resume File",
+  "runAnalysis": "Run Structural Analysis",
+  "analyzing": "Analyzing resume structure & keywords...",
+  "overallScore": "Overall Readiness Score",
+  "categoryScores": "Category Breakdown Scores",
+  "strengths": "Identified Key Strengths",
+  "weaknesses": "Areas Needing Attention",
+  "recommendations": "Actionable Improvement Advice",
+  "retry": "Retry Analysis",
+  "demoNotice": "Local mock analysis: Metrics are computed locally using standard document validation benchmarks.",
+  "openInBuilder": "Open Resume in Builder to Apply Fixes",
+  "emptyStateTitle": "No Resume Data Available for Analysis",
+  "emptyStateDesc": "Create a resume draft or upload a file first to execute structural analysis."
+}

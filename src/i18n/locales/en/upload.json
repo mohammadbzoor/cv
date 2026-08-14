@@ -1,0 +1,22 @@
+{
+  "pageTitle": "Upload & Extract Resume Data",
+  "pageDesc": "Upload your existing PDF or DOCX resume file to extract structure into the platform builder.",
+  "dropzoneLabel": "Select a file or drag & drop it here",
+  "dropzoneHint": "Supports PDF and DOCX files up to 5 MB",
+  "fileRequirements": "File requirements: PDF or DOCX format, max 5 MB size. Single file upload.",
+  "selectedFile": "Selected File",
+  "removeFile": "Remove File",
+  "replaceFile": "Replace File",
+  "processCV": "Process & Extract Data",
+  "processing": "Processing resume document...",
+  "demoNotice": "Demo mode: Document parsing is currently simulated via local mock services and will connect to live servers in future releases.",
+  "openInBuilder": "Open Extracted Resume in Builder",
+  "errors": {
+    "FILE_REQUIRED": "Please select a resume file to proceed.",
+    "FILE_EMPTY": "The selected file is empty and contains no readable data.",
+    "FILE_TOO_LARGE": "File size exceeds the maximum allowed limit of 5 MB.",
+    "FILE_TYPE_NOT_ALLOWED": "Unsupported file format. Please upload a valid PDF or DOCX file.",
+    "FILE_EXTENSION_NOT_ALLOWED": "The file extension is not allowed.",
+    "FILE_NAME_INVALID": "File name contains invalid paths or characters."
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "pageTitle": "Resume & Job Description Match",
+  "pageDesc": "Compare your resume directly against target job descriptions to identify missing skills and keyword opportunities.",
+  "jobDescriptionLabel": "Target Job Description (English)",
+  "jobDescriptionPlaceholder": "Paste the target job description here (English only, min 100 characters)...",
+  "matchCV": "Calculate Job Match Score",
+  "matching": "Comparing skills & requirements...",
+  "matchScore": "Overall Job Match Score",
+  "matchedSkills": "Matched Skills",
+  "missingSkills": "Missing Skills & Gaps",
+  "keywordSuggestions": "Suggested ATS Keywords",
+  "experienceAlignment": "Experience Alignment Audit",
+  "addToCV": "Add to Skills",
+  "added": "Added",
+  "confirmHonestyTitle": "Skill Authenticity Confirmation",
+  "confirmHonestyDesc": "Please confirm that you genuinely possess hands-on proficiency with this skill before adding it to your formal resume.",
+  "confirmAdd": "Confirm & Add to Skills",
+  "cancel": "Cancel",
+  "retry": "Retry Match",
+  "demoNotice": "Mock job matching: Algorithms perform deterministic keyword comparisons locally.",
+  "errors": {
+    "JOB_DESCRIPTION_TOO_SHORT": "Job description text is too short. Please provide at least 100 characters."
+  }
+}
