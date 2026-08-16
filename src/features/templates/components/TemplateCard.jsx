@@ -44,13 +44,15 @@ export function TemplateCard({
 
         {/* Thumbnail Preview */}
         <div
-          className="cursor-pointer overflow-hidden rounded-xl border border-border/40 group bg-app-bg p-2 flex justify-center items-center h-52"
+          lang="en"
+          dir="ltr"
+          className="cursor-pointer overflow-hidden rounded-xl border border-border/60 group bg-slate-100/70 dark:bg-slate-900/60 p-2.5 flex justify-center items-center h-56 sm:h-64 relative shadow-2xs"
           onClick={() => onPreview(template)}
           title={t('clickToPreview')}
         >
           <TemplateThumbnail
             variant={template.thumbnailVariant}
-            className="group-hover:scale-102 transition-transform duration-200"
+            className="w-full h-full object-contain group-hover:scale-[1.03] transition-all duration-300 group-hover:shadow-md"
           />
         </div>
 
