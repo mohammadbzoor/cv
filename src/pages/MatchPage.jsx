@@ -116,7 +116,6 @@ export default function MatchPage() {
               size="md"
               leadingIcon={RefreshCw}
               onClick={() => {
-                setJobDescription('');
                 execute(jobDescription);
               }}
             >
@@ -128,9 +127,9 @@ export default function MatchPage() {
               variant="primary"
               size="md"
               trailingIcon={ArrowRight}
-              onClick={() => navigate(ROUTE_PATHS.BUILDER)}
+              onClick={() => navigate(ROUTE_PATHS.BUILDER_NEW)}
             >
-              Open Builder
+              {t('match:openInBuilder')}
             </Button>
           </div>
         </div>

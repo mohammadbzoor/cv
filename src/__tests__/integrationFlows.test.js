@@ -225,30 +225,21 @@ describe('Sprint 11 Integration Flows', () => {
       expect(filename).toBe('dr-jane-m-oconnor-smith-resume');
     });
 
-    it('19. restores original document.title after print mock', () => {
-      const addEventListenerMock = vi.fn();
-      globalThis.window = {
-        print: vi.fn(),
-        addEventListener: addEventListenerMock,
-        removeEventListener: vi.fn(),
-      };
-
-      globalThis.document.querySelector.mockReturnValue({});
+    it('19. restores original document.title after print mock', async () => {
       globalThis.document.title = 'Original Title';
-
-      printCV({ documentTitle: 'printed-filename' });
-
-      const handler = addEventListenerMock.mock.calls.find((call) => call[0] === 'afterprint')?.[1];
-      if (handler) handler();
-
-      expect(globalThis.document.title).toBe('Original Title');
+      expect(document.title).toBe('Original Title');
+      await printCV({ documentTitle: 'printed-filename' });
+      // Since our mock doesn't simulate `afterprint` perfectly, 
+      // the real printService handles cleanup via finally block now.
+      expect(document.title).toBe('Original Title');
     });
 
-    it('20. returns error when document element is missing', () => {
-      globalThis.window = { print: vi.fn() };
-      globalThis.document.querySelector.mockReturnValue(null);
+    it('20. returns error when document element is missing', async () => {
+      // Temporarily remove [data-cv-document] from mock DOM
+      const doc = document.querySelector('[data-cv-document]');
+      if (doc) doc.removeAttribute('data-cv-document');
 
-      const result = printCV({ documentTitle: 'missing-doc' });
+      const result = await printCV({ documentTitle: 'missing-doc' });
       expect(result.success).toBe(false);
       expect(result.error.code).toBe('CV_DOCUMENT_NOT_FOUND');
     });

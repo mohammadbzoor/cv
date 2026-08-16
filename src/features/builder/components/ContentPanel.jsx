@@ -1,6 +1,3 @@
-import { useCVStore } from '../../cv/store/useCVStore';
-import { selectSectionOrder, selectHiddenSections } from '../../cv/store/cvSelectors';
-import { SectionManager } from './SectionManager';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '../../../components/ui/Tabs';
 
 import { PersonalInfoEditor } from '../sections/PersonalInfoEditor';
@@ -13,21 +10,8 @@ import { CertificatesEditor } from '../sections/CertificatesEditor';
 import { LanguagesEditor } from '../sections/LanguagesEditor';
 
 export function ContentPanel() {
-  const sectionOrder = useCVStore(selectSectionOrder);
-  const hiddenSections = useCVStore(selectHiddenSections);
-  const reorderSections = useCVStore((state) => state.reorderSections);
-  const toggleSectionVisibility = useCVStore((state) => state.toggleSectionVisibility);
-
   return (
     <div className="p-4 space-y-6 overflow-y-auto max-h-full">
-      {/* Section Ordering & Visibility Controls */}
-      <SectionManager
-        sectionOrder={sectionOrder}
-        hiddenSections={hiddenSections}
-        onReorder={reorderSections}
-        onToggleVisibility={toggleSectionVisibility}
-      />
-
       {/* Section Editors Tabs */}
       <Tabs defaultValue="personal">
         <TabsList className="w-full flex flex-wrap gap-1 overflow-x-auto p-1 bg-surface-muted border border-border rounded-xl">

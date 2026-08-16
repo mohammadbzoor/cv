@@ -35,8 +35,13 @@ export const SUPPORTED_FONT_SIZES = Object.freeze(['sm', 'md', 'lg']);
 export const SUPPORTED_LINE_HEIGHTS = Object.freeze(['tight', 'normal', 'relaxed']);
 export const SUPPORTED_PAGE_SIZES = Object.freeze(['A4']);
 export const SUPPORTED_MARGIN_SIZES = Object.freeze(['compact', 'normal', 'spacious']);
-export const SUPPORTED_DENSITIES = Object.freeze(['comfortable', 'balanced', 'compact']);
+export const SUPPORTED_DENSITIES = Object.freeze(['comfortable', 'balanced', 'compact', 'ultra-compact']);
 export const SUPPORTED_HEADING_STYLES = Object.freeze(['standard', 'understated', 'prominent']);
+export const SUPPORTED_ITEM_SPACINGS = Object.freeze(['tight', 'normal', 'relaxed']);
+export const SUPPORTED_PARAGRAPH_SPACINGS = Object.freeze(['tight', 'normal', 'relaxed']);
+export const SUPPORTED_CONTACT_LAYOUTS = Object.freeze(['inline', 'stacked']);
+export const SUPPORTED_SKILLS_PRESENTATIONS = Object.freeze(['grouped', 'list', 'inline']);
+export const SUPPORTED_DATE_ALIGNMENTS = Object.freeze(['inline', 'opposite']);
 
 export const SUPPORTED_PROFICIENCY_LEVELS = Object.freeze([
   'native',

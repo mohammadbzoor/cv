@@ -21,5 +21,8 @@
   "conflict": "Conflict: Original text was manually modified after suggestions were generated.",
   "noChange": "No change detected",
   "demoNotice": "Mock improvement suggestions: Enhancements are generated locally using deterministic standard phrasing benchmarks.",
-  "openInBuilder": "Open Resume in Builder"
+  "openInBuilder": "Open Resume in Builder",
+  "retryBtn": "Retry",
+  "regenerate": "Regenerate Suggestions",
+  "generatedSuggestions": "Generated Suggestions ({{count}} pending)"
 }

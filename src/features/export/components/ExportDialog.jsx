@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Printer, X } from 'lucide-react';
+import { Download } from 'lucide-react';
 import { Modal } from '../../../components/ui/Modal';
 import { Button } from '../../../components/ui/Button';
 import { ExportReadiness } from './ExportReadiness';
@@ -16,11 +16,7 @@ import { getTemplateName } from '../../templates/registry/templateMetadata';
 
 /**
  * Export PDF Dialog.
- * Displays document properties, readiness validation, print instructions,
- * and the "Open Print Dialog" action button.
- *
- * Does NOT claim automatic PDF download — explains that the user
- * selects "Save as PDF" in the browser print dialog.
+ * Direct PDF Download Dialog.
  */
 export function ExportDialog({ isOpen, onClose }) {
   const { t } = useTranslation(['export', 'common']);
@@ -36,17 +32,13 @@ export function ExportDialog({ isOpen, onClose }) {
 
   const templateName = getTemplateName(templateId);
 
-  const handlePrint = useCallback(() => {
+  const handleDownload = useCallback(async () => {
     clearError();
-    // Close modal first so it doesn't appear in the print output
-    onClose?.();
-
-    // Wait for modal close animation and a render frame before printing
-    requestAnimationFrame(() => {
-      setTimeout(() => {
-        executePrint();
-      }, 100);
-    });
+    const result = await executePrint();
+    
+    if (result.success) {
+      onClose?.();
+    }
   }, [executePrint, clearError, onClose]);
 
   const footer = (
@@ -63,11 +55,12 @@ export function ExportDialog({ isOpen, onClose }) {
         type="button"
         variant="primary"
         size="sm"
-        leadingIcon={Printer}
-        onClick={handlePrint}
+        leadingIcon={Download}
+        onClick={handleDownload}
         disabled={!isReady || isPrinting}
+        loading={isPrinting}
       >
-        {t('export:openPrintDialog')}
+        {isPrinting ? (t('export:downloading') || t('common:loading')) : t('export:downloadPdf')}
       </Button>
     </>
   );

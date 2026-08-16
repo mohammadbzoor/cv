@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ContentPanel } from './ContentPanel';
-import { DesignPanel } from './DesignPanel';
+import { DesignSettingsPanel } from '../../templates/design/components/DesignSettingsPanel';
 
 /**
  * Combined Sidebar for Desktop / Tablet viewports.
@@ -37,7 +37,7 @@ export function BuilderSidebar() {
       </div>
 
       <div className="flex-1 overflow-hidden">
-        {activeTab === 'content' ? <ContentPanel /> : <DesignPanel />}
+        {activeTab === 'content' ? <ContentPanel /> : <DesignSettingsPanel />}
       </div>
     </aside>
   );

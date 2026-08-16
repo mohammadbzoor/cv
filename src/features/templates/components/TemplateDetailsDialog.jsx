@@ -2,11 +2,12 @@ import { useTranslation } from 'react-i18next';
 import { LayoutTemplate, CheckCircle2, Info } from 'lucide-react';
 import { Modal } from '../../../components/ui/Modal';
 import { Button } from '../../../components/ui/Button';
-import { TemplateThumbnail } from './TemplateThumbnail';
+import { TemplateRenderer } from './TemplateRenderer';
 import { TemplateCompatibilityBadge } from './TemplateCompatibilityBadge';
 import { getTemplateName } from '../registry/templateMetadata';
+import { templatePreviewData } from '../data/templatePreviewData';
 
-export function TemplateDetailsDialog({ template, isOpen, onClose, onSelect }) {
+export function TemplateDetailsDialog({ template, isOpen, onClose, onSelect, onSelectAndOpenBuilder }) {
   const { t } = useTranslation('templates');
 
   if (!template) return null;
@@ -21,9 +22,21 @@ export function TemplateDetailsDialog({ template, isOpen, onClose, onSelect }) {
       size="md"
     >
       <div className="space-y-6 text-start">
-        {/* Enlarged Thumbnail */}
-        <div className="h-64 bg-app-bg rounded-xl overflow-hidden flex items-center justify-center p-3 border border-border/40">
-          <TemplateThumbnail variant={template.thumbnailVariant} className="max-w-[240px]" />
+        {/* Full Interactive Document Preview */}
+        <div className="h-96 bg-slate-100 rounded-xl overflow-y-auto p-4 border border-border/40 relative shadow-inner">
+          <div className="w-full max-w-[800px] mx-auto bg-white shadow-md">
+            {/* 
+              Scale it down or let it scroll. Since it's a dialog, scrolling is fine and often better 
+              than extreme downscaling that makes it unreadable. 
+            */}
+            <TemplateRenderer
+              templateId={template.id}
+              cvData={templatePreviewData}
+              isInteractive={false}
+              lang="en"
+              dir="ltr"
+            />
+          </div>
         </div>
 
         {/* Info Header */}
@@ -76,15 +89,27 @@ export function TemplateDetailsDialog({ template, isOpen, onClose, onSelect }) {
 
           <Button
             type="button"
+            variant="outline"
+            size="sm"
+            leadingIcon={CheckCircle2}
+            onClick={() => {
+              onSelect(template.id);
+            }}
+          >
+            {t('useTemplate')}
+          </Button>
+
+          <Button
+            type="button"
             variant="primary"
             size="sm"
             leadingIcon={LayoutTemplate}
             onClick={() => {
               onClose();
-              onSelect(template.id);
+              if (onSelectAndOpenBuilder) onSelectAndOpenBuilder(template.id);
             }}
           >
-            {t('useTemplate')}
+            {t('useAndOpenBuilder', { defaultValue: 'Select & Open Builder' })}
           </Button>
         </div>
       </div>

@@ -120,3 +120,23 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* html2pdf.js specific reset */
+.cv-printing-active [data-cv-document] {
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  border: none !important;
+  margin: 0 !important;
+  transform: none !important;
+  background-color: white !important;
+}
+
+.cv-printing-active [data-preview-zoom-container] {
+  transform: none !important;
+}
+
+.cv-printing-active [data-cv-document] [role="button"] {
+  border-color: transparent !important;
+  background-color: transparent !important;
+}
+

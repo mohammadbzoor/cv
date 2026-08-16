@@ -7,10 +7,10 @@
  */
 
 @media print {
-  /* ── Page Setup ── */
+  /* ── Page Setup (US Letter: 21.59cm x 27.94cm, Margins: 1.5cm) ── */
   @page {
-    size: A4;
-    margin: 0;
+    size: 21.59cm 27.94cm;
+    margin: 1.5cm;
   }
 
   /* ── Reset html & body for print ── */
@@ -58,8 +58,8 @@
   [data-cv-document] {
     display: block !important;
     position: static !important;
-    width: 210mm !important;
-    min-height: 297mm !important;
+    width: 21.59cm !important;
+    min-height: 27.94cm !important;
     max-width: none !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -71,6 +71,9 @@
     transform: none !important;
     overflow: visible !important;
     page-break-before: auto;
+    page-break-after: auto;
+    break-inside: auto;
+    box-sizing: border-box !important;
   }
 
   /* ── Reset CV document zoom/scale ── */
@@ -137,18 +140,9 @@
     line-height: 1.4;
   }
 
-  /* ── Links: show URL in parentheses for print ── */
+  /* ── Links: Don't show URL in parentheses for print (handled by templates) ── */
   [data-cv-document] a[href]::after {
-    content: " (" attr(href) ")";
-    font-size: 8pt;
-    color: #555;
-    word-break: break-all;
-  }
-
-  /* Don't show URL for email/tel links */
-  [data-cv-document] a[href^="mailto:"]::after,
-  [data-cv-document] a[href^="tel:"]::after {
-    content: none;
+    content: none !important;
   }
 
   /* ── Ensure text remains selectable & extractable ── */

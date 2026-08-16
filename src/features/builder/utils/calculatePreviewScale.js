@@ -14,13 +14,13 @@ export function clampZoomScale(requestedZoom) {
 }
 
 /**
- * Calculates scale ratio needed to fit A4 page width (210mm ~ 794px at 96DPI) inside container width.
+ * Calculates scale ratio needed to fit page width (21.59cm / 8.5in ~ 816px at 96DPI) inside container width.
  *
  * @param {number} containerWidth Available container width in pixels.
- * @param {number} pageWidthPx Standard A4 width in pixels (~794px).
+ * @param {number} pageWidthPx Standard US Letter width in pixels (~816px).
  * @returns {number} Calculated fit scale factor.
  */
-export function calculateFitScale(containerWidth, pageWidthPx = 794) {
+export function calculateFitScale(containerWidth, pageWidthPx = 816) {
   if (!containerWidth || containerWidth <= 0) return DEFAULT_ZOOM;
   const paddingMargin = 48; // Account for padding
   const available = containerWidth - paddingMargin;

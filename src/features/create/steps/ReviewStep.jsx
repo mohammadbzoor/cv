@@ -33,7 +33,7 @@ export function ReviewStep({ onJumpToStep, isFinished }) {
   function handleOpenBuilder() {
     replaceCVData(cvStoreData);
     markSaved();
-    navigate(ROUTE_PATHS.BUILDER);
+    navigate(ROUTE_PATHS.BUILDER_NEW);
   }
 
   return (

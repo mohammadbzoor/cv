@@ -19,25 +19,40 @@ export function CompactATSTemplate({ cvData, design: overrideDesign, editable = 
 
   const visibleSections = getOrderedVisibleSections(cvData);
   const primaryColor = design.primaryColor || '#1e293b';
-
   const showDivider = design.showSectionDividers !== false;
-
-  let headingClass = 'text-[11px] font-bold uppercase tracking-wider';
-  if (design.headingStyle === 'understated') {
-    headingClass = 'text-[11px] font-semibold text-slate-800';
-  } else if (design.headingStyle === 'prominent') {
-    headingClass = 'text-xs font-extrabold uppercase tracking-widest';
-  }
+  const showBullets = design.showBulletPoints !== false;
+  const contactLayout = design.contactLayout || 'inline';
 
   return (
     <article
       lang="en"
       dir="ltr"
-      className="p-6 md:p-8 space-y-2.5 text-slate-800 font-sans text-xs leading-snug max-w-full bg-white select-text"
+      className="max-w-full text-slate-800 break-words select-text transition-all duration-150"
+      style={{
+        fontFamily: 'var(--cv-font-family, Inter, sans-serif)',
+        fontSize: 'var(--cv-font-size, 0.75rem)',
+        lineHeight: 'var(--cv-line-height, 1.35)',
+        padding: 'var(--cv-page-margin, 1.5cm)',
+      }}
     >
       {/* Header */}
-      <header className={`space-y-0.5 text-center ${showDivider ? 'border-b border-slate-300 pb-2' : 'pb-1'}`}>
-        <h1 className="text-xl font-bold tracking-tight text-slate-900 uppercase">
+      <header
+        className="space-y-0.5 text-center transition-all"
+        style={{
+          paddingBottom: 'var(--cv-item-spacing, 0.5rem)',
+          marginBottom: 'var(--cv-section-spacing, 1rem)',
+          borderBottomWidth: showDivider ? 'var(--cv-divider-width, 1px)' : '0px',
+          borderBottomColor: showDivider ? '#cbd5e1' : 'transparent',
+          borderBottomStyle: 'solid',
+        }}
+      >
+        <h1
+          className="text-xl font-bold tracking-tight"
+          style={{
+            color: primaryColor,
+            textTransform: 'var(--cv-heading-transform, uppercase)',
+          }}
+        >
           {editable ? (
             <EditableField
               value={personal.fullName}
@@ -63,11 +78,17 @@ export function CompactATSTemplate({ cvData, design: overrideDesign, editable = 
           )}
         </p>
 
-        <div className="flex flex-wrap justify-center gap-x-2 gap-y-0.5 text-[10px] text-slate-600 font-mono pt-0.5">
+        <div
+          className={`text-[10px] text-slate-600 font-mono pt-0.5 ${
+            contactLayout === 'stacked'
+              ? 'flex flex-col gap-0.5'
+              : 'flex flex-wrap justify-center gap-x-2 gap-y-0.5'
+          }`}
+        >
           {personal.email && <span>{personal.email}</span>}
-          {personal.phone && <span>• {personal.phone}</span>}
-          {personal.location && <span>• {personal.location}</span>}
-          {personal.linkedin && <span>• {personal.linkedin}</span>}
+          {personal.phone && <span>{contactLayout === 'stacked' ? '' : '• '}{personal.phone}</span>}
+          {personal.location && <span>{contactLayout === 'stacked' ? '' : '• '}{personal.location}</span>}
+          {personal.linkedin && <span>{contactLayout === 'stacked' ? '' : '• '}{personal.linkedin}</span>}
         </div>
       </header>
 
@@ -75,14 +96,30 @@ export function CompactATSTemplate({ cvData, design: overrideDesign, editable = 
       {visibleSections.map((sec) => {
         if (sec === 'summary') {
           return (
-            <section key="summary" className="space-y-0.5">
+            <section
+              key="summary"
+              style={{ marginBottom: 'var(--cv-section-spacing, 0.875rem)' }}
+            >
               <h2
-                className={`${headingClass} ${showDivider ? 'border-b border-slate-200 pb-0.5' : ''}`}
-                style={{ color: primaryColor }}
+                className="transition-all"
+                style={{
+                  color: primaryColor,
+                  fontWeight: 'var(--cv-heading-weight, 700)',
+                  fontSize: 'var(--cv-heading-size, 0.9em)',
+                  textTransform: 'var(--cv-heading-transform, uppercase)',
+                  borderBottomWidth: showDivider ? 'var(--cv-divider-width, 1px)' : '0px',
+                  borderBottomColor: showDivider ? '#e2e8f0' : 'transparent',
+                  borderBottomStyle: 'solid',
+                  paddingBottom: '2px',
+                  marginBottom: 'var(--cv-item-spacing, 0.25rem)',
+                }}
               >
                 Summary
               </h2>
-              <p className="text-[11px] text-slate-700 leading-normal">
+              <p
+                className="text-slate-700"
+                style={{ marginTop: 'var(--cv-paragraph-spacing, 0.15rem)' }}
+              >
                 {editable ? (
                   <EditableField
                     value={cvData.summary}
@@ -101,15 +138,31 @@ export function CompactATSTemplate({ cvData, design: overrideDesign, editable = 
 
         if (sec === 'experiences') {
           return (
-            <section key="experiences" className="space-y-1.5">
+            <section
+              key="experiences"
+              style={{ marginBottom: 'var(--cv-section-spacing, 0.875rem)' }}
+            >
               <h2
-                className={`${headingClass} ${showDivider ? 'border-b border-slate-200 pb-0.5' : ''}`}
-                style={{ color: primaryColor }}
+                className="transition-all"
+                style={{
+                  color: primaryColor,
+                  fontWeight: 'var(--cv-heading-weight, 700)',
+                  fontSize: 'var(--cv-heading-size, 0.9em)',
+                  textTransform: 'var(--cv-heading-transform, uppercase)',
+                  borderBottomWidth: showDivider ? 'var(--cv-divider-width, 1px)' : '0px',
+                  borderBottomColor: showDivider ? '#e2e8f0' : 'transparent',
+                  borderBottomStyle: 'solid',
+                  paddingBottom: '2px',
+                  marginBottom: 'var(--cv-item-spacing, 0.25rem)',
+                }}
               >
                 Work Experience
               </h2>
               {experiences.map((exp) => (
-                <div key={exp.id} className="space-y-0.5 text-[11px]">
+                <div
+                  key={exp.id}
+                  style={{ marginBottom: 'var(--cv-item-spacing, 0.5rem)' }}
+                >
                   <div className="flex justify-between items-baseline font-bold text-slate-900">
                     <span>{exp.position} — {exp.company}</span>
                     <span className="text-[10px] font-mono text-slate-500 font-normal">
@@ -117,7 +170,12 @@ export function CompactATSTemplate({ cvData, design: overrideDesign, editable = 
                     </span>
                   </div>
                   {exp.description && (
-                    <p className="text-[11px] text-slate-700 leading-normal">{exp.description}</p>
+                    <p
+                      className="text-slate-700"
+                      style={{ marginTop: 'var(--cv-paragraph-spacing, 0.15rem)' }}
+                    >
+                      {exp.description}
+                    </p>
                   )}
                 </div>
               ))}
@@ -127,15 +185,32 @@ export function CompactATSTemplate({ cvData, design: overrideDesign, editable = 
 
         if (sec === 'education') {
           return (
-            <section key="education" className="space-y-1">
+            <section
+              key="education"
+              style={{ marginBottom: 'var(--cv-section-spacing, 0.875rem)' }}
+            >
               <h2
-                className={`${headingClass} ${showDivider ? 'border-b border-slate-200 pb-0.5' : ''}`}
-                style={{ color: primaryColor }}
+                className="transition-all"
+                style={{
+                  color: primaryColor,
+                  fontWeight: 'var(--cv-heading-weight, 700)',
+                  fontSize: 'var(--cv-heading-size, 0.9em)',
+                  textTransform: 'var(--cv-heading-transform, uppercase)',
+                  borderBottomWidth: showDivider ? 'var(--cv-divider-width, 1px)' : '0px',
+                  borderBottomColor: showDivider ? '#e2e8f0' : 'transparent',
+                  borderBottomStyle: 'solid',
+                  paddingBottom: '2px',
+                  marginBottom: 'var(--cv-item-spacing, 0.25rem)',
+                }}
               >
                 Education
               </h2>
               {education.map((edu) => (
-                <div key={edu.id} className="flex justify-between items-baseline text-[11px] text-slate-900">
+                <div
+                  key={edu.id}
+                  className="flex justify-between items-baseline text-slate-900"
+                  style={{ marginBottom: 'var(--cv-item-spacing, 0.25rem)' }}
+                >
                   <span className="font-bold">{edu.degree} — {edu.institution}</span>
                   <span className="text-[10px] font-mono text-slate-500">{edu.startDate} - {edu.endDate}</span>
                 </div>
@@ -146,14 +221,30 @@ export function CompactATSTemplate({ cvData, design: overrideDesign, editable = 
 
         if (sec === 'skills') {
           return (
-            <section key="skills" className="space-y-0.5">
+            <section
+              key="skills"
+              style={{ marginBottom: 'var(--cv-section-spacing, 0.875rem)' }}
+            >
               <h2
-                className={`${headingClass} ${showDivider ? 'border-b border-slate-200 pb-0.5' : ''}`}
-                style={{ color: primaryColor }}
+                className="transition-all"
+                style={{
+                  color: primaryColor,
+                  fontWeight: 'var(--cv-heading-weight, 700)',
+                  fontSize: 'var(--cv-heading-size, 0.9em)',
+                  textTransform: 'var(--cv-heading-transform, uppercase)',
+                  borderBottomWidth: showDivider ? 'var(--cv-divider-width, 1px)' : '0px',
+                  borderBottomColor: showDivider ? '#e2e8f0' : 'transparent',
+                  borderBottomStyle: 'solid',
+                  paddingBottom: '2px',
+                  marginBottom: 'var(--cv-item-spacing, 0.25rem)',
+                }}
               >
                 Skills
               </h2>
-              <p className="text-[11px] text-slate-700 leading-normal">
+              <p
+                className="text-slate-700"
+                style={{ marginTop: 'var(--cv-paragraph-spacing, 0.15rem)' }}
+              >
                 {skills.map((sk) => sk.name).filter(Boolean).join(' • ')}
               </p>
             </section>
@@ -162,17 +253,40 @@ export function CompactATSTemplate({ cvData, design: overrideDesign, editable = 
 
         if (sec === 'projects') {
           return (
-            <section key="projects" className="space-y-1">
+            <section
+              key="projects"
+              style={{ marginBottom: 'var(--cv-section-spacing, 0.875rem)' }}
+            >
               <h2
-                className={`${headingClass} ${showDivider ? 'border-b border-slate-200 pb-0.5' : ''}`}
-                style={{ color: primaryColor }}
+                className="transition-all"
+                style={{
+                  color: primaryColor,
+                  fontWeight: 'var(--cv-heading-weight, 700)',
+                  fontSize: 'var(--cv-heading-size, 0.9em)',
+                  textTransform: 'var(--cv-heading-transform, uppercase)',
+                  borderBottomWidth: showDivider ? 'var(--cv-divider-width, 1px)' : '0px',
+                  borderBottomColor: showDivider ? '#e2e8f0' : 'transparent',
+                  borderBottomStyle: 'solid',
+                  paddingBottom: '2px',
+                  marginBottom: 'var(--cv-item-spacing, 0.25rem)',
+                }}
               >
                 Projects
               </h2>
               {projects.map((proj) => (
-                <div key={proj.id} className="text-[11px] space-y-0.5">
+                <div
+                  key={proj.id}
+                  style={{ marginBottom: 'var(--cv-item-spacing, 0.25rem)' }}
+                >
                   <span className="font-bold text-slate-900">{proj.name}</span>
-                  {proj.description && <p className="text-slate-700">{proj.description}</p>}
+                  {proj.description && (
+                    <p
+                      className="text-slate-700"
+                      style={{ marginTop: 'var(--cv-paragraph-spacing, 0.15rem)' }}
+                    >
+                      {proj.description}
+                    </p>
+                  )}
                 </div>
               ))}
             </section>
@@ -181,30 +295,64 @@ export function CompactATSTemplate({ cvData, design: overrideDesign, editable = 
 
         if (sec === 'certificates') {
           return (
-            <section key="certificates" className="space-y-0.5">
+            <section
+              key="certificates"
+              style={{ marginBottom: 'var(--cv-section-spacing, 0.875rem)' }}
+            >
               <h2
-                className={`${headingClass} ${showDivider ? 'border-b border-slate-200 pb-0.5' : ''}`}
-                style={{ color: primaryColor }}
+                className="transition-all"
+                style={{
+                  color: primaryColor,
+                  fontWeight: 'var(--cv-heading-weight, 700)',
+                  fontSize: 'var(--cv-heading-size, 0.9em)',
+                  textTransform: 'var(--cv-heading-transform, uppercase)',
+                  borderBottomWidth: showDivider ? 'var(--cv-divider-width, 1px)' : '0px',
+                  borderBottomColor: showDivider ? '#e2e8f0' : 'transparent',
+                  borderBottomStyle: 'solid',
+                  paddingBottom: '2px',
+                  marginBottom: 'var(--cv-item-spacing, 0.25rem)',
+                }}
               >
                 Certifications
               </h2>
-              <p className="text-[11px] text-slate-700">
-                {certificates.map((cert) => `${cert.name} (${cert.issuer})`).join(' • ')}
-              </p>
+              <ul
+                className={`text-slate-700 space-y-0.5 ${showBullets ? 'list-disc list-inside' : ''}`}
+                style={{ marginTop: 'var(--cv-paragraph-spacing, 0.15rem)' }}
+              >
+                {certificates.map((cert) => (
+                  <li key={cert.id}>{cert.name} - {cert.issuer}</li>
+                ))}
+              </ul>
             </section>
           );
         }
 
         if (sec === 'languages') {
           return (
-            <section key="languages" className="space-y-0.5">
+            <section
+              key="languages"
+              style={{ marginBottom: 'var(--cv-section-spacing, 0.875rem)' }}
+            >
               <h2
-                className={`${headingClass} ${showDivider ? 'border-b border-slate-200 pb-0.5' : ''}`}
-                style={{ color: primaryColor }}
+                className="transition-all"
+                style={{
+                  color: primaryColor,
+                  fontWeight: 'var(--cv-heading-weight, 700)',
+                  fontSize: 'var(--cv-heading-size, 0.9em)',
+                  textTransform: 'var(--cv-heading-transform, uppercase)',
+                  borderBottomWidth: showDivider ? 'var(--cv-divider-width, 1px)' : '0px',
+                  borderBottomColor: showDivider ? '#e2e8f0' : 'transparent',
+                  borderBottomStyle: 'solid',
+                  paddingBottom: '2px',
+                  marginBottom: 'var(--cv-item-spacing, 0.25rem)',
+                }}
               >
                 Languages
               </h2>
-              <p className="text-[11px] text-slate-700">
+              <p
+                className="text-slate-700"
+                style={{ marginTop: 'var(--cv-paragraph-spacing, 0.15rem)' }}
+              >
                 {languages.map((lang) => `${lang.name} (${lang.proficiency})`).join(', ')}
               </p>
             </section>

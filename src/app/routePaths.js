@@ -11,6 +11,7 @@ export const ROUTE_PATHS = Object.freeze({
   IMPROVE: '/improve',
   TEMPLATES: '/templates',
   BUILDER: '/builder/:cvId?',
+  BUILDER_NEW: '/builder',
   HELP: '/help',
   LOGIN: '/login',
   REGISTER: '/register',

@@ -8,6 +8,11 @@ import {
   SUPPORTED_PAGE_SIZES,
   SUPPORTED_DENSITIES,
   SUPPORTED_HEADING_STYLES,
+  SUPPORTED_ITEM_SPACINGS,
+  SUPPORTED_PARAGRAPH_SPACINGS,
+  SUPPORTED_CONTACT_LAYOUTS,
+  SUPPORTED_SKILLS_PRESENTATIONS,
+  SUPPORTED_DATE_ALIGNMENTS,
 } from '../models/cvConstants';
 
 /**
@@ -56,6 +61,24 @@ export function normalizeCVData(input) {
     headingStyle: SUPPORTED_HEADING_STYLES.includes(rawDesign.headingStyle)
       ? rawDesign.headingStyle
       : 'standard',
+    itemSpacing: SUPPORTED_ITEM_SPACINGS.includes(rawDesign.itemSpacing)
+      ? rawDesign.itemSpacing
+      : 'normal',
+    paragraphSpacing: SUPPORTED_PARAGRAPH_SPACINGS.includes(rawDesign.paragraphSpacing)
+      ? rawDesign.paragraphSpacing
+      : 'normal',
+    contactLayout: SUPPORTED_CONTACT_LAYOUTS.includes(rawDesign.contactLayout)
+      ? rawDesign.contactLayout
+      : 'inline',
+    skillsPresentation: SUPPORTED_SKILLS_PRESENTATIONS.includes(rawDesign.skillsPresentation)
+      ? rawDesign.skillsPresentation
+      : 'list',
+    dateAlignment: SUPPORTED_DATE_ALIGNMENTS.includes(rawDesign.dateAlignment)
+      ? rawDesign.dateAlignment
+      : 'opposite',
+    showBulletPoints: typeof rawDesign.showBulletPoints === 'boolean'
+      ? rawDesign.showBulletPoints
+      : true,
   };
 
   const metadata = {

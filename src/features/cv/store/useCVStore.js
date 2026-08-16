@@ -183,6 +183,30 @@ export const useCVStore = create(
         });
       },
 
+      applyDesignSettingsPatch: (patch) => {
+        const state = get();
+        const updatedCv = {
+          ...state.cvData,
+          design: {
+            ...state.cvData.design,
+            ...patch,
+            pageSize: 'A4',
+          },
+          metadata: {
+            ...state.cvData.metadata,
+            updatedAt: new Date().toISOString(),
+          },
+        };
+
+        set({
+          ...pushHistory(state),
+          cvData: updatedCv,
+          status: 'dirty',
+          isDirty: true,
+          lastError: null,
+        });
+      },
+
       setTemplate: (templateId) => {
         get().updateDesignSettings({ templateId });
       },

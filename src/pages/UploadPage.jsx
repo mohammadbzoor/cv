@@ -60,13 +60,13 @@ export default function UploadPage() {
       const normalized = normalizeCVData(result);
       const validCheck = validateCVData(normalized);
 
-      if (validCheck.valid) {
+      if (validCheck.success) {
         setExtractedData(normalized);
       } else {
-        setErrorMsg('Failed to structure extracted resume content.');
+        setErrorMsg(t('upload:errors.EXTRACTION_FAILED'));
       }
     } catch (err) {
-      setErrorMsg(err.message || 'An error occurred during file extraction.');
+      setErrorMsg(err.message || t('upload:errors.EXTRACTION_FAILED'));
     } finally {
       setIsProcessing(false);
     }
@@ -75,7 +75,7 @@ export default function UploadPage() {
   function handleOpenInBuilder() {
     if (extractedData) {
       replaceCVData(extractedData);
-      navigate(ROUTE_PATHS.BUILDER);
+      navigate(ROUTE_PATHS.BUILDER_NEW);
     }
   }
 
@@ -135,20 +135,20 @@ export default function UploadPage() {
           <div className="flex items-center gap-3 text-success">
             <CheckCircle2 className="w-6 h-6 shrink-0" aria-hidden="true" />
             <div>
-              <h3 className="text-base font-bold text-foreground">Extracted Resume Content Ready</h3>
+              <h3 className="text-base font-bold text-foreground">{t('upload:extractedReady')}</h3>
               <p className="text-xs text-foreground-secondary">
-                Successfully parsed profile for {extractedData.personalInfo?.fullName} ({extractedData.personalInfo?.jobTitle}).
+                {t('upload:extractedProfile', { name: extractedData.personalInfo?.fullName, title: extractedData.personalInfo?.jobTitle })}
               </p>
             </div>
           </div>
 
           <div className="p-4 bg-surface rounded-xl border border-border space-y-2 text-xs">
-            <p className="font-bold text-foreground">Extracted Structure Overview:</p>
+            <p className="font-bold text-foreground">{t('upload:structureOverview')}</p>
             <ul className="list-disc list-inside text-foreground-secondary space-y-1">
-              <li>Summary: {extractedData.summary ? 'Included' : 'None'}</li>
-              <li>Work Experiences: {extractedData.experiences?.length || 0} items</li>
-              <li>Education Credentials: {extractedData.education?.length || 0} items</li>
-              <li>Skills Listed: {extractedData.skills?.length || 0} skills</li>
+              <li>{t('upload:overviewSummary')}: {extractedData.summary ? t('upload:included') : t('upload:none')}</li>
+              <li>{t('upload:overviewExperiences')}: {extractedData.experiences?.length || 0}</li>
+              <li>{t('upload:overviewEducation')}: {extractedData.education?.length || 0}</li>
+              <li>{t('upload:overviewSkills')}: {extractedData.skills?.length || 0}</li>
             </ul>
           </div>
 
@@ -162,7 +162,7 @@ export default function UploadPage() {
                 setSelectedFile(null);
               }}
             >
-              Cancel / Upload Different File
+              {t('upload:cancelUpload')}
             </Button>
 
             <Button

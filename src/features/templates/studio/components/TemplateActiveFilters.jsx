@@ -11,9 +11,9 @@ export function TemplateActiveFilters({ appliedFilters = [], onRemoveFilter, onC
     <div className="flex items-center gap-2 flex-wrap text-xs pt-1">
       <span className="text-foreground-secondary font-medium">{t('activeFilters')}:</span>
 
-      {appliedFilters.map((chip) => (
+      {appliedFilters.map((chip, idx) => (
         <span
-          key={chip.id}
+          key={chip.id || `${chip.type}-${chip.label || idx}`}
           className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-primary-subtle text-primary border border-primary/20 rounded-full font-semibold"
         >
           <span>{chip.label}</span>

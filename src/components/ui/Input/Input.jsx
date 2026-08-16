@@ -12,14 +12,18 @@ export const Input = forwardRef(function Input(
     error,
     required,
     disabled,
-    startIcon: StartIcon,
-    endIcon: EndIcon,
+    startIcon: StartIconProp,
+    leadingIcon: LeadingIconProp,
+    endIcon: EndIconProp,
+    trailingIcon: TrailingIconProp,
     className,
     id: providedId,
     ...props
   },
   ref
 ) {
+  const StartIcon = StartIconProp || LeadingIconProp;
+  const EndIcon = EndIconProp || TrailingIconProp;
   const generatedId = useId();
   const inputId = providedId || generatedId;
   const helperId = `${inputId}-helper`;

@@ -70,7 +70,7 @@ export function AccountMenu() {
 
       <DropdownMenuItem
         leadingIcon={Sliders}
-        onClick={() => navigate(ROUTE_PATHS.BUILDER)}
+        onClick={() => navigate(ROUTE_PATHS.BUILDER_NEW)}
       >
         {t('navigation:openBuilder', { defaultValue: 'Open Builder' })}
       </DropdownMenuItem>

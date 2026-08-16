@@ -11,12 +11,23 @@
   "processing": "Processing resume document...",
   "demoNotice": "Demo mode: Document parsing is currently simulated via local mock services and will connect to live servers in future releases.",
   "openInBuilder": "Open Extracted Resume in Builder",
+  "extractedReady": "Extracted Resume Content Ready",
+  "extractedProfile": "Successfully parsed profile for {{name}} ({{title}}).",
+  "structureOverview": "Extracted Structure Overview",
+  "overviewSummary": "Summary",
+  "overviewExperiences": "Work Experiences",
+  "overviewEducation": "Education Credentials",
+  "overviewSkills": "Skills Listed",
+  "included": "Included",
+  "none": "None",
+  "cancelUpload": "Cancel / Upload Different File",
   "errors": {
     "FILE_REQUIRED": "Please select a resume file to proceed.",
     "FILE_EMPTY": "The selected file is empty and contains no readable data.",
     "FILE_TOO_LARGE": "File size exceeds the maximum allowed limit of 5 MB.",
     "FILE_TYPE_NOT_ALLOWED": "Unsupported file format. Please upload a valid PDF or DOCX file.",
     "FILE_EXTENSION_NOT_ALLOWED": "The file extension is not allowed.",
-    "FILE_NAME_INVALID": "File name contains invalid paths or characters."
+    "FILE_NAME_INVALID": "File name contains invalid paths or characters.",
+    "EXTRACTION_FAILED": "Failed to structure extracted resume content."
   }
 }

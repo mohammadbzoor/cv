@@ -10,6 +10,11 @@ import {
   SUPPORTED_MARGIN_SIZES,
   SUPPORTED_DENSITIES,
   SUPPORTED_HEADING_STYLES,
+  SUPPORTED_ITEM_SPACINGS,
+  SUPPORTED_PARAGRAPH_SPACINGS,
+  SUPPORTED_CONTACT_LAYOUTS,
+  SUPPORTED_SKILLS_PRESENTATIONS,
+  SUPPORTED_DATE_ALIGNMENTS,
 } from './cvConstants';
 
 // Helper for optional string fields accepting empty string or URL
@@ -122,6 +127,12 @@ export const designSettingsSchema = z.object({
   density: z.enum(SUPPORTED_DENSITIES).default('balanced'),
   showSectionDividers: z.boolean().default(true),
   headingStyle: z.enum(SUPPORTED_HEADING_STYLES).default('standard'),
+  itemSpacing: z.enum(SUPPORTED_ITEM_SPACINGS).default('normal'),
+  paragraphSpacing: z.enum(SUPPORTED_PARAGRAPH_SPACINGS).default('normal'),
+  contactLayout: z.enum(SUPPORTED_CONTACT_LAYOUTS).default('inline'),
+  skillsPresentation: z.enum(SUPPORTED_SKILLS_PRESENTATIONS).default('list'),
+  dateAlignment: z.enum(SUPPORTED_DATE_ALIGNMENTS).default('opposite'),
+  showBulletPoints: z.boolean().default(true),
 });
 
 export const metadataSchema = z.object({

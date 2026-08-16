@@ -10,7 +10,7 @@ export function ExportOptions({ documentName, templateName }) {
   const options = [
     { label: t('documentName'), value: documentName || 'cv-resume' },
     { label: t('template'), value: templateName || 'Classic ATS' },
-    { label: t('pageSize'), value: 'A4' },
+    { label: t('pageSize'), value: 'US Letter (21.59 × 27.94 cm)' },
     { label: t('language'), value: 'English' },
     { label: t('direction'), value: 'LTR' },
   ];

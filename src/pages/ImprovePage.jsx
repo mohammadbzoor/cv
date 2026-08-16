@@ -112,7 +112,7 @@ export default function ImprovePage() {
         <Card className="p-6 text-center space-y-4 border-error/30 bg-error-subtle/10">
           <p className="text-sm font-bold text-error">{error?.message || 'Improvement failed.'}</p>
           <Button type="button" variant="outline" size="sm" leadingIcon={RefreshCw} onClick={retry}>
-            Retry
+            {t('improve:retryBtn')}
           </Button>
         </Card>
       )}
@@ -122,7 +122,7 @@ export default function ImprovePage() {
         <div className="space-y-6">
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <h3 className="text-sm font-bold text-foreground">
-              Generated Suggestions ({suggestions.filter((s) => s.status === 'pending').length} pending)
+              {t('improve:generatedSuggestions', { count: suggestions.filter((s) => s.status === 'pending').length })}
             </h3>
 
             <Button
@@ -149,7 +149,7 @@ export default function ImprovePage() {
 
           <div className="flex justify-between items-center pt-4 border-t border-border">
             <Button type="button" variant="outline" size="md" leadingIcon={RefreshCw} onClick={handleGenerate}>
-              Regenerate Suggestions
+              {t('improve:regenerate')}
             </Button>
 
             <Button
@@ -157,7 +157,7 @@ export default function ImprovePage() {
               variant="primary"
               size="md"
               trailingIcon={ArrowRight}
-              onClick={() => navigate(ROUTE_PATHS.BUILDER)}
+              onClick={() => navigate(ROUTE_PATHS.BUILDER_NEW)}
             >
               {t('improve:openInBuilder')}
             </Button>

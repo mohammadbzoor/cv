@@ -44,6 +44,9 @@
   "clearFilters": "إعادة ضبط الفلاتر",
   "noTemplatesFound": "لا توجد قوالب تطابق معايير البحث أو الفلاتر المحددة.",
   "noTemplatesFoundDesc": "جرب تعديل كلمات البحث أو مسح فلاتر التصفية.",
+  "noResults": "لم يتم العثور على قوالب",
+  "noResultsDescription": "حاول تعديل الفلاتر أو نص البحث.",
+  "resultsCount": "عرض {{count}} قوالب",
   "previewingYourCv": "معاينة بيانات سيرتك الذاتية",
   "previewingSampleData": "معاينة البيانات التوضيحية",
   "tabVisualPreview": "المعاينة البصرية",
@@ -52,12 +55,14 @@
   "zoom": "مستوى التقريب",
   "fullscreen": "ملء الشاشة",
   "exitFullscreen": "إغلاق ملء الشاشة",
-  "quickCustomizationTitle": "التخصيص السريع للقالب",
   "contentDensity": "كثافة المحتوى",
+  "fitToOnePage": "ملاءمة صفحة واحدة (Fit to 1 Page)",
+  "ultraCompactDesc": "ضغط فائق للمسافات لاحتواء كامل السيرة الذاتية في صفحة واحدة",
   "density": {
     "comfortable": "مريح (Comfortable)",
     "balanced": "متوازن (Balanced)",
-    "compact": "مضغوط (Compact)"
+    "compact": "مضغوط (Compact)",
+    "ultra-compact": "مضغوط فائق (Ultra Compact)"
   },
   "showSectionDividers": "إظهار خطوط الفواصل بين الأقسام",
   "headingStyle": "نمط عناوين الأقسام",

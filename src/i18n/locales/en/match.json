@@ -18,6 +18,7 @@
   "cancel": "Cancel",
   "retry": "Retry Match",
   "demoNotice": "Mock job matching: Algorithms perform deterministic keyword comparisons locally.",
+  "openInBuilder": "Open Resume in Builder",
   "errors": {
     "JOB_DESCRIPTION_TOO_SHORT": "Job description text is too short. Please provide at least 100 characters."
   }

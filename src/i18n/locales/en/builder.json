@@ -37,6 +37,14 @@
     "lineHeight": "Line Spacing",
     "margins": "Page Margins",
     "sectionSpacing": "Section Spacing",
-    "template": "Active Template"
+    "template": "Active Template",
+    "style": "Style",
+    "spacing": "Spacing",
+    "structure": "Structure",
+    "itemSpacing": "Item Spacing",
+    "paragraphSpacing": "Paragraph Spacing",
+    "contactLayout": "Contact Layout",
+    "skillsPresentation": "Skills Presentation",
+    "dateAlignment": "Date Alignment"
   }
 }

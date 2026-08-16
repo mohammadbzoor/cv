@@ -92,7 +92,7 @@ export default function AnalyzePage() {
               variant="primary"
               size="md"
               trailingIcon={ArrowRight}
-              onClick={() => navigate(ROUTE_PATHS.BUILDER)}
+              onClick={() => navigate(ROUTE_PATHS.BUILDER_NEW)}
             >
               {t('analyze:openInBuilder')}
             </Button>

@@ -27,21 +27,32 @@ export function CertificatesEditor() {
               <Trash2 className="w-3 h-3" aria-hidden="true" />
             </Button>
           </div>
-          <div className="grid grid-cols-2 gap-2">
-            <Input
-              placeholder="Name"
-              value={cert.name || ''}
-              onChange={(e) => updateCertificate(cert.id, { name: e.target.value })}
-              lang="en"
-              dir="ltr"
-            />
-            <Input
-              placeholder="Issuer"
-              value={cert.issuer || ''}
-              onChange={(e) => updateCertificate(cert.id, { issuer: e.target.value })}
-              lang="en"
-              dir="ltr"
-            />
+          <div className="space-y-2">
+            <div className="grid grid-cols-2 gap-2">
+              <Input
+                placeholder="Name"
+                value={cert.name || ''}
+                onChange={(e) => updateCertificate(cert.id, { name: e.target.value })}
+                lang="en"
+                dir="ltr"
+              />
+              <Input
+                placeholder="Issuer"
+                value={cert.issuer || ''}
+                onChange={(e) => updateCertificate(cert.id, { issuer: e.target.value })}
+                lang="en"
+                dir="ltr"
+              />
+            </div>
+            <div>
+              <Input
+                placeholder="Date (e.g. Oct 2023)"
+                value={cert.issueDate || ''}
+                onChange={(e) => updateCertificate(cert.id, { issueDate: e.target.value })}
+                lang="en"
+                dir="ltr"
+              />
+            </div>
           </div>
         </div>
       ))}

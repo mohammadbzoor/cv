@@ -1,9 +1,10 @@
 import { EditableField } from '../../../builder/components/EditableField';
 import { getOrderedVisibleSections } from '../shared/templateSharedUtils';
+import { calculateSmartDensity } from '../../design/utils/densityCalculator';
 
 /**
  * Technical Prime ATS Template — Flagship Template.
- * Single-column, ATS-optimized layout supporting clean grouped skills and all core engineering sections.
+ * Single-column, ATS-optimized layout with smart auto-density scaling.
  */
 export function TechnicalPrimeATSTemplate({ cvData, design: overrideDesign, editable = true, onFieldCommit }) {
   if (!cvData) return null;
@@ -18,32 +19,10 @@ export function TechnicalPrimeATSTemplate({ cvData, design: overrideDesign, edit
   const languages = cvData.languages || [];
 
   const visibleSections = getOrderedVisibleSections(cvData);
-  const primaryColor = design.primaryColor || '#1e293b';
-
-  // Density spacing mapping
-  const densityClass =
-    design.density === 'compact'
-      ? 'space-y-3'
-      : design.density === 'comfortable'
-        ? 'space-y-6'
-        : 'space-y-4.5';
-
-  const itemSpacingClass =
-    design.density === 'compact'
-      ? 'space-y-1.5'
-      : design.density === 'comfortable'
-        ? 'space-y-3.5'
-        : 'space-y-2.5';
-
-  // Heading style mapping
-  const showDivider = design.showSectionDividers !== false;
-
-  let headingClass = 'text-xs font-bold uppercase tracking-wider';
-  if (design.headingStyle === 'understated') {
-    headingClass = 'text-xs font-semibold text-slate-800 tracking-normal';
-  } else if (design.headingStyle === 'prominent') {
-    headingClass = 'text-sm font-extrabold uppercase tracking-widest';
-  }
+  
+  // Smart Density Calculation
+  // If the user hasn't explicitly set a density in the new UI, or if they set it to 'auto', it calculates dynamically.
+  const densityTokens = calculateSmartDensity(cvData, design.density);
 
   // Group skills by category if present
   const skillsByCategory = skills.reduce((acc, sk) => {
@@ -52,51 +31,87 @@ export function TechnicalPrimeATSTemplate({ cvData, design: overrideDesign, edit
     if (sk.name) acc[cat].push(sk.name);
     return acc;
   }, {});
-
+  
   const hasGroupedSkills = Object.keys(skillsByCategory).length > 0;
+
+  const showDivider = design.showSectionDividers !== false;
+  const showBullets = design.showBulletPoints !== false;
+  const contactLayout = design.contactLayout || 'inline';
+  const primaryColor = design.primaryColor || '#111827';
+
+  // Render Helpers
+  const renderEditable = (value, path, placeholder, multiline = false) => {
+    if (!editable) return value || placeholder;
+    return (
+      <EditableField
+        value={value}
+        onCommit={(val) => onFieldCommit?.(path, val)}
+        placeholder={placeholder}
+        multiline={multiline}
+      />
+    );
+  };
 
   return (
     <article
       lang="en"
       dir="ltr"
-      className={`p-8 md:p-12 ${densityClass} text-slate-800 font-sans text-xs sm:text-sm leading-relaxed max-w-full bg-white select-text`}
-      style={{ color: '#1e293b' }}
+      className="bg-white text-[#111] font-sans break-words select-text transition-all duration-150"
+      style={{
+        ...densityTokens,
+        padding: 'var(--cv-page-margin, 1.5cm)',
+        fontFamily: 'var(--cv-font-family, Arial, Helvetica, sans-serif)',
+        fontSize: 'var(--cv-font-size, var(--base-font))',
+        lineHeight: 'var(--cv-line-height, var(--line-height))',
+      }}
     >
       {/* Contact Header */}
-      <header className={`space-y-1 text-start ${showDivider ? 'border-b border-slate-300 pb-4' : 'pb-2'}`}>
-        <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 uppercase">
-          {editable ? (
-            <EditableField
-              value={personal.fullName}
-              onCommit={(val) => onFieldCommit?.('personalInfo.fullName', val)}
-              placeholder="FULL NAME"
-              ariaLabel="Full Name"
-            />
-          ) : (
-            personal.fullName || 'FULL NAME'
-          )}
+      <header
+        className="text-center pb-[8px] transition-all"
+        style={{ marginBottom: 'var(--cv-section-spacing, var(--section-gap))' }}
+      >
+        <h1
+          className="m-0 text-[26px] leading-[1.1] font-bold uppercase tracking-[0.3px]"
+          style={{ color: primaryColor }}
+        >
+          {renderEditable(personal.fullName, 'personalInfo.fullName', 'FULL NAME')}
         </h1>
+        
+        <div className="mt-[6px] text-[12px] font-normal text-slate-700">
+          {renderEditable(personal.jobTitle, 'personalInfo.jobTitle', 'Job Title / Role')}
+        </div>
 
-        <p className="text-xs sm:text-sm font-semibold text-slate-700">
-          {editable ? (
-            <EditableField
-              value={personal.jobTitle}
-              onCommit={(val) => onFieldCommit?.('personalInfo.jobTitle', val)}
-              placeholder="Job Title / Engineering Role"
-              ariaLabel="Job Title"
-            />
-          ) : (
-            personal.jobTitle
-          )}
-        </p>
+        <div className="mt-[6px] text-[10px] text-[#111] leading-[1.6]">
+          <div
+            className={`justify-center gap-0 ${
+              contactLayout === 'stacked' ? 'flex flex-col items-center gap-0.5' : 'flex flex-wrap'
+            }`}
+          >
+            <span className="contact-cluster">
+              {[personal.location, personal.phone, personal.email].filter(Boolean).map((info, i, arr) => (
+                <span key={info}>
+                  {info}
+                  {contactLayout !== 'stacked' && i < arr.length - 1 && <span className="mx-1 text-[#111]">|</span>}
+                </span>
+              ))}
+            </span>
 
-        <div className="flex flex-wrap gap-x-2 gap-y-0.5 text-xs text-slate-600 font-mono pt-1">
-          {personal.email && <span>{personal.email}</span>}
-          {personal.phone && <span>• {personal.phone}</span>}
-          {personal.location && <span>• {personal.location}</span>}
-          {personal.linkedin && <span>• {personal.linkedin}</span>}
-          {personal.github && <span>• {personal.github}</span>}
-          {personal.website && <span>• {personal.website}</span>}
+            {/* Links */}
+            {(personal.linkedin || personal.github || personal.website) && (
+              <span className={`contact-cluster ${contactLayout === 'stacked' ? 'mt-0.5' : 'ml-[16px]'}`}>
+                {[
+                  { label: 'LinkedIn', url: personal.linkedin },
+                  { label: 'GitHub', url: personal.github },
+                  { label: 'Portfolio', url: personal.website }
+                ].filter(link => link.url).map((link, i, arr) => (
+                  <span key={link.label}>
+                    {link.label}: <a href={link.url.startsWith('http') ? link.url : `https://${link.url}`} target="_blank" rel="noreferrer" className="no-underline hover:underline font-medium" style={{ color: primaryColor }}>{link.url.replace(/^https?:\/\//i, '').replace(/\/$/g, '')}</a>
+                    {contactLayout !== 'stacked' && i < arr.length - 1 && <span className="mx-1 text-[#111]">|</span>}
+                  </span>
+                ))}
+              </span>
+            )}
+          </div>
         </div>
       </header>
 
@@ -104,25 +119,32 @@ export function TechnicalPrimeATSTemplate({ cvData, design: overrideDesign, edit
       {visibleSections.map((sec) => {
         if (sec === 'summary') {
           return (
-            <section key="summary" className="space-y-1">
+            <section
+              key="summary"
+              style={{
+                marginTop: 'var(--cv-section-spacing, var(--section-gap))',
+                marginBottom: 'var(--cv-item-spacing, 0.5rem)',
+              }}
+            >
               <h2
-                className={`${headingClass} ${showDivider ? 'border-b border-slate-200 pb-1' : ''}`}
-                style={{ color: primaryColor }}
+                className="m-0 mb-[6px] pb-[3px] text-[13.5px] leading-[1.2] tracking-[0.2px] transition-all"
+                style={{
+                  color: primaryColor,
+                  fontWeight: 'var(--cv-heading-weight, 700)',
+                  fontSize: 'var(--cv-heading-size, 1.1em)',
+                  textTransform: 'var(--cv-heading-transform, uppercase)',
+                  borderBottomWidth: showDivider ? 'var(--cv-divider-width, 1px)' : '0px',
+                  borderBottomColor: showDivider ? '#d0d0d0' : 'transparent',
+                  borderBottomStyle: 'solid',
+                }}
               >
                 Professional Summary
               </h2>
-              <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
-                {editable ? (
-                  <EditableField
-                    value={cvData.summary}
-                    onCommit={(val) => onFieldCommit?.('summary', val)}
-                    multiline
-                    placeholder="Enter professional summary..."
-                    ariaLabel="Summary"
-                  />
-                ) : (
-                  cvData.summary
-                )}
+              <p
+                className="m-0 mb-[5px] text-slate-800"
+                style={{ marginTop: 'var(--cv-paragraph-spacing, 0.2rem)' }}
+              >
+                {renderEditable(cvData.summary, 'summary', 'Enter professional summary...', true)}
               </p>
             </section>
           );
@@ -130,25 +152,45 @@ export function TechnicalPrimeATSTemplate({ cvData, design: overrideDesign, edit
 
         if (sec === 'skills') {
           return (
-            <section key="skills" className="space-y-1.5">
+            <section
+              key="skills"
+              style={{
+                marginTop: 'var(--cv-section-spacing, var(--section-gap))',
+                marginBottom: 'var(--cv-item-spacing, 0.5rem)',
+              }}
+            >
               <h2
-                className={`${headingClass} ${showDivider ? 'border-b border-slate-200 pb-1' : ''}`}
-                style={{ color: primaryColor }}
+                className="m-0 mb-[6px] pb-[3px] text-[13.5px] leading-[1.2] tracking-[0.2px] transition-all"
+                style={{
+                  color: primaryColor,
+                  fontWeight: 'var(--cv-heading-weight, 700)',
+                  fontSize: 'var(--cv-heading-size, 1.1em)',
+                  textTransform: 'var(--cv-heading-transform, uppercase)',
+                  borderBottomWidth: showDivider ? 'var(--cv-divider-width, 1px)' : '0px',
+                  borderBottomColor: showDivider ? '#d0d0d0' : 'transparent',
+                  borderBottomStyle: 'solid',
+                }}
               >
-                Technical & Core Skills
+                Skills
               </h2>
               {hasGroupedSkills ? (
-                <div className="space-y-1 text-xs sm:text-sm text-slate-700">
+                <div
+                  className="grid grid-cols-2 gap-x-[16px] gap-y-[3px]"
+                  style={{ marginTop: 'var(--cv-paragraph-spacing, 0.2rem)' }}
+                >
                   {Object.entries(skillsByCategory).map(([category, items]) => (
-                    <div key={category} className="leading-relaxed">
-                      <span className="font-bold text-slate-900">{category}: </span>
-                      <span>{items.join(', ')}</span>
+                    <div key={category} className="break-inside-avoid">
+                      <div className="font-bold inline">{category}: </div>
+                      <div className="inline">{items.join(', ')}</div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
-                  {skills.map((sk) => sk.name).filter(Boolean).join(' • ')}
+                <p
+                  className="m-0 mb-[5px]"
+                  style={{ marginTop: 'var(--cv-paragraph-spacing, 0.2rem)' }}
+                >
+                  {skills.map((sk) => sk.name).filter(Boolean).join(', ')}
                 </p>
               )}
             </section>
@@ -157,31 +199,61 @@ export function TechnicalPrimeATSTemplate({ cvData, design: overrideDesign, edit
 
         if (sec === 'experiences') {
           return (
-            <section key="experiences" className="space-y-2">
+            <section
+              key="experiences"
+              style={{
+                marginTop: 'var(--cv-section-spacing, var(--section-gap))',
+                marginBottom: 'var(--cv-item-spacing, 0.5rem)',
+              }}
+            >
               <h2
-                className={`${headingClass} ${showDivider ? 'border-b border-slate-200 pb-1' : ''}`}
-                style={{ color: primaryColor }}
+                className="m-0 mb-[6px] pb-[3px] text-[13.5px] leading-[1.2] tracking-[0.2px] transition-all"
+                style={{
+                  color: primaryColor,
+                  fontWeight: 'var(--cv-heading-weight, 700)',
+                  fontSize: 'var(--cv-heading-size, 1.1em)',
+                  textTransform: 'var(--cv-heading-transform, uppercase)',
+                  borderBottomWidth: showDivider ? 'var(--cv-divider-width, 1px)' : '0px',
+                  borderBottomColor: showDivider ? '#d0d0d0' : 'transparent',
+                  borderBottomStyle: 'solid',
+                }}
               >
-                Work Experience
+                Experience
               </h2>
-              <div className={itemSpacingClass}>
+              <div>
                 {experiences.map((exp) => (
-                  <div key={exp.id} className="space-y-1">
-                    <div className="flex justify-between items-baseline flex-wrap gap-x-2 text-xs sm:text-sm font-bold text-slate-900">
-                      <span>{exp.position} — <span style={{ color: primaryColor }}>{exp.company}</span></span>
-                      <span className="text-xs font-mono text-slate-500 font-normal">
-                        {exp.startDate} – {exp.isCurrent ? 'Present' : exp.endDate} {exp.location && `| ${exp.location}`}
-                      </span>
+                  <div
+                    key={exp.id}
+                    className="break-inside-avoid"
+                    style={{ marginBottom: 'var(--cv-item-spacing, var(--item-gap))' }}
+                  >
+                    <div className="flex justify-between items-baseline gap-[12px]">
+                      <div className="flex-1 font-bold">
+                        <strong>{exp.position || 'Position'}</strong>
+                        {exp.company && <span> | <span style={{ color: primaryColor }}>{exp.company}</span></span>}
+                        {exp.location && ` | ${exp.location}`}
+                      </div>
+                      <div className="whitespace-nowrap text-right text-[#111] text-[9.6px] font-bold">
+                        {exp.startDate} – {exp.isCurrent ? 'Present' : exp.endDate}
+                      </div>
                     </div>
-
+                    
                     {exp.description && (
-                      <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">{exp.description}</p>
+                      <div
+                        className="mt-[2px] text-slate-700"
+                        style={{ marginTop: 'var(--cv-paragraph-spacing, 0.2rem)' }}
+                      >
+                        {exp.description}
+                      </div>
                     )}
 
                     {Array.isArray(exp.achievements) && exp.achievements.length > 0 && (
-                      <ul className="list-disc list-inside text-xs sm:text-sm text-slate-700 space-y-0.5 ps-1">
+                      <ul
+                        className={`m-0 mt-[3px] pl-[15px] ${showBullets ? 'list-disc' : 'list-none pl-0'}`}
+                        style={{ marginTop: 'var(--cv-paragraph-spacing, 0.2rem)' }}
+                      >
                         {exp.achievements.map((ach, idx) => (
-                          <li key={idx}>{ach}</li>
+                          <li key={idx} className="m-0 mb-[2px] p-0">{ach}</li>
                         ))}
                       </ul>
                     )}
@@ -194,28 +266,62 @@ export function TechnicalPrimeATSTemplate({ cvData, design: overrideDesign, edit
 
         if (sec === 'projects') {
           return (
-            <section key="projects" className="space-y-2">
+            <section
+              key="projects"
+              style={{
+                marginTop: 'var(--cv-section-spacing, var(--section-gap))',
+                marginBottom: 'var(--cv-item-spacing, 0.5rem)',
+              }}
+            >
               <h2
-                className={`${headingClass} ${showDivider ? 'border-b border-slate-200 pb-1' : ''}`}
-                style={{ color: primaryColor }}
+                className="m-0 mb-[6px] pb-[3px] text-[13.5px] leading-[1.2] tracking-[0.2px] transition-all"
+                style={{
+                  color: primaryColor,
+                  fontWeight: 'var(--cv-heading-weight, 700)',
+                  fontSize: 'var(--cv-heading-size, 1.1em)',
+                  textTransform: 'var(--cv-heading-transform, uppercase)',
+                  borderBottomWidth: showDivider ? 'var(--cv-divider-width, 1px)' : '0px',
+                  borderBottomColor: showDivider ? '#d0d0d0' : 'transparent',
+                  borderBottomStyle: 'solid',
+                }}
               >
-                Key Engineering Projects
+                Projects
               </h2>
-              <div className={itemSpacingClass}>
+              <div>
                 {projects.map((proj) => (
-                  <div key={proj.id} className="text-xs sm:text-sm space-y-0.5">
-                    <div className="flex justify-between items-baseline flex-wrap gap-x-2 font-bold text-slate-900">
-                      <span>{proj.name}</span>
+                  <div
+                    key={proj.id}
+                    className="break-inside-avoid"
+                    style={{ marginBottom: 'var(--cv-item-spacing, var(--item-gap))' }}
+                  >
+                    <div className="flex justify-between items-baseline gap-[12px]">
+                      <div className="flex-1 font-bold">
+                        <strong>{proj.name || 'Project Name'}</strong>
+                        {Array.isArray(proj.technologies) && proj.technologies.length > 0 && (
+                          <span className="font-normal text-[10px] text-[#555]"> | {proj.technologies.join(', ')}</span>
+                        )}
+                      </div>
+                      
                       {(proj.url || proj.repositoryUrl) && (
-                        <span className="text-xs font-mono text-slate-500 font-normal">
-                          {proj.url || proj.repositoryUrl}
-                        </span>
+                        <div className="whitespace-nowrap text-right text-[9.6px] font-bold">
+                          <a
+                            href={proj.url || proj.repositoryUrl}
+                            className="no-underline hover:underline"
+                            style={{ color: primaryColor }}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {(proj.url || proj.repositoryUrl).replace(/^https?:\/\//i, '').replace(/\/$/g, '')}
+                          </a>
+                        </div>
                       )}
                     </div>
-                    {proj.description && <p className="text-slate-700 leading-relaxed">{proj.description}</p>}
-                    {Array.isArray(proj.technologies) && proj.technologies.length > 0 && (
-                      <div className="text-xs font-mono text-slate-600">
-                        Technologies: {proj.technologies.join(', ')}
+                    {proj.description && (
+                      <div
+                        className="mt-[2px] text-slate-700"
+                        style={{ marginTop: 'var(--cv-paragraph-spacing, 0.2rem)' }}
+                      >
+                        {proj.description}
                       </div>
                     )}
                   </div>
@@ -227,22 +333,44 @@ export function TechnicalPrimeATSTemplate({ cvData, design: overrideDesign, edit
 
         if (sec === 'education') {
           return (
-            <section key="education" className="space-y-2">
+            <section
+              key="education"
+              style={{
+                marginTop: 'var(--cv-section-spacing, var(--section-gap))',
+                marginBottom: 'var(--cv-item-spacing, 0.5rem)',
+              }}
+            >
               <h2
-                className={`${headingClass} ${showDivider ? 'border-b border-slate-200 pb-1' : ''}`}
-                style={{ color: primaryColor }}
+                className="m-0 mb-[6px] pb-[3px] text-[13.5px] leading-[1.2] tracking-[0.2px] transition-all"
+                style={{
+                  color: primaryColor,
+                  fontWeight: 'var(--cv-heading-weight, 700)',
+                  fontSize: 'var(--cv-heading-size, 1.1em)',
+                  textTransform: 'var(--cv-heading-transform, uppercase)',
+                  borderBottomWidth: showDivider ? 'var(--cv-divider-width, 1px)' : '0px',
+                  borderBottomColor: showDivider ? '#d0d0d0' : 'transparent',
+                  borderBottomStyle: 'solid',
+                }}
               >
                 Education
               </h2>
-              <div className={itemSpacingClass}>
+              <div>
                 {education.map((edu) => (
-                  <div key={edu.id} className="flex justify-between items-baseline flex-wrap gap-x-2 text-xs sm:text-sm text-slate-900">
-                    <div>
-                      <span className="font-bold">{edu.degree}</span>
-                      {edu.field && <span> in {edu.field}</span>}
-                      <span> — {edu.institution}</span>
+                  <div
+                    key={edu.id}
+                    className="break-inside-avoid"
+                    style={{ marginBottom: 'var(--cv-item-spacing, var(--item-gap))' }}
+                  >
+                    <div className="flex justify-between items-baseline gap-[12px]">
+                      <div className="flex-1 font-bold">
+                        <strong>{edu.degree || 'Degree'}</strong>
+                        {edu.institution && ` | ${edu.institution}`}
+                        {edu.location && ` | ${edu.location}`}
+                      </div>
+                      <div className="whitespace-nowrap text-right text-[#111] text-[9.6px] font-bold">
+                        {edu.startDate} – {edu.endDate || 'Present'}
+                      </div>
                     </div>
-                    <span className="text-xs font-mono text-slate-500">{edu.startDate} – {edu.endDate}</span>
                   </div>
                 ))}
               </div>
@@ -250,46 +378,70 @@ export function TechnicalPrimeATSTemplate({ cvData, design: overrideDesign, edit
           );
         }
 
-        if (sec === 'certificates') {
-          return (
-            <section key="certificates" className="space-y-1">
+        return null;
+      })}
+
+      {/* Footer Grid: Certifications & Languages */}
+      {(certificates.length > 0 || languages.length > 0) && (
+        <div className="grid grid-cols-2 gap-[18px]">
+          {certificates.length > 0 && visibleSections.includes('certificates') && (
+            <section style={{ marginTop: 'var(--cv-section-spacing, var(--section-gap))' }}>
               <h2
-                className={`${headingClass} ${showDivider ? 'border-b border-slate-200 pb-1' : ''}`}
-                style={{ color: primaryColor }}
+                className="m-0 mb-[6px] pb-[3px] text-[13.5px] leading-[1.2] tracking-[0.2px] transition-all"
+                style={{
+                  color: primaryColor,
+                  fontWeight: 'var(--cv-heading-weight, 700)',
+                  fontSize: 'var(--cv-heading-size, 1.1em)',
+                  textTransform: 'var(--cv-heading-transform, uppercase)',
+                  borderBottomWidth: showDivider ? 'var(--cv-divider-width, 1px)' : '0px',
+                  borderBottomColor: showDivider ? '#d0d0d0' : 'transparent',
+                  borderBottomStyle: 'solid',
+                }}
               >
-                Certifications & Credentials
+                Certifications
               </h2>
-              <ul className="list-disc list-inside text-xs sm:text-sm text-slate-700 space-y-0.5">
-                {certificates.map((cert) => (
-                  <li key={cert.id}>
-                    <span className="font-semibold text-slate-900">{cert.name}</span>
-                    {cert.issuer && <span> — {cert.issuer}</span>}
-                    {cert.issueDate && <span className="font-mono text-slate-500 text-xs"> ({cert.issueDate})</span>}
-                  </li>
-                ))}
+              <ul
+                className={`m-0 ml-[15px] pl-0 ${showBullets ? 'list-disc' : 'list-none ml-0'}`}
+                style={{ marginTop: 'var(--cv-paragraph-spacing, 0.2rem)' }}
+              >
+                {certificates.map((cert) => {
+                  const meta = [cert.issuer, cert.issueDate].filter(Boolean).join(' | ');
+                  return (
+                    <li key={cert.id} className="m-0 mb-[2px] p-0">
+                      <strong>{cert.name}</strong>{meta ? ` — ${meta}` : ''}
+                    </li>
+                  );
+                })}
               </ul>
             </section>
-          );
-        }
+          )}
 
-        if (sec === 'languages') {
-          return (
-            <section key="languages" className="space-y-1">
+          {languages.length > 0 && visibleSections.includes('languages') && (
+            <section style={{ marginTop: 'var(--cv-section-spacing, var(--section-gap))' }}>
               <h2
-                className={`${headingClass} ${showDivider ? 'border-b border-slate-200 pb-1' : ''}`}
-                style={{ color: primaryColor }}
+                className="m-0 mb-[6px] pb-[3px] text-[13.5px] leading-[1.2] tracking-[0.2px] transition-all"
+                style={{
+                  color: primaryColor,
+                  fontWeight: 'var(--cv-heading-weight, 700)',
+                  fontSize: 'var(--cv-heading-size, 1.1em)',
+                  textTransform: 'var(--cv-heading-transform, uppercase)',
+                  borderBottomWidth: showDivider ? 'var(--cv-divider-width, 1px)' : '0px',
+                  borderBottomColor: showDivider ? '#d0d0d0' : 'transparent',
+                  borderBottomStyle: 'solid',
+                }}
               >
                 Languages
               </h2>
-              <p className="text-xs sm:text-sm text-slate-700">
-                {languages.map((lang) => `${lang.name} (${lang.proficiency})`).join(', ')}
+              <p
+                className="m-0 mb-[5px]"
+                style={{ marginTop: 'var(--cv-paragraph-spacing, 0.2rem)' }}
+              >
+                {languages.map((lang) => `${lang.name}${lang.proficiency ? ` (${lang.proficiency})` : ''}`).join(' | ')}
               </p>
             </section>
-          );
-        }
-
-        return null;
-      })}
+          )}
+        </div>
+      )}
     </article>
   );
 }

@@ -34,6 +34,12 @@ export function getDefaultDesignSettings() {
     density: 'balanced',
     showSectionDividers: true,
     headingStyle: 'standard',
+    itemSpacing: 'normal',
+    paragraphSpacing: 'normal',
+    contactLayout: 'inline',
+    skillsPresentation: 'list',
+    dateAlignment: 'opposite',
+    showBulletPoints: true,
   };
 }
 

@@ -15,6 +15,7 @@ export function TemplateStudioToolbar({
   hasActiveFilters,
   appliedFilters,
   onRemoveFilter,
+  resultsCount,
 }) {
   const { t } = useTranslation('templates');
 
@@ -31,8 +32,9 @@ export function TemplateStudioToolbar({
   ];
 
   return (
-    <div className="p-4 bg-surface border border-border rounded-2xl space-y-3 shadow-2xs">
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
+    <div className="space-y-4">
+      <div className="p-4 bg-surface border border-border rounded-2xl space-y-3 shadow-2xs">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
         {/* Search */}
         <div className="md:col-span-6">
           <TemplateSearch
@@ -71,6 +73,12 @@ export function TemplateStudioToolbar({
           onClearAll={onClearFilters}
         />
       )}
+      </div>
+      
+      {/* Results Count */}
+      <div className="text-sm text-foreground-secondary font-medium px-1" aria-live="polite">
+        {t('resultsCount', { count: resultsCount, defaultValue: `Showing ${resultsCount} templates` })}
+      </div>
     </div>
   );
 }

@@ -9,7 +9,7 @@ import {
 
 import { BuilderHeader } from './BuilderHeader';
 import { ContentPanel } from './ContentPanel';
-import { DesignPanel } from './DesignPanel';
+import { DesignSettingsPanel } from '../../templates/design/components/DesignSettingsPanel';
 import { PreviewPanel } from './PreviewPanel';
 import { BuilderUnsavedGuard } from './BuilderUnsavedGuard';
 import { useBuilderLayout } from '../hooks/useBuilderLayout';
@@ -83,30 +83,32 @@ export function BuilderLayout() {
             data-design-panel
             className="w-72 xl:w-80 bg-surface border-s border-border h-full flex flex-col shrink-0"
           >
-            <DesignPanel />
+            <DesignSettingsPanel />
           </aside>
         </div>
 
         {/* Mobile / Tablet Viewport Layout (<lg) */}
         <div className="flex flex-col w-full h-full lg:hidden">
-          <div className="flex-1 overflow-hidden">
-            {activeTab === 'content' && (
-              <div className="h-full bg-surface" data-content-panel>
-                <ContentPanel />
-              </div>
-            )}
+          <div className="flex-1 overflow-hidden relative">
+            <div
+              className={`h-full bg-surface ${activeTab === 'content' ? 'block' : 'hidden'}`}
+              data-content-panel
+            >
+              <ContentPanel />
+            </div>
 
-            {activeTab === 'preview' && (
-              <div className="h-full">
-                <PreviewPanel />
-              </div>
-            )}
+            <div
+              className={`h-full ${activeTab === 'preview' ? 'block' : 'hidden'}`}
+            >
+              <PreviewPanel />
+            </div>
 
-            {activeTab === 'design' && (
-              <div className="h-full bg-surface" data-design-panel>
-                <DesignPanel />
-              </div>
-            )}
+            <div
+              className={`h-full bg-surface ${activeTab === 'design' ? 'block' : 'hidden'}`}
+              data-design-panel
+            >
+              <DesignSettingsPanel />
+            </div>
           </div>
 
           {/* Bottom Mobile Viewport Tab Bar */}

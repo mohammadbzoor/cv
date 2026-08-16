@@ -1,15 +1,31 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { printCV } from '../services/printService';
 
+// Mock html2pdf.js
+const { mockSave, mockFrom, mockSet, mockHtml2Pdf } = vi.hoisted(() => {
+  const mockSave = vi.fn().mockResolvedValue(true);
+  const mockFrom = vi.fn().mockReturnValue({ save: mockSave });
+  const mockSet = vi.fn().mockReturnValue({ from: mockFrom });
+  const mockHtml2Pdf = vi.fn().mockReturnValue({ set: mockSet });
+  return { mockSave, mockFrom, mockSet, mockHtml2Pdf };
+});
+
+vi.mock('html2pdf.js', () => ({
+  default: mockHtml2Pdf,
+}));
+
 describe('printService', () => {
-  let originalWindowPrint;
   let originalDocument;
+  let originalWindow;
 
   beforeEach(() => {
-    originalWindowPrint = globalThis.window ? globalThis.window.print : undefined;
     originalDocument = globalThis.document;
+    originalWindow = globalThis.window;
 
     const classListSet = new Set();
+    const mockAppend = vi.fn();
+    const mockRemove = vi.fn();
+
     globalThis.document = {
       title: 'Original Title',
       body: {
@@ -18,66 +34,65 @@ describe('printService', () => {
           remove: (cls) => classListSet.delete(cls),
           contains: (cls) => classListSet.has(cls),
         },
+        appendChild: mockAppend,
       },
       querySelector: vi.fn(),
     };
+    
+    globalThis.window = {}; // Environment exists
+    
+    vi.clearAllMocks();
   });
 
   afterEach(() => {
-    if (globalThis.window) {
-      globalThis.window.print = originalWindowPrint;
-    }
     globalThis.document = originalDocument;
+    globalThis.window = originalWindow;
   });
 
-  it('returns PRINT_NOT_SUPPORTED when window.print is undefined', () => {
-    globalThis.window = {};
-    const result = printCV({ documentTitle: 'test-resume' });
+  it('returns PRINT_NOT_SUPPORTED when window is undefined', async () => {
+    globalThis.window = undefined;
+    const result = await printCV({ documentTitle: 'test-resume' });
     expect(result.success).toBe(false);
     expect(result.error.code).toBe('PRINT_NOT_SUPPORTED');
   });
 
-  it('returns CV_DOCUMENT_NOT_FOUND when [data-cv-document] is missing', () => {
-    globalThis.window = {
-      print: vi.fn(),
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn(),
-    };
+  it('returns CV_DOCUMENT_NOT_FOUND when [data-cv-document] is missing', async () => {
     globalThis.document.querySelector.mockReturnValue(null);
 
-    const result = printCV({ documentTitle: 'test-resume' });
+    const result = await printCV({ documentTitle: 'test-resume' });
     expect(result.success).toBe(false);
     expect(result.error.code).toBe('CV_DOCUMENT_NOT_FOUND');
   });
 
-  it('successfully invokes window.print and updates document.title temporarily when document exists', () => {
+  it('successfully triggers direct PDF download when document exists', async () => {
     const mockElem = {};
+    const mockZoom = { style: { transform: 'scale(1.2)' } };
     globalThis.document.querySelector.mockImplementation((selector) => {
       if (selector === '[data-cv-document]') return mockElem;
+      if (selector === '[data-preview-zoom-container]') return mockZoom;
       return null;
     });
 
-    const addEventListenerMock = vi.fn();
-    const removeEventListenerMock = vi.fn();
-    const printMock = vi.fn(() => {
-      expect(globalThis.document.title).toBe('alex-johnson-resume');
+    const onBefore = vi.fn();
+    const onAfter = vi.fn();
+
+    const result = await printCV({
+      documentTitle: 'alex-johnson-resume',
+      onBeforePrint: onBefore,
+      onAfterPrint: onAfter,
     });
-
-    globalThis.window = {
-      print: printMock,
-      addEventListener: addEventListenerMock,
-      removeEventListener: removeEventListenerMock,
-    };
-
-    const result = printCV({ documentTitle: 'alex-johnson-resume' });
+    
     expect(result.success).toBe(true);
-    expect(printMock).toHaveBeenCalledTimes(1);
-
-    // Simulate afterprint handler execution
-    const afterprintHandler = addEventListenerMock.mock.calls.find((call) => call[0] === 'afterprint')?.[1];
-    if (afterprintHandler) {
-      afterprintHandler();
-      expect(globalThis.document.title).toBe('Original Title');
-    }
+    expect(mockHtml2Pdf).toHaveBeenCalled();
+    expect(mockSet).toHaveBeenCalledWith(expect.objectContaining({
+      filename: 'alex-johnson-resume.pdf',
+      jsPDF: expect.objectContaining({
+        format: 'letter',
+      }),
+    }));
+    expect(mockSave).toHaveBeenCalled();
+    expect(onBefore).toHaveBeenCalled();
+    expect(onAfter).toHaveBeenCalled();
+    expect(mockZoom.style.transform).toBe('scale(1.2)');
   });
 });

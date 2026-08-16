@@ -1,4 +1,5 @@
 import { getTemplateById } from '../registry/templateRegistry';
+import { getTemplateDesignVariables } from '../design/utils/getTemplateDesignVariables';
 
 /**
  * Universal Template Renderer Component.
@@ -14,12 +15,17 @@ export function TemplateRenderer({
 }) {
   const definition = getTemplateById(templateId);
   const TemplateComponent = definition.component;
+  const effectiveDesign = design || cvData?.design;
+  const designVariables = getTemplateDesignVariables(effectiveDesign, definition);
 
   return (
-    <div className={`w-full max-w-full overflow-hidden ${className}`}>
+    <div 
+      className={`w-full max-w-full overflow-hidden ${className}`}
+      style={designVariables}
+    >
       <TemplateComponent
         cvData={cvData}
-        design={design || cvData?.design}
+        design={effectiveDesign}
         editable={editable}
         onFieldCommit={onFieldCommit}
       />

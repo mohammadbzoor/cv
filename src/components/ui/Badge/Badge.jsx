@@ -19,7 +19,19 @@ const sizeStyles = {
  * Non-interactive status label component.
  * Use for categorization, tagging, and status indication.
  */
-export function Badge({ variant = 'neutral', size = 'md', className, children, ...props }) {
+export function Badge({
+  variant = 'neutral',
+  size = 'md',
+  leadingIcon: LeadingIconProp,
+  startIcon: StartIconProp,
+  icon: IconProp,
+  trailingIcon: TrailingIcon,
+  className,
+  children,
+  ...props
+}) {
+  const Icon = LeadingIconProp || StartIconProp || IconProp;
+
   return (
     <span
       className={cn(
@@ -30,7 +42,9 @@ export function Badge({ variant = 'neutral', size = 'md', className, children, .
       )}
       {...props}
     >
+      {Icon && <Icon className="w-3 h-3 shrink-0" aria-hidden="true" />}
       {children}
+      {TrailingIcon && <TrailingIcon className="w-3 h-3 shrink-0" aria-hidden="true" />}
     </span>
   );
 }

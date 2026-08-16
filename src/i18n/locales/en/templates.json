@@ -44,6 +44,9 @@
   "clearFilters": "Clear all filters",
   "noTemplatesFound": "No templates match your current search or filter criteria.",
   "noTemplatesFoundDesc": "Try adjusting your search terms or clearing category filters.",
+  "noResults": "No Templates Found",
+  "noResultsDescription": "Try adjusting your filters or search query.",
+  "resultsCount": "Showing {{count}} templates",
   "previewingYourCv": "Previewing Your CV Data",
   "previewingSampleData": "Previewing Sample Data",
   "tabVisualPreview": "Visual Preview",
@@ -54,10 +57,13 @@
   "exitFullscreen": "Exit Fullscreen",
   "quickCustomizationTitle": "Template Quick Customization",
   "contentDensity": "Content Density",
+  "fitToOnePage": "Fit to 1 Page (Ultra Compact)",
+  "ultraCompactDesc": "Ultra-tight spacing to fit everything onto a single page",
   "density": {
     "comfortable": "Comfortable",
     "balanced": "Balanced",
-    "compact": "Compact"
+    "compact": "Compact",
+    "ultra-compact": "Ultra Compact"
   },
   "showSectionDividers": "Show Section Dividers",
   "headingStyle": "Section Heading Style",

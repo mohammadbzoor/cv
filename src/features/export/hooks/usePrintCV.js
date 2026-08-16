@@ -14,7 +14,7 @@ export function usePrintCV() {
   const [lastError, setLastError] = useState(null);
   const personalInfo = useCVStore(selectPersonalInfo);
 
-  const executePrint = useCallback(() => {
+  const executePrint = useCallback(async () => {
     setLastError(null);
     setIsPrinting(true);
 
@@ -23,7 +23,7 @@ export function usePrintCV() {
       title: personalInfo?.jobTitle,
     });
 
-    const result = printCV({
+    const result = await printCV({
       documentTitle,
       onBeforePrint: () => {
         // Could perform pre-print preparations here

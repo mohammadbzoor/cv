@@ -1,31 +1,18 @@
 /**
- * Print Service for CV Platform.
- * Orchestrates the Browser Print API workflow for PDF export.
- *
- * Responsibilities:
- * 1. Validate print environment (window.print, [data-cv-document]).
- * 2. Temporarily change document.title for PDF filename suggestion.
- * 3. Add printing class to body for any additional CSS hooks.
- * 4. Invoke window.print().
- * 5. Clean up: restore title, remove class.
- *
- * Does NOT:
- * - Open popups or iframes.
- * - Make network requests.
- * - Store data in URL or console.
- * - Use html2canvas, jsPDF, or external PDF libraries.
+ * Direct PDF Download Service for CV Platform.
+ * Temporarily resets preview viewport transform and invokes html2pdf for direct download.
  *
  * @param {{ documentTitle: string, onBeforePrint?: () => void, onAfterPrint?: () => void }} options
- * @returns {{ success: boolean, error?: { code: string, message: string } }}
+ * @returns {Promise<{ success: boolean, error?: { code: string, message: string } }>}
  */
-export function printCV({ documentTitle, onBeforePrint, onAfterPrint } = {}) {
+export async function printCV({ documentTitle, onBeforePrint, onAfterPrint } = {}) {
   // 1. Validate environment
-  if (typeof window === 'undefined' || typeof window.print !== 'function') {
+  if (typeof window === 'undefined') {
     return {
       success: false,
       error: {
         code: 'PRINT_NOT_SUPPORTED',
-        message: 'Browser print API is not available in this environment.',
+        message: 'Browser environment is not available.',
       },
     };
   }
@@ -41,60 +28,127 @@ export function printCV({ documentTitle, onBeforePrint, onAfterPrint } = {}) {
     };
   }
 
-  // 2. Save current document title
-  const originalTitle = document.title;
+  const zoomContainer = document.querySelector('[data-preview-zoom-container]');
+  const previousTransform = zoomContainer ? zoomContainer.style.transform : '';
 
-  // 3. Set temporary title (becomes suggested PDF filename)
-  if (documentTitle && typeof documentTitle === 'string') {
-    document.title = documentTitle;
-  }
-
-  // 4. Add printing state class
-  document.body.classList.add('cv-printing');
-
-  // 5. Execute callbacks
   try {
     onBeforePrint?.();
-  } catch {
-    // Non-critical: proceed with print even if callback fails
-  }
 
-  // 6. Register afterprint cleanup handler
-  function cleanup() {
-    document.title = originalTitle;
-    document.body.classList.remove('cv-printing');
+    // 2. Temporarily reset zoom scale so html2canvas renders at exact 1:1 dimensions
+    if (zoomContainer) {
+      zoomContainer.style.transform = 'none';
+    }
+
+    // Allow DOM to settle
+    await new Promise((resolve) => setTimeout(resolve, 60));
+
+    // 3. Dynamic import of html2pdf
+    const html2pdfModule = await import('html2pdf.js');
+    const html2pdf = typeof html2pdfModule.default === 'function' 
+      ? html2pdfModule.default 
+      : (typeof html2pdfModule === 'function' ? html2pdfModule : html2pdfModule.default);
+
+    const safeTitle = documentTitle || 'resume';
+    const opt = {
+      margin: 0,
+      filename: `${safeTitle}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: '#ffffff',
+        scrollY: 0,
+        scrollX: 0,
+        onclone: (clonedDoc) => {
+          // 1. Remove dark mode on the cloned document for clean white PDF
+          if (clonedDoc.documentElement) {
+            clonedDoc.documentElement.classList.remove('dark');
+            clonedDoc.documentElement.style.backgroundColor = '#ffffff';
+            clonedDoc.documentElement.style.color = '#111827';
+          }
+          if (clonedDoc.body) {
+            clonedDoc.body.style.backgroundColor = '#ffffff';
+            clonedDoc.body.style.color = '#111827';
+          }
+
+          // 2. Convert modern CSS oklch colors to standard RGB for html2canvas compatibility
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+
+          const sanitizeColor = (val) => {
+            if (!val || typeof val !== 'string' || !val.includes('oklch')) return val;
+            try {
+              ctx.fillStyle = '#000000';
+              ctx.fillStyle = val;
+              return ctx.fillStyle;
+            } catch {
+              return '#1e293b';
+            }
+          };
+
+          const colorProps = [
+            'color',
+            'backgroundColor',
+            'borderColor',
+            'borderTopColor',
+            'borderBottomColor',
+            'borderLeftColor',
+            'borderRightColor',
+            'outlineColor',
+            'fill',
+            'stroke',
+          ];
+
+          const elements = clonedDoc.querySelectorAll('*');
+          elements.forEach((el) => {
+            if (!el || !el.style) return;
+            try {
+              const computed = window.getComputedStyle(el);
+              colorProps.forEach((prop) => {
+                const computedVal = computed[prop];
+                if (computedVal && computedVal.includes('oklch')) {
+                  el.style[prop] = sanitizeColor(computedVal);
+                }
+              });
+            } catch {
+              // Ignore non-rendered nodes
+            }
+          });
+        },
+      },
+      jsPDF: {
+        unit: 'in',
+        format: 'letter', // Standard US Letter format (8.5 x 11 inches)
+        orientation: 'portrait',
+      },
+      pagebreak: {
+        mode: ['avoid-all', 'css', 'legacy'],
+      },
+    };
+
+    // 4. Generate and save directly to disk
+    await html2pdf().set(opt).from(cvDocument).save();
+
+    return { success: true };
+  } catch (err) {
+    console.error('PDF Generation Error:', err);
+    return {
+      success: false,
+      error: {
+        code: 'PRINT_FAILED',
+        message: err?.message || 'Failed to generate and download PDF file.',
+      },
+    };
+  } finally {
+    // 5. Restore previous zoom scale
+    if (zoomContainer) {
+      zoomContainer.style.transform = previousTransform;
+    }
     try {
       onAfterPrint?.();
     } catch {
       // Non-critical
     }
-    window.removeEventListener('afterprint', cleanup);
   }
-
-  window.addEventListener('afterprint', cleanup);
-
-  // 7. Trigger print dialog
-  try {
-    window.print();
-  } catch {
-    // If print throws, clean up immediately
-    cleanup();
-    return {
-      success: false,
-      error: {
-        code: 'PRINT_FAILED',
-        message: 'An unexpected error occurred while opening the print dialog.',
-      },
-    };
-  }
-
-  // 8. Fallback cleanup with timeout in case afterprint doesn't fire
-  // Some browsers may not reliably fire afterprint
-  setTimeout(() => {
-    if (document.body.classList.contains('cv-printing')) {
-      cleanup();
-    }
-  }, 5000);
-
-  return { success: true };
 }

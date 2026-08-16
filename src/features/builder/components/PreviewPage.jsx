@@ -25,7 +25,10 @@ export function PreviewPage() {
       data-cv-document
       lang="en"
       dir="ltr"
-      className="w-[210mm] min-h-[297mm] bg-white text-slate-900 shadow-xl rounded-sm overflow-hidden select-text relative transition-shadow"
+      className="w-[21.59cm] min-h-[27.94cm] bg-white text-slate-900 shadow-xl rounded-sm overflow-visible select-text relative transition-shadow"
+      style={{
+        boxSizing: 'border-box',
+      }}
     >
       {hasContent ? (
         <TemplateRenderer
