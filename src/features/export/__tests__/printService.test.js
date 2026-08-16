@@ -2,12 +2,12 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { printCV } from '../services/printService';
 
 // Mock html2pdf.js
-const { mockSave, mockFrom, mockSet, mockHtml2Pdf } = vi.hoisted(() => {
+const { mockSave, mockSet, mockHtml2Pdf } = vi.hoisted(() => {
   const mockSave = vi.fn().mockResolvedValue(true);
   const mockFrom = vi.fn().mockReturnValue({ save: mockSave });
   const mockSet = vi.fn().mockReturnValue({ from: mockFrom });
   const mockHtml2Pdf = vi.fn().mockReturnValue({ set: mockSet });
-  return { mockSave, mockFrom, mockSet, mockHtml2Pdf };
+  return { mockSave, mockSet, mockHtml2Pdf };
 });
 
 vi.mock('html2pdf.js', () => ({
@@ -24,7 +24,6 @@ describe('printService', () => {
 
     const classListSet = new Set();
     const mockAppend = vi.fn();
-    const mockRemove = vi.fn();
 
     globalThis.document = {
       title: 'Original Title',
